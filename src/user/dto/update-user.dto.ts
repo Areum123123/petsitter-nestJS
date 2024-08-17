@@ -15,3 +15,5 @@ export class UpdateUserDto {
   // })
   address?: string;
 }
+
+//비어있어도 입력할 수 있어야 하는데 유효성을 넣으니까 비우면 에러

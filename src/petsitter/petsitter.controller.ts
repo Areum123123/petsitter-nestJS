@@ -14,12 +14,15 @@ import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Petsitter } from '../petsitter/entities/petsitter.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ReviewService } from 'src/review/review.service';
+import { CustomRequest } from 'src/auth/dto/req-user.dto';
+import { CreateReviewDto } from 'src/review/dto/create-review.dto';
+import { GetReviewDto } from 'src/review/dto/review-res.dto';
 
 @Controller('pet-sitters')
 export class PetSitterController {
   constructor(
     private readonly petSitterService: PetSitterService,
-    // private readonly reviewService: ReviewService,
+    private readonly reviewService: ReviewService,
   ) {}
 
   //펫시터 목록 조회
@@ -51,30 +54,39 @@ export class PetSitterController {
   }
 
   //펫시터 리뷰
-  // @Post(':petSitterId/reviews')
-  // async createReview(
-  //   @Param('petSitterId') petSitterId: number,
-  //   @Req() req: any, // 사용자 인증 정보가 있는 요청
-  //   @Body() createReviewDto: CreateReviewDto,
-  // ) {
-  //   const userId = req.user.id; // 사용자 ID는 인증 미들웨어에서 설정한 값을 가져옵니다.
-  //   const review = await this.reviewService.createReview(userId, petSitterId, createReviewDto);
+  @Post(':petSitterId/reviews')
+  @UseGuards(AuthGuard())
+  async createReview(
+    @Param('petSitterId') petSitterId: number,
+    @Req() req: CustomRequest, // 사용자 인증 정보가 있는 요청
+    @Body() createReviewDto: CreateReviewDto,
+  ): Promise<GetReviewDto> {
+    const userId = req.user.id;
+    const review = await this.reviewService.createReview(
+      userId,
+      petSitterId,
+      createReviewDto,
+      req,
+    );
 
-  //   return {
-  //     status: HttpStatus.CREATED,
-  //     message: '리뷰가 성공적으로 작성되었습니다.',
-  //     data: {
-  //       review_id: review.id,
-  //       pet_sitter_id: petSitterId,
-  //       reviews: {
-  //         user_name: req.user.name, // 사용자의 이름
-  //         rating: review.rating,
-  //         comment: review.comment,
-  //         created_at: review.created_at.toISOString(),
-  //         updated_at: review.updated_at.toISOString(),
-  //       },
-  //     },
-  //   }}
+    return {
+      status: 201,
+      message: '리뷰가 성공적으로 작성되었습니다.',
+      data: review,
+    };
+  }
+
+  //펫시터 리뷰 조회
+  @Get(':petSitterId/reviews')
+  async getReviews(@Param('petSitterId') petSitterId: number) {
+    const reviews = await this.petSitterService.getReviews(petSitterId);
+
+    return {
+      status: 200,
+      message: '펫시터 리뷰 조회 성공',
+      data: reviews,
+    };
+  }
 
   //펫시터생성 - 관리자만 할수있도록 수정필요
   @Post()
