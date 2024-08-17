@@ -1,13 +1,24 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Param,
+  Req,
+  NotFoundException,
+} from '@nestjs/common';
 import { PetSitterService } from '../petsitter/petsitter.service';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
-import { PetSitter } from '../petsitter/entities/petsitter.entity';
+import { Petsitter } from '../petsitter/entities/petsitter.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('pet-sitters')
 export class PetSitterController {
   constructor(private readonly petSitterService: PetSitterService) {}
 
   //펫시터 목록 조회
+  @UseGuards(AuthGuard()) //인증된사용자만 사용할수있게(authmiddlware)
   @Get()
   async getPetsitters(): Promise<{
     status: number;
@@ -34,11 +45,11 @@ export class PetSitterController {
     };
   }
 
-  //펫시터생성 -수정필요
+  //펫시터생성 - 관리자만 할수있도록 수정필요
   @Post()
   async create(
     @Body() createPetSitterDto: CreatePetSitterDto,
-  ): Promise<PetSitter> {
+  ): Promise<Petsitter> {
     return this.petSitterService.create(createPetSitterDto);
   }
 }

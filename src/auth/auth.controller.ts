@@ -2,16 +2,15 @@ import {
   Body,
   Controller,
   HttpCode,
-  HttpException,
-  HttpStatus,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto, SignUpResponse } from './dto/sign-up.dto';
 import { SignInDto, SignInResponse } from './dto/sign-in.dto';
-import { Request } from 'express';
-import { User } from 'src/user/entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
+import { CustomRequest } from './dto/req-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -42,5 +41,12 @@ export class AuthController {
       access_token,
       refresh_token,
     };
+  }
+
+  @Post('test')
+  @UseGuards(AuthGuard()) //인증도 해주고 req로 user객체를 보내준다.
+  async test(@Req() req: CustomRequest) {
+    //req에 들어가있는 정보들
+    console.log('req', req.user.phone_number);
   }
 }

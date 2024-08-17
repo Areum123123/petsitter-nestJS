@@ -26,7 +26,7 @@ export class RefreshToken {
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
 
-  @OneToOne(() => User, (user) => user.refresh_token, { onDelete: 'CASCADE' })
+  @OneToOne(() => User, (user) => user.refresh_token, { onDelete: 'CASCADE' }) //두번째는 db테이블명이다.(user) => user.refresh_token
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

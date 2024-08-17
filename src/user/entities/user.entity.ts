@@ -49,6 +49,7 @@ export class User {
 
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refresh_token: RefreshToken;
+  reviews: any;
 }
 //()=>RefreshToken 관계설정할 대상
 // (refreshToken) => refreshToken.user  RefreshToken 엔티티 내에서 user엔티티에 대한 참조필드

@@ -15,6 +15,10 @@ export class UserService {
     return await this.userRepository.findOneBy({ email });
   }
 
+  async findUserById(id: number): Promise<User | undefined> {
+    return await this.userRepository.findOneBy({ id });
+  }
+
   async save(signUpDto: SignUpDto): Promise<User> {
     return await this.userRepository.save(signUpDto); // 데이터베이스에 저장
   }

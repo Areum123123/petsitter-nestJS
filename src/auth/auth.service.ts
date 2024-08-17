@@ -70,14 +70,14 @@ export class AuthService {
       throw new UnauthorizedException('이메일 또는 비밀번호가 잘못되었습니다.');
     }
 
-    const payload = { email, sub: user.id };
+    const payload = { email, id: user.id };
 
     const access_token = this.jwtService.sign(payload, {
-      expiresIn: '12h', // Access Token 유효기간 설정
+      expiresIn: '12h',
     });
 
     const refresh_token = this.jwtService.sign(payload, {
-      expiresIn: '7d', // Refresh Token 유효기간 설정
+      expiresIn: '7d',
     });
 
     // RefreshToken 저장 또는 갱신

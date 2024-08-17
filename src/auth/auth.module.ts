@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from 'src/user/user.module';
@@ -7,23 +7,25 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RefreshToken } from './entities/refresh_token.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-
 import { JwtStrategy } from './jwt.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
+    PassportModule.register({ defaultStrategy: 'jwt' }), //추가
     TypeOrmModule.forFeature([User, RefreshToken]),
-    UserModule, // UserModule 임포트
+    forwardRef(() => UserModule),
+    // UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         secret: config.get('JWT_SECRET_KEY'),
-        // signOptions: { expiresIn: '12h' }, // 토큰 만료 시간 설정 (12시간)
       }),
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy], //authmodule에서 사용하기 위한것
+  exports: [JwtStrategy, PassportModule], //다른모듈 에서 사용가능.
 })
 export class AuthModule {}
