@@ -11,5 +11,6 @@ import { PetsitterModule } from 'src/petsitter/petsitter.module';
   imports: [TypeOrmModule.forFeature([Review])],
   controllers: [ReviewController],
   providers: [ReviewService],
+  exports: [ReviewModule],
 })
 export class ReviewModule {}

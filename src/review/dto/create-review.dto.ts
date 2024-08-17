@@ -1,7 +1,9 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsInt, IsNumber, IsString, Max, Min } from 'class-validator';
 
 export class CreateReviewDto {
-  @IsNumber()
+  @IsInt()
+  @Min(1)
+  @Max(5)
   rating: number;
 
   @IsString()

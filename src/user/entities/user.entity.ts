@@ -11,6 +11,7 @@ import {
 
 import { Role } from '../types/user-role.type';
 import { RefreshToken } from 'src/auth/entities/refresh_token.entity';
+import { Exclude } from 'class-transformer';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -23,7 +24,7 @@ export class User {
   @Column({ type: 'varchar', unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false }) //select로 명시하지않는이상 사용되지않음
+  @Column({ type: 'varchar', nullable: false })
   password: string;
 
   @Column({ type: 'varchar', nullable: false })

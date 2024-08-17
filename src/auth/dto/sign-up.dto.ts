@@ -3,6 +3,8 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
+  Matches,
   MinLength,
 } from 'class-validator';
 
@@ -22,10 +24,16 @@ export class SignUpDto {
 
   @IsString()
   @IsNotEmpty({ message: '전화번호는 필수 입력 항목입니다.' })
+  @Matches(/^\d{10,12}$/, {
+    message: '전화번호는 10자리에서 12자리 사이의 숫자만 포함해야 합니다.',
+  })
   phone_number: string;
 
   @IsString()
   @IsNotEmpty({ message: '주소는 필수 입력 항목입니다.' })
+  @Length(5, 100, {
+    message: '주소는 최소 5자 이상, 최대 100자 이하이어야 합니다.',
+  })
   address: string;
 
   @IsOptional()

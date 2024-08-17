@@ -18,13 +18,13 @@ export class Review {
   @ManyToOne(() => Petsitter, (petsitters) => petsitters.reviews, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'pet_sitter_id' })
+  @JoinColumn({ name: 'pet_sitter_id' }) //FK
   petsitter: Petsitter;
 
   @ManyToOne(() => User, (user) => user.reviews, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'user_id' }) //FK
   user: User;
 
   @Column({ type: 'int', nullable: false })
