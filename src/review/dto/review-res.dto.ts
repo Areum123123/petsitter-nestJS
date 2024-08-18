@@ -25,3 +25,15 @@ export class createReviewResponse {
     updated_at: string;
   };
 }
+
+export class getMyReviewResponse {
+  review_id: number;
+  user_id: number;
+  reviews: {
+    petsitter_name: string;
+    rating: number;
+    comment: string;
+    created_at: string;
+    updated_at: string;
+  };
+}

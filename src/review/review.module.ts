@@ -12,6 +12,7 @@ import { User } from 'src/user/entities/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Review, Petsitter, User]),
+    AuthModule,
     // PetsitterModule,
     // UserModule,
   ],
