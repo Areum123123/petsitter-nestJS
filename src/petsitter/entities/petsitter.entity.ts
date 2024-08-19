@@ -1,3 +1,4 @@
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { Review } from 'src/review/entities/review.entity';
 import {
   Entity,
@@ -37,8 +38,8 @@ export class Petsitter {
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
 
-  // @OneToMany(() => Reservation, (reservation) => reservation.petsitter)
-  // reservations: Reservation[];
+  @OneToMany(() => Reservation, (reservation) => reservation.petsitter)
+  reservations: Reservation[];
 
   @OneToMany(() => Review, (review) => review.petsitter)
   reviews: Review[];

@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -12,6 +13,7 @@ import {
 import { Role } from '../types/user-role.type';
 import { RefreshToken } from 'src/auth/entities/refresh_token.entity';
 import { Exclude } from 'class-transformer';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -51,7 +53,12 @@ export class User {
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refresh_token: RefreshToken;
   reviews: any;
+  // reservations: any;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservations: Reservation[];
 }
+
 //()=>RefreshToken 관계설정할 대상
 // (refreshToken) => refreshToken.user  RefreshToken 엔티티 내에서 user엔티티에 대한 참조필드
 //refresh_token: RefreshToken  USer엔티티가 refresh_token필드를 통해 관련된 RefreshToken 엔티티에 접근

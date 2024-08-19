@@ -13,6 +13,8 @@ import { PetsitterModule } from './petsitter/petsitter.module';
 import { Petsitter } from './petsitter/entities/petsitter.entity';
 import { ReviewModule } from './review/review.module';
 import { Review } from './review/entities/review.entity';
+import { ReservationModule } from './reservation/reservation.module';
+import { Reservation } from './reservation/entities/reservation.entity';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -25,7 +27,7 @@ const typeOrmModuleOptions = {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     database: configService.get('DB_NAME'),
-    entities: [User, RefreshToken, Petsitter, Review], //이곳은 반드시 명시 해주기
+    entities: [User, RefreshToken, Petsitter, Review, Reservation], //이곳은 반드시 명시 해주기
     synchronize: configService.get('DB_SYNC'),
     logging: true,
   }),
@@ -50,6 +52,7 @@ const typeOrmModuleOptions = {
     UserModule,
     PetsitterModule,
     ReviewModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

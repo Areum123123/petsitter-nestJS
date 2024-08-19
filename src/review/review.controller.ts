@@ -55,4 +55,21 @@ export class ReviewController {
       data: review,
     };
   }
+
+  //리뷰삭제
+  @Delete(':reviewId')
+  @UseGuards(AuthGuard())
+  async deleteReview(
+    @Param('reviewId') reviewId: number,
+    @Req() req: CustomRequest,
+  ): Promise<{ status: number; message: string }> {
+    const userId = req.user.id;
+
+    const review = await this.reviewService.deleteReivew(reviewId, userId);
+
+    return {
+      status: 200,
+      message: '리뷰가 성공적으로 삭제되었습니다.',
+    };
+  }
 }

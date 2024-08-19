@@ -1,10 +1,10 @@
-export class GetReviewDto {
+export interface GetReviewDto {
   status: number;
   message: string;
   data: any;
 }
 
-export class getReviewResponse {
+export interface getReviewResponse {
   reviewId: number;
   petSitterId: number;
   userName: string;
@@ -14,7 +14,7 @@ export class getReviewResponse {
   updatedAt: string;
 }
 
-export class createReviewResponse {
+export interface createReviewResponse {
   review_id: number;
   pet_sitter_id: number;
   reviews: {
@@ -26,7 +26,7 @@ export class createReviewResponse {
   };
 }
 
-export class getMyReviewResponse {
+export interface getMyReviewResponse {
   review_id: number;
   user_id: number;
   reviews: {

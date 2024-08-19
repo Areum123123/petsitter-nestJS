@@ -15,9 +15,13 @@ import {
   getMyReviewResponse,
 } from './dto/review-res.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { error } from 'console';
 
 @Injectable()
 export class ReviewService {
+  findOne(reviewId: number) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
@@ -126,5 +130,21 @@ export class ReviewService {
         updated_at: savedReview.updated_at.toISOString(),
       },
     };
+  }
+
+  //리뷰삭제
+  async deleteReivew(reviewId: number, userId: number): Promise<void> {
+    const review = await this.reviewRepository.findOne({
+      where: {
+        id: reviewId,
+        user: { id: userId },
+      },
+    });
+
+    if (!review) {
+      throw new NotFoundException('리뷰를 찾을 수 없습니다.');
+    }
+
+    await this.reviewRepository.remove(review);
   }
 }
