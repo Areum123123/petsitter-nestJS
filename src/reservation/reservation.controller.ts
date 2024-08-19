@@ -16,8 +16,6 @@ import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
 import { GetReservationDto } from './dto/reservation-res.dto';
-import { query } from 'express';
-import { AllReservationsDto } from './dto/get-reservation.dto';
 import { Role } from 'src/user/types/user-role.type';
 
 @Controller('reservations')
@@ -84,13 +82,28 @@ export class ReservationController {
       data: reservation,
     };
   }
+  //예약정보변경
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @Patch(':reservationId')
+  @UseGuards(AuthGuard())
+  async update(
+    @Param('reservationId') reservationId: number,
     @Body() updateReservationDto: UpdateReservationDto,
-  ) {
-    return this.reservationService.update(+id, updateReservationDto);
+    @Req() req: CustomRequest,
+  ): Promise<GetReservationDto> {
+    const userId = req.user.id;
+
+    const updatedReservation = await this.reservationService.updateReservation(
+      userId,
+      reservationId,
+      updateReservationDto,
+    );
+
+    return {
+      status: 200,
+      message: '예약 수정에 성공했습니다.',
+      data: updatedReservation,
+    };
   }
 
   @Delete(':id')

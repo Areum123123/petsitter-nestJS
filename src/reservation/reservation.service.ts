@@ -8,7 +8,7 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from './entities/reservation.entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Not, QueryFailedError, Repository } from 'typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/user/types/user-role.type';
@@ -198,8 +198,98 @@ export class ReservationService {
     };
   }
 
-  update(id: number, updateReservationDto: UpdateReservationDto) {
-    return `This action updates a #${id} reservation`;
+  //예약정보변경
+  async updateReservation(
+    userId: number,
+    reservationId: number,
+    updateReservationDto: UpdateReservationDto,
+  ) {
+    //: Promise<getAllReservation>
+    const {
+      dog_name,
+      dog_breed,
+      dog_age,
+      dog_weight,
+      request_details,
+      booking_date,
+    } = updateReservationDto;
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('해당 사용자를 찾을 수 없습니다.');
+    }
+
+    const reservation = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+      relations: ['user', 'petsitter'],
+    });
+
+    if (!reservation) {
+      throw new NotFoundException('해당 예약을 찾을 수 없습니다.');
+    }
+
+    // 사용자는 자신의 예약만 수정 가능
+    if (reservation.user.id !== userId) {
+      throw new ForbiddenException(
+        '해당 예약에 접근할 수 있는 권한이 없습니다.',
+      );
+    }
+
+    // 예약 정보 업데이트
+    if (dog_name) reservation.dog_name = updateReservationDto.dog_name;
+    if (dog_breed) reservation.dog_breed = updateReservationDto.dog_breed;
+    if (dog_age) reservation.dog_age = updateReservationDto.dog_age;
+    if (dog_weight) reservation.dog_weight = updateReservationDto.dog_weight;
+    if (request_details)
+      reservation.request_details = updateReservationDto.request_details;
+    if (booking_date)
+      reservation.booking_date = new Date(updateReservationDto.booking_date);
+
+    // 중복된 예약 날짜가 있는지 확인
+    const existingReservation = await this.reservationRepository.findOne({
+      where: {
+        petsitter: reservation.petsitter,
+        booking_date: reservation.booking_date,
+        id: Not(reservationId),
+      },
+    });
+
+    if (existingReservation) {
+      throw new ConflictException('해당 날짜에 이미 예약이 있습니다.');
+    }
+    // 예약 정보 저장 및 updated_at 자동 업데이트
+    try {
+      await this.reservationRepository.save(reservation);
+      return {
+        reservation_id: reservation.id,
+        status: reservation.status,
+        pet_details: {
+          name: reservation.dog_name,
+          breed: reservation.dog_breed,
+          age: reservation.dog_age,
+          weight: reservation.dog_weight,
+          request_details: reservation.request_details,
+        },
+        reservation_details: {
+          user_name: user.name,
+          phone_number: user.phone_number,
+          address: user.address,
+        },
+        petsitter_details: {
+          name: reservation.petsitter.name,
+          region: reservation.petsitter.region,
+          booking_date: reservation.booking_date,
+        },
+        created_at: reservation.created_at,
+        updated_at: reservation.updated_at,
+      };
+    } catch (error) {
+      // 중복 제약 조건 에러 처리
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('해당 날짜에 이미 예약이 있습니다.');
+      }
+      throw error;
+    }
   }
 
   remove(id: number) {
