@@ -6,7 +6,7 @@ export interface GetReservationDto {
   data: any;
 }
 
-export interface createReservationDto {
+export interface bookingReservation {
   reservation_id: number;
   user_id: number;
   pet_details: {

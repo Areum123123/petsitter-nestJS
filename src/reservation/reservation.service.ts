@@ -12,7 +12,10 @@ import { QueryFailedError, Repository } from 'typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/user/types/user-role.type';
-import { getAllReservation } from './dto/reservation-res.dto';
+import {
+  bookingReservation,
+  getAllReservation,
+} from './dto/reservation-res.dto';
 
 @Injectable()
 export class ReservationService {
@@ -28,7 +31,7 @@ export class ReservationService {
   async bookingCreate(
     userId: number,
     createReservationDto: CreateReservationDto,
-  ) {
+  ): Promise<bookingReservation> {
     const {
       pet_sitter_id,
       dog_name,
