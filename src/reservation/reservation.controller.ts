@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -15,6 +16,9 @@ import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
 import { GetReservationDto } from './dto/reservation-res.dto';
+import { query } from 'express';
+import { AllReservationsDto } from './dto/get-reservation.dto';
+import { Role } from 'src/user/types/user-role.type';
 
 @Controller('reservations')
 export class ReservationController {
@@ -41,14 +45,44 @@ export class ReservationController {
     };
   }
 
+  //예약목록조회
   @Get()
-  findAll() {
-    return this.reservationService.findAll();
+  @UseGuards(AuthGuard())
+  async getReservations(@Req() req: CustomRequest): Promise<GetReservationDto> {
+    const userId = req.user.id;
+    const userRole: Role = req.user.role as Role;
+    const reservations = await this.reservationService.getReservations(
+      userId,
+      userRole,
+    );
+
+    return {
+      status: 200,
+      message: '예약 조회에 성공했습니다.',
+      data: reservations,
+    };
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservationService.findOne(+id);
+  //예약상세조회
+  @Get(':reservationId')
+  @UseGuards(AuthGuard())
+  async getReservation(
+    @Param('reservationId') reservationId: number,
+    @Req() req: CustomRequest,
+  ): Promise<GetReservationDto> {
+    const userId = req.user.id;
+    const userRole: Role = req.user.role as Role;
+    const reservation = await this.reservationService.getReservation(
+      userId,
+      reservationId,
+      userRole,
+    );
+
+    return {
+      status: 200,
+      message: '예약 조회에 성공했습니다.',
+      data: reservation,
+    };
   }
 
   @Patch(':id')

@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { Role } from 'src/user/types/user-role.type';
 
 export interface User {
   id: number;
@@ -7,7 +8,7 @@ export interface User {
   name: string;
   phone_number: string;
   address: string;
-  role: string;
+  role: Role;
   image_url: string | null;
   created_at: Date;
   updated_at: Date;

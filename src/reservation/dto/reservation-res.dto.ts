@@ -1,3 +1,5 @@
+import { Status } from '../types/reservation-status.type';
+
 export interface GetReservationDto {
   status: number;
   message: string;
@@ -20,4 +22,28 @@ export interface createReservationDto {
     booking_date: Date;
   };
   created_at: Date;
+}
+
+export interface getAllReservation {
+  reservation_id: number;
+  status: Status;
+  pet_details: {
+    name: string;
+    breed: string;
+    age: string;
+    weight: string;
+    request_details: string;
+  };
+  reservation_details: {
+    user_name: string;
+    phone_number: string;
+    address: string;
+  };
+  petsitter_details: {
+    name: string;
+    region: string;
+    booking_date: Date;
+  };
+  created_at: Date;
+  updated_at: Date;
 }

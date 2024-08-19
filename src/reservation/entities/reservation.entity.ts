@@ -8,11 +8,13 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { Status } from '../types/reservation-status.type';
 
 @Entity({ name: 'reservations' })
+@Unique(['petsitter', 'booking_date']) // 유니크 제약 조건 설정
 export class Reservation {
   @PrimaryGeneratedColumn()
   id: number;
