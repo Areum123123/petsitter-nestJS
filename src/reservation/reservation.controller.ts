@@ -15,7 +15,10 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
-import { GetReservationDto } from './dto/reservation-res.dto';
+import {
+  cancelReservation,
+  GetReservationDto,
+} from './dto/reservation-res.dto';
 import { Role } from 'src/user/types/user-role.type';
 
 @Controller('reservations')
@@ -106,8 +109,22 @@ export class ReservationController {
     };
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationService.remove(+id);
+  @Delete(':reservationId')
+  @UseGuards(AuthGuard())
+  async cancelReservation(
+    @Param('reservationId') reservationId: number,
+    @Req() req: CustomRequest,
+  ): Promise<cancelReservation> {
+    const userId = req.user.id;
+    const result = await this.reservationService.cancelReservation(
+      userId,
+      reservationId,
+    );
+
+    return {
+      status: 200,
+      message: '예약이 성공적으로 취소되었습니다.',
+      Id: `${reservationId}`,
+    };
   }
 }

@@ -16,6 +16,7 @@ import {
   bookingReservation,
   getAllReservation,
 } from './dto/reservation-res.dto';
+import { Status } from './types/reservation-status.type';
 
 @Injectable()
 export class ReservationService {
@@ -292,7 +293,40 @@ export class ReservationService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  //예약취소
+  async cancelReservation(
+    userId: number,
+    reservationId: number,
+  ): Promise<void> {
+    // 예약 조회
+    const reservation = await this.reservationRepository.findOne({
+      where: { id: reservationId },
+      relations: ['user'],
+    });
+
+    if (!reservation) {
+      throw new NotFoundException('해당 예약을 찾을 수 없습니다.');
+    }
+
+    // 사용자는 자신의 예약만 취소 가능
+    if (reservation.user.id !== userId) {
+      throw new ForbiddenException(
+        '해당 예약에 접근할 수 있는 권한이 없습니다.',
+      );
+    }
+
+    // 예약 상태를 CANCELLED로 업데이트하고 booking_date를 현재 날짜로 변경
+    reservation.status = Status.CANCELED; // Enum으로 상태를 정의
+
+    // 어제 날짜로 설정
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    reservation.booking_date = yesterday;
+
+    try {
+      const result = await this.reservationRepository.save(reservation);
+    } catch (error) {
+      throw new Error('예약 취소 처리 중 오류가 발생했습니다.');
+    }
   }
 }

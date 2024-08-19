@@ -47,3 +47,9 @@ export interface getAllReservation {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface cancelReservation {
+  status: number;
+  message: string;
+  Id: string;
+}

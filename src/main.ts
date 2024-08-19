@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
+const PORT = process.env.PORT_NUMBER;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -14,6 +15,6 @@ async function bootstrap() {
   // 모든 라우트에 `/api` 프리픽스 추가
   app.setGlobalPrefix('api');
 
-  await app.listen(3020);
+  await app.listen(PORT);
 }
 bootstrap();
