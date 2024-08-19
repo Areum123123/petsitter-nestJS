@@ -14,6 +14,7 @@ import { Role } from '../types/user-role.type';
 import { RefreshToken } from 'src/auth/entities/refresh_token.entity';
 import { Exclude } from 'class-transformer';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
+import { ReservationLog } from 'src/reservation-logs/entities/reservation-log.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -53,7 +54,9 @@ export class User {
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refresh_token: RefreshToken;
   reviews: any;
-  // reservations: any;
+
+  @OneToMany(() => ReservationLog, (reservationLog) => reservationLog.user)
+  reservation_logs: ReservationLog[];
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];

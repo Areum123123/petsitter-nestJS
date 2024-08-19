@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Status } from '../types/reservation-status.type';
+import { ReservationLog } from 'src/reservation-logs/entities/reservation-log.entity';
 
 @Entity({ name: 'reservations' })
 @Unique(['petsitter', 'booking_date']) // 유니크 제약 조건 설정
@@ -61,9 +62,9 @@ export class Reservation {
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
 
-  //   @OneToMany(
-  //     () => ReservationLog,
-  //     (reservationLog) => reservationLog.reservation,
-  //   )
-  //   reservation_logs: ReservationLog[];
+  @OneToMany(
+    () => ReservationLog,
+    (reservationLog) => reservationLog.reservation,
+  )
+  reservation_logs: ReservationLog[];
 }
