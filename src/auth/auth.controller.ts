@@ -11,6 +11,8 @@ import { SignUpDto, SignUpResponse } from './dto/sign-up.dto';
 import { SignInDto, SignInResponse } from './dto/sign-in.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from './dto/req-user.dto';
+import { RefreshTokenStrategy } from './refresh-token.strategy';
+import { RefreshToken } from './entities/refresh_token.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -40,6 +42,31 @@ export class AuthController {
       message: '로그인 성공했습니다.',
       access_token,
       refresh_token,
+    };
+  }
+
+  //토큰재발급
+  @Post('token')
+  @UseGuards(AuthGuard('refreshToken')) //refreshToken 사용시 안됨
+  async refreshToken(@Req() req: CustomRequest) {
+    console.log('Req:', req.user);
+    const userId = req.user.id;
+
+    return await this.authService.refreshToken(userId);
+  }
+
+  //로그아웃
+  @Post('sign-out')
+  @UseGuards(AuthGuard('refreshToken')) //refreshToken전략 안되서 서비스에서 refreshtoken 로직
+  async signOut(@Req() req: CustomRequest) {
+    // const authorizationHeader = req.headers.authorization;
+    // console.log('또시작', authorizationHeader);
+    const userId = req.user.id;
+    await this.authService.signOut(userId);
+
+    return {
+      status: 200,
+      message: '로그아웃이 성공적으로 처리 되었습니다.',
     };
   }
 

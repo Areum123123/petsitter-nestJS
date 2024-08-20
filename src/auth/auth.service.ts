@@ -13,9 +13,11 @@ import _ from 'lodash';
 import { RefreshToken } from './entities/refresh_token.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
+  usersRepository: any;
   constructor(
     @InjectRepository(RefreshToken)
     private readonly refreshTokenRepository: Repository<RefreshToken>,
@@ -45,12 +47,7 @@ export class AuthService {
     };
     return await this.userService.save(userToSave);
   }
-  //refreshtoken 미들웨어 에서 추가
-  async findByToken(token: string): Promise<RefreshToken | null> {
-    return await this.refreshTokenRepository.findOne({
-      where: { refresh_token: token },
-    });
-  }
+
   //로그인
   async login(
     signInDto: SignInDto,
@@ -70,20 +67,40 @@ export class AuthService {
       throw new UnauthorizedException('이메일 또는 비밀번호가 잘못되었습니다.');
     }
 
-    const payload = { email, id: user.id };
+    const userId = user.id;
+
+    //토큰발급
+    return await this.generateTokens(email, userId);
+  }
+
+  // 토큰 재발급
+  async refreshToken(userId: number) {
+    const user = await this.userService.findUserById(userId);
+    const email = user.email;
+
+    return await this.generateTokens(email, userId);
+  }
+
+  // 토큰 발급
+  async generateTokens(email: string, userId: number) {
+    // 토큰 발급
+
+    const payload = { email, id: userId };
 
     const access_token = this.jwtService.sign(payload, {
+      secret: process.env.JWT_SECRET_KEY,
       expiresIn: '12h',
     });
 
     const refresh_token = this.jwtService.sign(payload, {
+      secret: process.env.REFRESH_SECRET_KEY,
       expiresIn: '7d',
     });
 
     // RefreshToken 저장 또는 갱신
     await this.refreshTokenRepository.upsert(
       {
-        user_id: user.id,
+        user_id: userId,
         refresh_token,
       },
       ['user_id'], // upsert 시 사용자 ID를 기준으로 처리
@@ -93,5 +110,15 @@ export class AuthService {
       access_token,
       refresh_token,
     };
+  }
+
+  //로그아웃
+  async signOut(userId: number) {
+    const refreshToken = await this.refreshTokenRepository.findOne({
+      where: { user_id: userId },
+    });
+
+    refreshToken.refresh_token = null;
+    await this.refreshTokenRepository.save(refreshToken);
   }
 }

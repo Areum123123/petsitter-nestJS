@@ -9,10 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { RefreshTokenStrategy } from '../auth/refresh-token.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }), //추가
+    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     TypeOrmModule.forFeature([User, RefreshToken]),
     forwardRef(() => UserModule),
     // UserModule,
@@ -25,7 +26,7 @@ import { PassportModule } from '@nestjs/passport';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy], //authmodule에서 사용하기 위한것
-  exports: [JwtStrategy, PassportModule], //다른모듈 에서 사용가능.
+  providers: [AuthService, JwtStrategy, RefreshTokenStrategy],
+  exports: [JwtStrategy, AuthService, PassportModule],
 })
 export class AuthModule {}

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { UnauthorizedExceptionFilter } from './filters/unauthorized-exception.filter';
 
 const PORT = process.env.PORT_NUMBER;
 async function bootstrap() {
@@ -12,9 +13,8 @@ async function bootstrap() {
     }), //dto를 사용하기 위해 꼭 필요한것
   );
 
-  // 모든 라우트에 `/api` 프리픽스 추가
   app.setGlobalPrefix('api');
-
+  app.useGlobalFilters(new UnauthorizedExceptionFilter());
   await app.listen(PORT);
 }
 bootstrap();
