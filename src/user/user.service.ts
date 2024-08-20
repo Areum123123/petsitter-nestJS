@@ -4,12 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { S3Service } from './s3/s3.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly s3Service: S3Service, // S3 서비스 주입
   ) {}
 
   async findUserByEmail(email: string): Promise<User | undefined> {
@@ -69,5 +71,22 @@ export class UserService {
 
     // 업데이트된 유저를 저장
     return await this.userRepository.save(user);
+  }
+
+  //s3이미지 업로드
+  async uploadUserImage(
+    userId: number,
+    file: Express.Multer.File,
+  ): Promise<string> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const imageUrl = await this.s3Service.uploadFile(file); // S3에 이미지 업로드
+    user.image_url = imageUrl;
+    await this.userRepository.save(user);
+
+    return imageUrl;
   }
 }

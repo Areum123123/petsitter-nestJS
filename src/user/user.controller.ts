@@ -9,13 +9,15 @@ import {
   Req,
   UseGuards,
   BadRequestException,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './entities/user.entity';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUserDto } from './dto/get-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UserController {
@@ -60,6 +62,26 @@ export class UserController {
       status: 200,
       message: '내 정보 수정에 성공했습니다',
       data: updatedUser,
+    };
+  }
+
+  //s3 유저 이미지 업로드
+  @Post('me/upload-images')
+  @UseInterceptors(FileInterceptor('file')) //클라이언트에서 보내는 필드이름 'file'
+  @UseGuards(AuthGuard())
+  async uploadImage(
+    @Req() req: CustomRequest,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const userId = req.user.id;
+    const imageUrl = await this.userService.uploadUserImage(userId, file);
+
+    return {
+      status: 200,
+      message: '이미지업로드 성공!',
+      data: {
+        image_url: imageUrl,
+      },
     };
   }
 }
