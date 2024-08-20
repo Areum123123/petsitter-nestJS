@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ReservationLogsService } from './reservation-logs.service';
-import { CreateReservationLogDto } from './dto/create-reservation-log.dto';
 import { Roles } from 'src/auth/roles.decorator';
 import { Role } from 'src/user/types/user-role.type';
 import { AuthGuard } from '@nestjs/passport';

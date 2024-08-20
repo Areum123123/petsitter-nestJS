@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateReservationLogDto } from './dto/create-reservation-log.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReservationLog } from './entities/reservation-log.entity';
 import { Repository } from 'typeorm';

@@ -13,7 +13,7 @@ import { RefreshTokenStrategy } from '../auth/refresh-token.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([User, RefreshToken]),
     forwardRef(() => UserModule),
     // UserModule,

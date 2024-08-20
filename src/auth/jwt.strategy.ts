@@ -26,8 +26,5 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     return user;
-    //user정보를 req로 보내지면 그냥 볼수없고
-    //UserGuards안에 @nestjs/passport에서 가져온 AuthGuard()를 이용하면 요청안에 유저 정보를 넣어 줄수있다.
-    //컨트롤러에서 API 에 사용하면 됩니다.
   }
 }
