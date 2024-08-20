@@ -8,18 +8,20 @@ import {
   Delete,
   UseGuards,
   Req,
-  Query,
+  HttpException,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
+import {
+  UpdateReservationDto,
+  UpdateStatusDTO,
+} from './dto/update-reservation.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
-import {
-  cancelReservation,
-  GetReservationDto,
-} from './dto/reservation-res.dto';
+import { cancelReservation, GetReservation } from './dto/reservation-res.dto';
 import { Role } from 'src/user/types/user-role.type';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
 
 @Controller('reservations')
 export class ReservationController {
@@ -31,7 +33,7 @@ export class ReservationController {
   async reservationCreate(
     @Body() createReservationDto: CreateReservationDto,
     @Req() req: CustomRequest,
-  ): Promise<GetReservationDto> {
+  ): Promise<GetReservation> {
     const userId = req.user.id;
 
     const result = await this.reservationService.bookingCreate(
@@ -49,7 +51,7 @@ export class ReservationController {
   //예약목록조회
   @Get()
   @UseGuards(AuthGuard())
-  async getReservations(@Req() req: CustomRequest): Promise<GetReservationDto> {
+  async getReservations(@Req() req: CustomRequest): Promise<GetReservation> {
     const userId = req.user.id;
     const userRole: Role = req.user.role as Role;
     const reservations = await this.reservationService.getReservations(
@@ -70,7 +72,7 @@ export class ReservationController {
   async getReservation(
     @Param('reservationId') reservationId: number,
     @Req() req: CustomRequest,
-  ): Promise<GetReservationDto> {
+  ): Promise<GetReservation> {
     const userId = req.user.id;
     const userRole: Role = req.user.role as Role;
     const reservation = await this.reservationService.getReservation(
@@ -93,7 +95,7 @@ export class ReservationController {
     @Param('reservationId') reservationId: number,
     @Body() updateReservationDto: UpdateReservationDto,
     @Req() req: CustomRequest,
-  ): Promise<GetReservationDto> {
+  ): Promise<GetReservation> {
     const userId = req.user.id;
 
     const updatedReservation = await this.reservationService.updateReservation(
@@ -125,6 +127,30 @@ export class ReservationController {
       status: 200,
       message: '예약이 성공적으로 취소되었습니다.',
       Id: `${reservationId}`,
+    };
+  }
+
+  //예약상태변경 (관리자)
+  @Patch(':reservationId/status')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.ADMIN)
+  async updateReservationStatus(
+    @Param('reservationId') reservationId: number,
+    @Body() updateStatusDTO: UpdateStatusDTO,
+    @Req() req: CustomRequest,
+  ): Promise<GetReservation> {
+    const userId = req.user.id;
+
+    const result = await this.reservationService.updateReservationStatus(
+      reservationId,
+      updateStatusDTO,
+      userId,
+    );
+
+    return {
+      status: 200,
+      message: '예약 상태가 성공적으로 변경되었습니다.',
+      data: result,
     };
   }
 }

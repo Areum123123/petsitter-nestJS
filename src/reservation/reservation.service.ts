@@ -5,18 +5,29 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
+import {
+  UpdateReservationDto,
+  UpdateStatusDTO,
+} from './dto/update-reservation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from './entities/reservation.entity';
-import { Not, QueryFailedError, Repository } from 'typeorm';
+import {
+  Connection,
+  DataSource,
+  Not,
+  QueryFailedError,
+  Repository,
+} from 'typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/user/types/user-role.type';
 import {
   bookingReservation,
+  changeStatus,
   getAllReservation,
 } from './dto/reservation-res.dto';
 import { Status } from './types/reservation-status.type';
+import { ReservationLog } from 'src/reservation-logs/entities/reservation-log.entity';
 
 @Injectable()
 export class ReservationService {
@@ -27,6 +38,10 @@ export class ReservationService {
     private readonly petsitterRepository: Repository<Petsitter>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(ReservationLog)
+    private readonly reservationLogRepository: Repository<ReservationLog>,
+    // private readonly connection: Connection,
+    private readonly dataSource: DataSource,
   ) {}
 
   async bookingCreate(
@@ -134,9 +149,9 @@ export class ReservationService {
         request_details: reservation.request_details,
       },
       reservation_details: {
-        user_name: user.name,
-        phone_number: user.phone_number,
-        address: user.address,
+        user_name: reservation.user.name,
+        phone_number: reservation.user.phone_number,
+        address: reservation.user.address,
       },
       petsitter_details: {
         name: reservation.petsitter.name,
@@ -327,6 +342,71 @@ export class ReservationService {
       const result = await this.reservationRepository.save(reservation);
     } catch (error) {
       throw new Error('예약 취소 처리 중 오류가 발생했습니다.');
+    }
+  }
+
+  //예약상태변경
+  async updateReservationStatus(
+    reservationId: number,
+    updateStatusDTO: UpdateStatusDTO,
+    userId: number,
+  ): Promise<changeStatus> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const reservation = await this.reservationRepository.findOne({
+        where: { id: reservationId },
+        relations: ['user', 'petsitter'],
+      });
+
+      if (!reservation) {
+        throw new NotFoundException('해당 예약을 찾을 수 없습니다.');
+      }
+
+      const { new_status, reason } = updateStatusDTO;
+      const old_status = reservation.status;
+
+      // 상태 변경
+      reservation.status = new_status;
+      await queryRunner.manager.save(reservation);
+
+      // 로그 기록
+      const reservationLog = this.reservationLogRepository.create({
+        reservation,
+        user: reservation.user,
+        old_status,
+        new_status,
+        reason,
+      });
+
+      await queryRunner.manager.save(reservationLog);
+
+      await queryRunner.commitTransaction();
+
+      return {
+        reservation_id: reservation.id,
+        user_id: reservation.user.id,
+        petsitter_id: reservation.petsitter.id,
+        pet_details: {
+          dog_name: reservation.dog_name,
+          dog_breed: reservation.dog_breed,
+          dog_age: reservation.dog_age,
+          dog_weight: reservation.dog_weight,
+        },
+        updated_status: {
+          old_status,
+          new_status,
+          reason,
+        },
+        booking_date: reservation.booking_date,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

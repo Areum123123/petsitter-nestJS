@@ -1,6 +1,6 @@
 import { Status } from '../types/reservation-status.type';
 
-export interface GetReservationDto {
+export interface GetReservation {
   status: number;
   message: string;
   data: any;
@@ -52,4 +52,22 @@ export interface cancelReservation {
   status: number;
   message: string;
   Id: string;
+}
+
+export interface changeStatus {
+  reservation_id: number;
+  user_id: number;
+  petsitter_id: number;
+  pet_details: {
+    dog_name: string;
+    dog_breed: string;
+    dog_age: string;
+    dog_weight: string;
+  };
+  updated_status: {
+    old_status: Status;
+    new_status: Status;
+    reason: string;
+  };
+  booking_date: Date;
 }
