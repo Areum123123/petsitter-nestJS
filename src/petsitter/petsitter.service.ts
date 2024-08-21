@@ -36,7 +36,12 @@ export class PetSitterService {
     if (experience) {
       where.experience = Like(`%${experience}%`);
     }
-    return this.petSitterRepository.find({ where });
+    return this.petSitterRepository.find({
+      where,
+      order: {
+        created_at: 'DESC',
+      },
+    });
   }
 
   //펫시터 리뷰 조회
@@ -51,8 +56,13 @@ export class PetSitterService {
       throw new NotFoundException('펫시터를 찾을 수 없습니다.');
     }
 
+    // 리뷰를 created_at 기준으로 내림차순 정렬
+    const sortedReviews = petsitter.reviews.sort(
+      (a, b) => b.created_at.getTime() - a.created_at.getTime(),
+    );
+
     // 리뷰 변환
-    return petsitter.reviews.map((review) => ({
+    return sortedReviews.map((review) => ({
       reviewId: review.id,
       petSitterId: petsitterId,
       userName: review.user.name, // 사용자 이름은 User 엔티티에 정의되어 있어야 합니다.

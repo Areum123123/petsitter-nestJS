@@ -6,7 +6,6 @@ import {
   UseGuards,
   Param,
   Req,
-  NotFoundException,
   Query,
 } from '@nestjs/common';
 import { PetSitterService } from '../petsitter/petsitter.service';
