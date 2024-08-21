@@ -11,8 +11,7 @@ import { SignUpDto, SignUpResponse } from './dto/sign-up.dto';
 import { SignInDto, SignInResponse } from './dto/sign-in.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from './dto/req-user.dto';
-import { RefreshTokenStrategy } from './refresh-token.strategy';
-import { RefreshToken } from './entities/refresh_token.entity';
+import { TokenResponse } from './dto/req-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -47,8 +46,8 @@ export class AuthController {
 
   //토큰재발급
   @Post('token')
-  @UseGuards(AuthGuard('refreshToken')) //refreshToken 사용시 안됨
-  async refreshToken(@Req() req: CustomRequest) {
+  @UseGuards(AuthGuard('refreshToken'))
+  async refreshToken(@Req() req: CustomRequest): Promise<TokenResponse> {
     console.log('Req:', req.user);
     const userId = req.user.id;
 
@@ -57,10 +56,10 @@ export class AuthController {
 
   //로그아웃
   @Post('sign-out')
-  @UseGuards(AuthGuard('refreshToken')) //refreshToken전략 안되서 서비스에서 refreshtoken 로직
-  async signOut(@Req() req: CustomRequest) {
-    // const authorizationHeader = req.headers.authorization;
-    // console.log('또시작', authorizationHeader);
+  @UseGuards(AuthGuard('refreshToken'))
+  async signOut(
+    @Req() req: CustomRequest,
+  ): Promise<{ status: number; message: string }> {
     const userId = req.user.id;
     await this.authService.signOut(userId);
 

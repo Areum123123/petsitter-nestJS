@@ -14,6 +14,7 @@ import { RefreshToken } from './entities/refresh_token.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { TokenResponse } from './dto/req-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -74,7 +75,7 @@ export class AuthService {
   }
 
   // 토큰 재발급
-  async refreshToken(userId: number) {
+  async refreshToken(userId: number): Promise<TokenResponse> {
     const user = await this.userService.findUserById(userId);
     const email = user.email;
 
@@ -82,7 +83,7 @@ export class AuthService {
   }
 
   // 토큰 발급
-  async generateTokens(email: string, userId: number) {
+  async generateTokens(email: string, userId: number): Promise<TokenResponse> {
     // 토큰 발급
 
     const payload = { email, id: userId };
@@ -113,7 +114,7 @@ export class AuthService {
   }
 
   //로그아웃
-  async signOut(userId: number) {
+  async signOut(userId: number): Promise<void> {
     const refreshToken = await this.refreshTokenRepository.findOne({
       where: { user_id: userId },
     });

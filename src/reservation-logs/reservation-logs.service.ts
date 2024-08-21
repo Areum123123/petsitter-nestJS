@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReservationLog } from './entities/reservation-log.entity';
 import { Repository } from 'typeorm';
+import { LogResponse, ReservationLogResponse } from './dto/log-response.dto';
 
 @Injectable()
 export class ReservationLogsService {
@@ -10,7 +11,7 @@ export class ReservationLogsService {
     private readonly reservationLogRepository: Repository<ReservationLog>,
   ) {}
 
-  async findAll() {
+  async findAll(): Promise<ReservationLogResponse[]> {
     const logs = await this.reservationLogRepository.find({
       relations: ['reservation', 'user'],
       order: { created_at: 'DESC' },

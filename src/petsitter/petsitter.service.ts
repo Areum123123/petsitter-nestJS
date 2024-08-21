@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Petsitter } from '../petsitter/entities/petsitter.entity';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
@@ -16,9 +16,27 @@ export class PetSitterService {
   ) {}
 
   //펫시터 목록 조회
-  async getPetsitters(): Promise<Petsitter[]> {
+  async getPetsitters(
+    name?: string,
+    region?: string,
+    experience?: string,
+  ): Promise<Petsitter[]> {
     const result = this.petSitterRepository.find();
-    return result;
+
+    const where: any = {};
+
+    if (name) {
+      where.name = Like(`%${name}%`);
+    }
+
+    if (region) {
+      where.region = Like(`%${region}%`);
+    }
+
+    if (experience) {
+      where.experience = Like(`%${experience}%`);
+    }
+    return this.petSitterRepository.find({ where });
   }
 
   //펫시터 리뷰 조회

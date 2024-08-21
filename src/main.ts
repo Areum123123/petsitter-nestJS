@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { UnauthorizedExceptionFilter } from './filters/unauthorized-exception.filter';
 
 const PORT = process.env.PORT_NUMBER;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

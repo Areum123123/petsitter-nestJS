@@ -15,6 +15,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { Role } from 'src/user/types/user-role.type';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { LogResponse } from './dto/log-response.dto';
 
 @Controller('reservation-logs')
 export class ReservationLogsController {
@@ -26,7 +27,7 @@ export class ReservationLogsController {
   @Get()
   @UseGuards(AuthGuard(), RolesGuard)
   @Roles(Role.ADMIN) // 관리자만 접근 가능
-  async getReservationLogs() {
+  async getReservationLogs(): Promise<LogResponse> {
     try {
       const logs = await this.reservationLogsService.findAll();
       return {

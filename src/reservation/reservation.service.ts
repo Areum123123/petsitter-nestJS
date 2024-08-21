@@ -6,18 +6,13 @@ import {
 } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import {
+  CancelReservation,
   UpdateReservationDto,
   UpdateStatusDTO,
 } from './dto/update-reservation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from './entities/reservation.entity';
-import {
-  Connection,
-  DataSource,
-  Not,
-  QueryFailedError,
-  Repository,
-} from 'typeorm';
+import { DataSource, Not, QueryFailedError, Repository } from 'typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/user/types/user-role.type';
@@ -43,7 +38,7 @@ export class ReservationService {
     // private readonly connection: Connection,
     private readonly dataSource: DataSource,
   ) {}
-
+  //예약
   async bookingCreate(
     userId: number,
     createReservationDto: CreateReservationDto,
@@ -312,36 +307,59 @@ export class ReservationService {
   async cancelReservation(
     userId: number,
     reservationId: number,
+    cancelReservation: CancelReservation,
   ): Promise<void> {
-    // 예약 조회
-    const reservation = await this.reservationRepository.findOne({
-      where: { id: reservationId },
-      relations: ['user'],
-    });
-
-    if (!reservation) {
-      throw new NotFoundException('해당 예약을 찾을 수 없습니다.');
-    }
-
-    // 사용자는 자신의 예약만 취소 가능
-    if (reservation.user.id !== userId) {
-      throw new ForbiddenException(
-        '해당 예약에 접근할 수 있는 권한이 없습니다.',
-      );
-    }
-
-    // 예약 상태를 CANCELLED로 업데이트하고 booking_date를 현재 날짜로 변경
-    reservation.status = Status.CANCELED; // Enum으로 상태를 정의
-
-    // 어제 날짜로 설정
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    reservation.booking_date = yesterday;
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
     try {
-      const result = await this.reservationRepository.save(reservation);
+      // 예약 조회
+      const reservation = await queryRunner.manager.findOne(Reservation, {
+        where: { id: reservationId },
+        relations: ['user'],
+      });
+
+      if (!reservation) {
+        throw new NotFoundException('해당 예약을 찾을 수 없습니다.');
+      }
+
+      // 사용자는 자신의 예약만 취소 가능
+      if (reservation.user.id !== userId) {
+        throw new ForbiddenException(
+          '해당 예약에 접근할 수 있는 권한이 없습니다.',
+        );
+      }
+      // 현재 상태 저장
+      const old_status = reservation.status;
+
+      //예약상태 취소
+      reservation.status = Status.CANCELED; // Enum으로 상태를 정의
+
+      // 어제 날짜로 설정
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      reservation.booking_date = yesterday;
+      //취소시 예약날짜 어제로 기록.상태 취소
+      await queryRunner.manager.save(reservation);
+
+      // 로그 기록
+      const reservationLog = this.reservationLogRepository.create({
+        reservation,
+        user: reservation.user,
+        old_status,
+        new_status: reservation.status,
+        reason: cancelReservation.reason,
+      });
+      await queryRunner.manager.save(reservationLog);
+
+      await queryRunner.commitTransaction();
     } catch (error) {
+      await queryRunner.rollbackTransaction();
       throw new Error('예약 취소 처리 중 오류가 발생했습니다.');
+    } finally {
+      // 쿼리러너 해제
+      await queryRunner.release();
     }
   }
 
@@ -410,4 +428,3 @@ export class ReservationService {
     }
   }
 }
-

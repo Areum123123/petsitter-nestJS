@@ -35,3 +35,9 @@ export class UpdateStatusDTO {
   @IsNotEmpty()
   reason: string;
 }
+
+export class CancelReservation {
+  @IsOptional()
+  @IsString()
+  reason?: string;
+}

@@ -35,7 +35,6 @@ export class ReviewService {
     userId: number,
     petSitterId: number,
     createReviewDto: CreateReviewDto,
-    // req: CustomRequest,
   ): Promise<createReviewResponse> {
     const petsitter = await this.petsitterRepository.findOne({
       where: { id: petSitterId },
@@ -58,9 +57,22 @@ export class ReviewService {
       user,
     });
 
-    console.log(review);
-
     await this.reviewRepository.save(review);
+
+    //펫시터 리뷰 조회
+    const reviews = await this.reviewRepository.find({
+      where: { petsitter: { id: petSitterId } },
+    });
+
+    // 평점 평균 계산
+    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+    const averageRating = totalRating / reviews.length;
+
+    // 소수점 한 자리까지 반올림
+    const AverageRating = averageRating.toFixed(1);
+    // 펫시터의 total_rate 업데이트
+    petsitter.total_rate = +AverageRating;
+    await this.petsitterRepository.save(petsitter);
 
     const result = {
       review_id: review.id,

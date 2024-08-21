@@ -28,12 +28,20 @@ export class PetSitterController {
   //펫시터 목록 조회
 
   @Get()
-  async getPetsitters(): Promise<{
+  async getPetsitters(
+    @Query('name') name?: string,
+    @Query('region') region?: string,
+    @Query('experience') experience?: string,
+  ): Promise<{
     status: number;
     message: string;
     data: any[];
   }> {
-    const petSitters = await this.petSitterService.getPetsitters();
+    const petSitters = await this.petSitterService.getPetsitters(
+      name,
+      region,
+      experience,
+    );
 
     const formattedPetSitters = petSitters.map((petSitter) => ({
       petSitterId: petSitter.id,
@@ -66,7 +74,6 @@ export class PetSitterController {
       userId,
       petSitterId,
       createReviewDto,
-      // req,
     );
 
     return {

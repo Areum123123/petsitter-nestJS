@@ -13,6 +13,7 @@ import {
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import {
+  CancelReservation,
   UpdateReservationDto,
   UpdateStatusDTO,
 } from './dto/update-reservation.dto';
@@ -111,16 +112,19 @@ export class ReservationController {
     };
   }
 
+  //예약취소
   @Delete(':reservationId')
   @UseGuards(AuthGuard())
   async cancelReservation(
     @Param('reservationId') reservationId: number,
+    @Body() cancelReservation: CancelReservation,
     @Req() req: CustomRequest,
   ): Promise<cancelReservation> {
     const userId = req.user.id;
     const result = await this.reservationService.cancelReservation(
       userId,
       reservationId,
+      cancelReservation,
     );
 
     return {
