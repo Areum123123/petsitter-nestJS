@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { Petsitter } from '../petsitter/entities/petsitter.entity';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
 import { getReviewResponse } from 'src/review/dto/review-res.dto';
+import Redis from 'ioredis';
 
 @Injectable()
 export class PetSitterService {
@@ -13,6 +14,7 @@ export class PetSitterService {
     private petSitterRepository: Repository<Petsitter>,
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
+    @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
   ) {}
 
   //펫시터 목록 조회
@@ -21,7 +23,13 @@ export class PetSitterService {
     region?: string,
     experience?: string,
   ): Promise<Petsitter[]> {
-    const result = this.petSitterRepository.find();
+    const cacheKey = `petsitters:${name || ''}:${region || ''}:${experience || ''}`;
+
+    // Redis에서 캐시된 데이터 가져오기
+    const cachedData = await this.redisClient.get(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
 
     const where: any = {};
 
@@ -36,12 +44,17 @@ export class PetSitterService {
     if (experience) {
       where.experience = Like(`%${experience}%`);
     }
-    return this.petSitterRepository.find({
+    const result = this.petSitterRepository.find({
       where,
       order: {
         created_at: 'DESC',
       },
     });
+
+    // Redis에 데이터 캐싱 (1시간 동안 유효)
+    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 3600);
+
+    return result;
   }
 
   //펫시터 리뷰 조회

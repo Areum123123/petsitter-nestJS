@@ -17,6 +17,7 @@ import { ReservationModule } from './reservation/reservation.module';
 import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationLogsModule } from './reservation-logs/reservation-logs.module';
 import { ReservationLog } from './reservation-logs/entities/reservation-log.entity';
+import { RedisModule } from './redis/redis.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -63,6 +64,7 @@ const typeOrmModuleOptions = {
     ReviewModule,
     ReservationModule,
     ReservationLogsModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
