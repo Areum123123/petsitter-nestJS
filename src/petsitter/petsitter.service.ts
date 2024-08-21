@@ -21,8 +21,6 @@ export class PetSitterService {
     region?: string,
     experience?: string,
   ): Promise<Petsitter[]> {
-    const result = this.petSitterRepository.find();
-
     const where: any = {};
 
     if (name) {
