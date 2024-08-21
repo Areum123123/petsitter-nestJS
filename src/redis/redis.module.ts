@@ -1,21 +1,23 @@
-// redis.module.ts
-import { Module, Global } from '@nestjs/common';
-import Redis from 'ioredis';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RedisConfig } from '../redis/redis.config';
+import { RedisService } from './redis.service';
 
 @Global()
 @Module({
+  imports: [ConfigModule.forRoot()], // ConfigModule을 루트 모듈로 설정
   providers: [
+    RedisConfig,
     {
       provide: 'REDIS_CLIENT',
-      useFactory: () => {
-        const redis = new Redis({
-          host: process.env.REDIS_HOST, // Redis 서버의 호스트 주소
-          port: Number(process.env.REDIS_PORT), // Redis 서버의 포트 번호
-        });
-        return redis;
+      useFactory: (configService: ConfigService) => {
+        const redisConfig = new RedisConfig(configService);
+        return redisConfig.getClient();
       },
+      inject: [ConfigService],
     },
-  ],
-  exports: ['REDIS_CLIENT'],
+    RedisService,
+  ], // RedisConfig를 모듈의 프로바이더로 등록
+  exports: ['REDIS_CLIENT', RedisService], // 다른 모듈에서도 RedisConfig를 사용할 수 있도록 내보내기
 })
 export class RedisModule {}

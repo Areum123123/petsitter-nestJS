@@ -42,6 +42,10 @@ export class PetSitterController {
       experience,
     );
 
+    if (!Array.isArray(petSitters)) {
+      throw new Error('Data from service is not an array');
+    }
+
     const formattedPetSitters = petSitters.map((petSitter) => ({
       petSitterId: petSitter.id,
       name: petSitter.name,
