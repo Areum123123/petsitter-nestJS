@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { Petsitter } from '../petsitter/entities/petsitter.entity';
+import { Petsitter } from './entities/petsitter.entity';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
 import { getReviewResponse } from 'src/review/dto/review-res.dto';

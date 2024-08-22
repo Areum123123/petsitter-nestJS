@@ -12,7 +12,6 @@ import {
 
 import { Role } from '../types/user-role.type';
 import { RefreshToken } from 'src/auth/entities/refresh_token.entity';
-import { Exclude } from 'class-transformer';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
 import { ReservationLog } from 'src/reservation-logs/entities/reservation-log.entity';
 
