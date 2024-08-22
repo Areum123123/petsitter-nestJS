@@ -39,8 +39,7 @@ export class AuthController {
     return {
       status: 200,
       message: '로그인 성공했습니다.',
-      access_token,
-      refresh_token,
+      data: { access_token, refresh_token },
     };
   }
 
