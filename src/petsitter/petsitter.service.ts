@@ -23,8 +23,8 @@ export class PetSitterService {
     region?: string,
     experience?: string,
   ): Promise<Petsitter[]> {
-    const cacheKey = `petsitters:${name || ''}:${region || ''}:${experience || ''}`;
     const startCacheTime = Date.now(); //캐시타임
+    const cacheKey = `petsitters:${name || ''}:${region || ''}:${experience || ''}`;
 
     // Redis에서 캐시된 데이터 가져오기
     const cachedData = await this.redisClient.get(cacheKey);
@@ -60,9 +60,9 @@ export class PetSitterService {
     });
 
     console.log(`Database query time: ${Date.now() - dbStartTime} ms`);
-    // Redis에 데이터 캐싱 (1시간 동안 유효)
-    console.log('Caching data:', result); // 데이터 캐시 전에 로그 추가
-    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 3600);
+    // Redis에 데이터 캐싱 (10분 동안 유효)
+    // console.log('Caching data:', result); // 데이터 캐시 전에 로그 추가
+    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 500);
 
     return result;
   }

@@ -13,6 +13,5 @@ export class SignInDto {
 export interface SignInResponse {
   status: number;
   message: string;
-  access_token: string;
-  refresh_token: string;
+  data: { access_token: string; refresh_token: string };
 }
