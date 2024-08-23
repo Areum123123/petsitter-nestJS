@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>실시간 채팅</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <style>
+      .new-message {
+        font-weight: bold;
+        color: red;
+      }
+      .system-message {
+        font-style: italic;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="customerBtn">고객 입장</button>
+    <button id="agentBtn">상담원 입장</button>
+    <div id="chatArea" style="display: none">
+      <div id="messages"></div>
+      <input type="text" id="messageInput" />
+      <button id="sendBtn">전송</button>
+    </div>
+    <div id="agentArea" style="display: none">
+      <ul id="customerList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
