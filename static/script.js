@@ -94,6 +94,16 @@ function appendSystemMessage(message) {
   document.getElementById('messages').appendChild(messageElement);
 }
 
+document.getElementById('leaveBtn').addEventListener('click', () => {
+  if (currentRoom) {
+    socket.emit('leaveRoom', { room: currentRoom });
+    currentRoom = ''; // 현재 방 정보 초기화
+    document.getElementById('messages').innerHTML = '';
+    document.getElementById('chatArea').style.display = 'none';
+    alert('채팅방을 떠났습니다.');
+  }
+});
+
 function showChatArea() {
   document.getElementById('chatArea').style.display = 'block';
 }

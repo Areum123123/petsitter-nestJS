@@ -67,9 +67,18 @@
         border-radius: 5px;
         transition: background-color 0.3s;
       }
-      #sendBtn:hover {
-        background-color: #218838;
+      #leaveBtn {
+        background-color: #a72828;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
       }
+
       .new-message {
         font-weight: bold;
         color: red;
@@ -87,6 +96,7 @@
       <div id="messages"></div>
       <input type="text" id="messageInput" />
       <button id="sendBtn">전송</button>
+      <button id="leaveBtn" class="button">채팅방 떠나기</button>
     </div>
     <div id="agentArea" style="display: none">
       <ul id="customerList"></ul>

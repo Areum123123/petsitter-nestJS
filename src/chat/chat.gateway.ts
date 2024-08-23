@@ -76,6 +76,21 @@ export class ChatGateway {
     }
   }
 
+  @SubscribeMessage('leaveRoom')
+  handlLeaveRoom(
+    @MessageBody() data: { room: string },
+    @ConnectedSocket() client: Socket,
+  ): void {
+    const room = data.room;
+    const customerId = room.split('_')[1];
+    if (this.customers.has(client.id)) {
+      this.server.to(room).emit('systemMessage', '고객이 채팅방을 떠났습니다.');
+      this.messages.delete(customerId); // 메시지 기록 삭제
+    }
+    client.leave(room);
+    this.updateAgentCustomerList(); // 상담원에게 고객 목록 업데이트
+  }
+
   private updateAgentCustomerList(): void {
     const customerList = Array.from(this.customers.entries()).map(
       ([id, nickname]) => ({
