@@ -12,10 +12,10 @@ export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  private customers: Map<string, string> = new Map(); // 소켓 ID to 닉네임
-  private agents: Set<string> = new Set(); // 에이전트 소켓 ID
+  private customers: Map<string, string> = new Map(); // 고객의 소켓 ID와 닉네임을 매핑하는 맵
+  private agents: Set<string> = new Set(); // 상담원의 소켓 ID를 관리하는 셋
   private messages: Map<string, Array<{ nickname: string; message: string }>> =
-    new Map(); // 고객 ID to 메시지 배열
+    new Map(); // 고객의 ID와 해당 고객의 메시지 배열을 관리하는 맵
 
   @SubscribeMessage('joinAsCustomer')
   handleCustomerJoin(@ConnectedSocket() client: Socket): void {
@@ -31,7 +31,7 @@ export class ChatGateway {
     @MessageBody() data: { password: string },
     @ConnectedSocket() client: Socket,
   ): void {
-    if (data.password === '1234') {
+    if (data.password === process.env.AGENT_PASSWORD) {
       this.agents.add(client.id);
       this.updateAgentCustomerList();
     } else {
