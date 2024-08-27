@@ -35,9 +35,9 @@
 
        
       }
-
+     
       body {
-        background-color: rgb(248, 243, 243)
+        background-color: #fff
       }
 /* 사진텍스트 높이조절 */
       .main .container-fluid h1 {
@@ -58,7 +58,7 @@ h1 {
     position: fixed;       /* 스크롤 시에도 고정된 위치에 있게 함 */
     right: 20px;           /* 오른쪽 끝에서 20px 떨어진 위치 */
     bottom: 20px;          /* 하단에서 20px 떨어진 위치 */
-    background-color: #8f9499; /* 버튼 배경색 (블루) */
+    background-color: #4e9ef2; /* 버튼 배경색 (블루) */
     color: white;          /* 글자 색상 (하얀색) */
     padding: 15px 20px;    /* 버튼 패딩 */
     border-radius: 50px;   /* 둥근 버튼 모양 */
@@ -77,14 +77,14 @@ h1 {
 
     .service-intro {
         padding: 60px 0;
-        background-color: rgb(248, 243, 243)
+        background-color: #fff
     }
-
+/* 펫시터 매칭서비스, 돌보미의 특별함 카드 */
     .feature-box {
         text-align: center;
         padding: 30px;
         border-radius: 10px;
-        background-color: white;
+        background-color: #edf1f6;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
         margin-bottom: 30px;
@@ -110,10 +110,10 @@ h1 {
         font-size: 16px;
         color: #666;
     }
-/* 추가 */
+/* 왜 돌보미를 선택해야 할까? */
 .why-choose-us, .testimonials {
     padding: 60px 0;
-    background-color: rgb(248, 243, 243)
+    background-color: #edf1f6
 }
 
 .reason-box {
@@ -154,7 +154,7 @@ h1 {
 }
 
 .cta-section {
-    background-color: rgb(248, 243, 243);
+    background-color: #fff;
     color: rgb(65, 62, 62);
     padding: 60px 0;
 }
@@ -184,7 +184,17 @@ h1 {
             text-decoration: none;
             font-size: 1rem;
         }
-
+        /* 왼쪽상단 반려견돌보미 */
+        .custom-color {
+    color: #4e9ef2;
+    font-weight: bold; /* 글씨를 두껍게 */
+}
+ /* 회원가입버튼 */
+.custom-btn {
+    background-color: #4e9ef2; /* 배경색 */
+    color: #fff; /* 텍스트 색상, 필요에 따라 조정 */
+    border: none; /* 기본 버튼 테두리 제거 */
+}
 
     </style>
   </head>
@@ -214,7 +224,8 @@ h1 {
             class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
           >
             <li>
-              <a href="#" class="nav-link px-2 text-dark">반려견 돌보미</a>
+              <!-- <a href="#" class="nav-link px-2 text-info">반려견 돌보미</a> -->
+              <a href="#" class="nav-link px-2 custom-color">반려견 돌보미</a>
             </li>
             <li>
               <a href="#" class="nav-link px-2 text-secondary">돌보미 예약</a>
@@ -238,7 +249,7 @@ h1 {
             <button type="button" class="btn btn-outline-dark me-2" onclick="redirectToSignIn()">
               로그인
             </button>
-            <button type="button" class="btn btn-danger" onclick="SignUp()">회원가입</button>
+            <button type="button" class="btn custom-btn" onclick="SignUp()">회원가입</button>
           </div>
         </div>
       </div>
