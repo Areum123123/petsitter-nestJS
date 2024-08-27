@@ -61,10 +61,7 @@ export class PetSitterService {
 
     console.log(`Database query time: ${Date.now() - dbStartTime} ms`);
     // Redis에 데이터 캐싱 (10분 동안 유효)
-    // console.log('Caching data:', result); // 데이터 캐시 전에 로그 추가
     await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 500);
-    //EX 초단위
-    //PX 밀리초 ms
 
     return result;
   }

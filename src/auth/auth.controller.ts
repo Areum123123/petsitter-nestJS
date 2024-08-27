@@ -24,6 +24,11 @@ export class AuthController {
   @Render('auth/sign-up.ejs') // views/auth/sign-up.ejs 파일을 렌더링
   signUpPage() {}
 
+  //로그인 페이지 렌더링
+  @Get('/sign-in')
+  @Render('auth/sign-in.ejs') // views/auth/sign-up.ejs 파일을 렌더링
+  signInPage() {}
+
   //회원가입
   @Post('sign-up')
   @HttpCode(201)
