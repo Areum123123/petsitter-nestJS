@@ -8,9 +8,9 @@ import {
   Req,
   Query,
 } from '@nestjs/common';
-import { PetSitterService } from '../petsitter/petsitter.service';
+import { PetSitterService } from './petsitter.service';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
-import { Petsitter } from '../petsitter/entities/petsitter.entity';
+import { Petsitter } from './entities/petsitter.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { ReviewService } from 'src/review/review.service';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';

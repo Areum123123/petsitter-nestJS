@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width , initial-scale=1.0" />
+    <title>돌보미 | 펫시터 매칭 서비스</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+     
+      @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Poor+Story&display=swap');
+
+
+      * {
+     font-family: "Poor Story", system-ui;
+     font-weight: 400;
+     font-style: normal;
+      }
+
+      .main {
+        color: rgb(35, 34, 34);
+        
+
+        background-image: url("main.jpg");
+        background-position: center;
+        background-size: cover;
+        height: 60vh; /* 뷰포트의 100% 높이로 설정 */
+
+       
+      }
+
+      body {
+        background-color: rgb(246, 226, 226)
+      }
+/* 사진텍스트 높이조절 */
+      .main .container-fluid h1 {
+    margin-top: 23vh; /* 원하는 만큼의 간격을 설정 */
+}
+
+h1 {
+    color: black; /* 글자 색상을 검정색으로 설정 */
+    text-shadow: 
+        0 0 3px white, /* 부드러운 하얀색 테두리 효과 */
+        0 0 1px white, 
+        0 0 1px white;
+}
+
+
+/* 실시간 채팅 버튼 스타일 */
+.chat-button {
+    position: fixed;       /* 스크롤 시에도 고정된 위치에 있게 함 */
+    right: 20px;           /* 오른쪽 끝에서 20px 떨어진 위치 */
+    bottom: 20px;          /* 하단에서 20px 떨어진 위치 */
+    background-color: #8f9499; /* 버튼 배경색 (블루) */
+    color: white;          /* 글자 색상 (하얀색) */
+    padding: 15px 20px;    /* 버튼 패딩 */
+    border-radius: 50px;   /* 둥근 버튼 모양 */
+    text-align: center;    /* 텍스트 중앙 정렬 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-size: 18px;       /* 글씨 크기 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+    z-index: 1000;         /* 버튼이 다른 요소들 위에 위치하도록 설정 */
+    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+}
+
+.chat-button:hover {
+    background-color: #8f9499; /* 버튼 호버 시 색상 */
+    transform: scale(1.05); /* 버튼 확대 효과 */
+}
+
+/* 버튼 */
+ /* 버튼을 감싸는 컨테이너 스타일 */
+ .button-container {
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            margin-top: 100px; /* 상단 여백을 조절하여 위치를 조정 */
+        }
+
+        /* 커스텀 버튼의 스타일 */
+        .btn-custom {
+            display: inline-block;
+            padding: 15px 45px; /* 버튼의 상하좌우 패딩 (크기 조정) */
+            font-size: 24px; /* 버튼 글자 크기 */
+            border-radius: 12px; /* 버튼 모서리 둥글게 하기 */
+            background-color: #8f9499; /* 버튼 배경색 */
+            color: white; /* 버튼 글자 색상 */
+            border: none; /* 버튼 테두리 제거 */
+            text-align: center; /* 텍스트 중앙 정렬 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 버튼에 그림자 추가 */
+            transition: background-color 0.3s, transform 0.3s; /* 배경색과 크기 전환 효과 */
+            text-decoration: none; /* 링크 밑줄 제거 */
+        }
+
+        .btn-custom:hover {
+            background-color: #8f9499; /* 버튼 호버 시 배경색 */
+            transform: scale(1.05); /* 버튼 확대 효과 */
+        }
+
+    </style>
+  </head>
+
+  <body>
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+          >
+            <svg
+              class="bi me-2"
+              width="40"
+              height="32"
+              role="img"
+              aria-label="Bootstrap"
+            >
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+          </a>
+
+          <ul
+            class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+          >
+            <li>
+              <a href="#" class="nav-link px-2 text-dark">반려견 돌보미</a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-2 text-secondary">돌보미 예약</a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-2 text-secondary">펫시터 소개</a>
+            </li>
+            
+          </ul>
+
+          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input
+              type="search"
+              class="form-control form-control-dark text-bg-dark"
+              placeholder="Search..."
+              aria-label="Search"
+            />
+          </form>
+
+          <div class="text-end">
+            <button type="button" class="btn btn-outline-dark me-2" onclick="redirectToSignIn()">
+              로그인
+            </button>
+            <button type="button" class="btn btn-danger" onclick="SignUp()">회원가입</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">언제 어디서나,</br> 믿을 수 있는 돌봄 파트너</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+        <a href="#" class="btn-custom" onclick="redirectToSignIn()" >돌보미 시작</a>
+       
+    </div>
+
+    <!-- 실시간 채팅 버튼  -->
+ <a href="#" class="chat-button" id="startChatBtn">💬 채팅하기</a>
+<script>
+ function redirectToSignIn() {
+      window.location.href = 'api/auth/sign-in'; // 'sign-in' 페이지로 리디렉션
+    }  
+
+    function SignUp() {
+      window.location.href = 'api/auth/sign-up'; // 'sign-in' 페이지로 리디렉션
+    }  
+
+  document.getElementById('startChatBtn').addEventListener('click', () => {
+    window.location.href = 'chat.html'; // 상담 페이지로 리디렉션
+  });
+</script>
+  </body>
+</html> 
