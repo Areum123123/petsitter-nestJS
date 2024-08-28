@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
+  Render,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -16,6 +18,16 @@ import { TokenResponse } from './dto/req-user.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  // 회원가입 페이지 렌더링
+  @Get('/sign-up')
+  @Render('auth/sign-up.ejs') // views/auth/sign-up.ejs 파일을 렌더링
+  signUpPage() {}
+
+  //로그인 페이지 렌더링
+  @Get('/sign-in')
+  @Render('auth/sign-in.ejs') // views/auth/sign-up.ejs 파일을 렌더링
+  signInPage() {}
 
   //회원가입
   @Post('sign-up')

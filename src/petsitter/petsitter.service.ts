@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { Petsitter } from '../petsitter/entities/petsitter.entity';
+import { Petsitter } from './entities/petsitter.entity';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
 import { getReviewResponse } from 'src/review/dto/review-res.dto';
@@ -23,7 +23,6 @@ export class PetSitterService {
     region?: string,
     experience?: string,
   ): Promise<Petsitter[]> {
-
     const startCacheTime = Date.now(); //캐시타임
     const cacheKey = `petsitters:${name || ''}:${region || ''}:${experience || ''}`;
 
@@ -37,7 +36,6 @@ export class PetSitterService {
     }
 
     console.log('Cache miss'); // 캐시에서 데이터 없음, DB 조회
-
 
     const where: any = {};
 
@@ -63,7 +61,6 @@ export class PetSitterService {
 
     console.log(`Database query time: ${Date.now() - dbStartTime} ms`);
     // Redis에 데이터 캐싱 (10분 동안 유효)
-    // console.log('Caching data:', result); // 데이터 캐시 전에 로그 추가
     await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 500);
 
     return result;

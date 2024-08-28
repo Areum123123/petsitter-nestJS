@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -27,9 +28,15 @@ export class AuthService {
   ) {}
 
   async register(newUser: SignUpDto) {
-    const user: SignUpDto = await this.userService.findUserByEmail(
-      newUser.email,
-    );
+    const { password, confirm_password } = newUser;
+
+    // 비밀번호와 비밀번호 확인이 일치하지 않으면 예외 처리
+    if (password !== confirm_password) {
+      throw new BadRequestException(
+        '비밀번호와 비밀번호 확인이 일치하지 않습니다.',
+      );
+    }
+    const user = await this.userService.findUserByEmail(newUser.email);
 
     if (user) {
       throw new HttpException(
