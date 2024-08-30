@@ -12,7 +12,7 @@ import {
 } from './dto/update-reservation.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reservation } from './entities/reservation.entity';
-import { DataSource, Not, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, Like, Not, QueryFailedError, Repository } from 'typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Role } from 'src/user/types/user-role.type';
@@ -111,6 +111,7 @@ export class ReservationService {
   async getReservations(
     userId: number,
     userRole: Role,
+    status?: Status,
   ): Promise<getAllReservation[]> {
     // 사용자 확인
     const user = await this.userRepository.findOne({ where: { id: userId } });
@@ -118,16 +119,23 @@ export class ReservationService {
       throw new NotFoundException('해당 사용자를 찾을 수 없습니다.');
     }
 
+    const where: any = {};
+
+    if (status) {
+      where.status = Like(`%${status}%`);
+    }
+
     // 역할에 따라 예약 필터링
     let reservations: Reservation[];
     if (userRole === Role.USER) {
       reservations = await this.reservationRepository.find({
         where: { user: { id: userId } },
-        relations: ['petsitter'],
+        relations: ['petsitter', 'user'],
         order: { created_at: 'DESC' },
       });
     } else if (userRole === Role.ADMIN) {
       reservations = await this.reservationRepository.find({
+        where,
         relations: ['petsitter', 'user'],
         order: { created_at: 'DESC' },
       });

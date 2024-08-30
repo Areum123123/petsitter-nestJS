@@ -8,10 +8,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // import { PetsitterModule } from 'src/petsitter/petsitter.module';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Review, Petsitter, User]),
+    TypeOrmModule.forFeature([Review, Petsitter, User, Reservation]),
     AuthModule,
     // PetsitterModule,
     // UserModule,

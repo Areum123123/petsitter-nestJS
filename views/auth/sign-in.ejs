@@ -100,14 +100,15 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(req),
+          // body: JSON.stringify({ email, password }),
         })
           .then((response) => response.json())
           .then((data) => {
             if (data.status === 200) {
               alert(data.message);
+              console.log(data);
               // 성공 시 토큰을 로컬 스토리지나 쿠키에 저장
-              localStorage.setItem('accessToken', data.data.accessToken);
-              localStorage.setItem('refreshToken', data.data.refreshToken);
+              localStorage.setItem('access_token', data.data.access_token);
               // 로그인 성공 후 리다이렉트 (예: 홈페이지로)
               window.location.href = '/';
             } else {

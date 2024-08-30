@@ -9,13 +9,12 @@ import { Review } from './entities/review.entity';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
-import { CustomRequest } from 'src/auth/dto/req-user.dto';
 import {
   createReviewResponse,
   getMyReviewResponse,
 } from './dto/review-res.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
-import { error } from 'console';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 
 @Injectable()
 export class ReviewService {
@@ -29,6 +28,8 @@ export class ReviewService {
     private readonly petsitterRepository: Repository<Petsitter>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Reservation)
+    private readonly reservationRepository: Repository<Reservation>,
   ) {}
 
   async createReview(
@@ -46,8 +47,23 @@ export class ReviewService {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
+
     if (!user) {
       throw new NotFoundException('유저를 찾을 수 없습니다.');
+    }
+    const reservation = await this.reservationRepository.findOne({
+      where: {
+        id: createReviewDto.reservationId,
+        user: { id: userId },
+        petsitter: { id: petSitterId },
+      },
+    });
+
+    console.log('reservation', reservation);
+    console.log('status', reservation.status);
+
+    if (!reservation || reservation.status !== 'COMPLETED') {
+      throw new ForbiddenException('리뷰를 작성할 권한이 없습니다.');
     }
 
     const review = this.reviewRepository.create({
@@ -79,7 +95,7 @@ export class ReviewService {
       pet_sitter_id: petSitterId,
       reviews: {
         user_name: review.user.name, // 사용자의 이름
-        rating: review.rating,
+        rating: +AverageRating,
         comment: review.comment,
         created_at: review.created_at.toISOString(),
         updated_at: review.updated_at.toISOString(),
@@ -119,7 +135,7 @@ export class ReviewService {
       where: { id: reviewId, user: { id: userId } },
       relations: ['petsitter', 'user'],
     });
-
+    console.log(review);
     if (!review) {
       throw new NotFoundException('리뷰를 찾을 수 없습니다.');
     }
@@ -131,12 +147,33 @@ export class ReviewService {
 
     const savedReview = await this.reviewRepository.save(review);
 
+    //리뷰 수정후 펫시터 평점변경
+    //펫시터 리뷰 조회
+
+    const petsitter = await this.petsitterRepository.findOne({
+      where: { id: review.petsitter.id },
+    });
+
+    const reviews = await this.reviewRepository.find({
+      where: { petsitter: { id: review.petsitter.id } },
+    });
+
+    // 평점 평균 계산
+    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
+    const averageRating = totalRating / reviews.length;
+
+    // 소수점 한 자리까지 반올림
+    const AverageRating = averageRating.toFixed(1);
+    // 펫시터의 total_rate 업데이트
+    petsitter.total_rate = +AverageRating;
+    await this.petsitterRepository.save(petsitter);
+
     return {
       review_id: savedReview.id,
       user_id: userId,
       reviews: {
         petsitter_name: review.petsitter.name,
-        rating: savedReview.rating,
+        rating: +AverageRating,
         comment: savedReview.comment,
         created_at: savedReview.created_at.toISOString(),
         updated_at: savedReview.updated_at.toISOString(),
