@@ -8,11 +8,11 @@
 npm run start
 ```
 
-# API
+# ERD
 
 ![ERD](./images/ERD.png)
 
-# ERD
+# API
 
 ![API명세서](./images/API.png)
 
