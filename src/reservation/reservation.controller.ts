@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
-  HttpException,
+  Query,
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -23,6 +23,7 @@ import { cancelReservation, GetReservation } from './dto/reservation-res.dto';
 import { Role } from 'src/user/types/user-role.type';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { Status } from './types/reservation-status.type';
 
 @Controller('reservations')
 export class ReservationController {
@@ -52,12 +53,16 @@ export class ReservationController {
   //예약목록조회
   @Get()
   @UseGuards(AuthGuard())
-  async getReservations(@Req() req: CustomRequest): Promise<GetReservation> {
+  async getReservations(
+    @Req() req: CustomRequest,
+    @Query('status') status?: Status,
+  ): Promise<GetReservation> {
     const userId = req.user.id;
     const userRole: Role = req.user.role as Role;
     const reservations = await this.reservationService.getReservations(
       userId,
       userRole,
+      status,
     );
 
     return {
