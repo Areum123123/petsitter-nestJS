@@ -7,6 +7,7 @@ import {
   Param,
   Req,
   Query,
+  Put,
 } from '@nestjs/common';
 import { PetSitterService } from './petsitter.service';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
@@ -30,17 +31,12 @@ export class PetSitterController {
   async getPetsitters(
     @Query('name') name?: string,
     @Query('region') region?: string,
-    @Query('experience') experience?: string,
   ): Promise<{
     status: number;
     message: string;
     data: any[];
   }> {
-    const petSitters = await this.petSitterService.getPetsitters(
-      name,
-      region,
-      experience,
-    );
+    const petSitters = await this.petSitterService.getPetsitters(name, region);
 
     if (!Array.isArray(petSitters)) {
       throw new Error('Data from service is not an array');

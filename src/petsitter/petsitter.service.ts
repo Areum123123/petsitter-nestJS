@@ -18,13 +18,9 @@ export class PetSitterService {
   ) {}
 
   //펫시터 목록 조회
-  async getPetsitters(
-    name?: string,
-    region?: string,
-    experience?: string,
-  ): Promise<Petsitter[]> {
+  async getPetsitters(name?: string, region?: string): Promise<Petsitter[]> {
     const startCacheTime = Date.now(); //캐시타임
-    const cacheKey = `petsitters:${name || ''}:${region || ''}:${experience || ''}`;
+    const cacheKey = `petsitters_search:${name || ''}:${region || ''}`;
 
     // Redis에서 캐시된 데이터 가져오기
     const cachedData = await this.redisClient.get(cacheKey);
@@ -46,10 +42,6 @@ export class PetSitterService {
     if (region) {
       where.region = Like(`%${region}%`);
     }
-
-    if (experience) {
-      where.experience = Like(`%${experience}%`);
-    }
     // 데이터베이스에서 데이터 조회
     const dbStartTime = Date.now(); //데이터베이스타임
     const result = await this.petSitterRepository.find({
@@ -60,8 +52,8 @@ export class PetSitterService {
     });
 
     console.log(`Database query time: ${Date.now() - dbStartTime} ms`);
-    // Redis에 데이터 캐싱 (10분 동안 유효)
-    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 500);
+    // Redis에 데이터 캐싱 (1시간 동안 유효)
+    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 3000);
 
     return result;
   }
@@ -97,6 +89,25 @@ export class PetSitterService {
   //펫시터생성
   async create(createPetSitterDto: CreatePetSitterDto): Promise<Petsitter> {
     const petSitter = this.petSitterRepository.create(createPetSitterDto);
-    return await this.petSitterRepository.save(petSitter);
+    const savedPetSitter = await this.petSitterRepository.save(petSitter);
+
+    // 캐시 삭제
+    await this.deleteCaches();
+
+    return savedPetSitter;
+  }
+
+  // 모든 캐시 삭제
+  private async deleteCaches(): Promise<void> {
+    try {
+      const cachePatterns = 'petsitters_search:*'; // 펫시터 캐시 전부 삭제
+
+      const keys = await this.redisClient.keys(cachePatterns);
+      if (keys.length) {
+        await this.redisClient.del(keys);
+      }
+    } catch (error) {
+      console.error('Error deleting caches:', error);
+    }
   }
 }
