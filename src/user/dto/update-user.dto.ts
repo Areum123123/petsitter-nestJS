@@ -1,6 +1,13 @@
-import { IsString, IsOptional, Length, Matches } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  Length,
+  Matches,
+  ValidateIf,
+} from 'class-validator';
 
 export class UpdateUserDto {
+  @ValidateIf((o) => o.phone_number !== '' && o.phone_number !== undefined)
   @IsOptional()
   @IsString()
   @Matches(/^\d{10,12}$/, {
@@ -8,6 +15,7 @@ export class UpdateUserDto {
   })
   phone_number?: string;
 
+  @ValidateIf((o) => o.address !== '' && o.address !== undefined)
   @IsOptional()
   @IsString()
   @Length(5, 100, {
