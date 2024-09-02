@@ -26,8 +26,11 @@ export class User {
   @Column({ type: 'varchar', unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true }) //nullable:true 수정
   password: string;
+
+  @Column({ nullable: true }) //providerId 추가
+  providerId: string;
 
   @Column({ type: 'varchar', nullable: false })
   name: string;

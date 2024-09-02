@@ -10,6 +10,8 @@ import { User } from 'src/user/entities/user.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenStrategy } from './refresh-token.strategy';
+import { GoogleStrategy } from './google.strategy';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
   imports: [
@@ -26,7 +28,13 @@ import { RefreshTokenStrategy } from './refresh-token.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RefreshTokenStrategy],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    RefreshTokenStrategy,
+    GoogleStrategy,
+    SessionSerializer,
+  ],
   exports: [JwtStrategy, AuthService, PassportModule],
 })
 export class AuthModule {}

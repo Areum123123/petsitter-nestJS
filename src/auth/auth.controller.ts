@@ -6,6 +6,7 @@ import {
   Post,
   Render,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -14,6 +15,7 @@ import { SignInDto, SignInResponse } from './dto/sign-in.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from './dto/req-user.dto';
 import { TokenResponse } from './dto/req-user.dto';
+import { GoogleAuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -80,11 +82,31 @@ export class AuthController {
     };
   }
 
+  //구글 로그인
+  @Get('to-google')
+  @UseGuards(GoogleAuthGuard)
+  async gooogleAuth(@Req() req: CustomRequest, @Res() res) {
+    // 구글 로그인 페이지로 리다이렉트
+    res.redirect('/auth/google');
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleAuthRedirect(@Req() req: CustomRequest, @Res() res) {
+    //구글계정로그인후 리다이렉트 페이지에 user정보
+    // const { user } = req;
+    // console.log(res.send(user));
+
+    // 로그인 후 클라이언트 페이지로 리다이렉트
+    // 클라이언트 측에서 로그인 처리 후 main 페이지로 리다이렉트
+    res.redirect('/?loginSuccess=true');
+  }
+
   //req 테스트
   @Post('test')
   @UseGuards(AuthGuard()) //인증도 해주고 req로 user객체를 보내준다.
   async test(@Req() req: CustomRequest) {
     //req에 들어가있는 정보들
-    console.log('req', req.user.phone_number);
+    console.log('req', req);
   }
 }

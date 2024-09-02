@@ -8,6 +8,12 @@ import { S3Service } from './s3/s3.service';
 
 @Injectable()
 export class UserService {
+  findOne(arg0: { where: { id: number } }) {
+    throw new Error('Method not implemented.');
+  }
+  findById(userId: number) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -88,5 +94,23 @@ export class UserService {
     await this.userRepository.save(user);
 
     return imageUrl;
+  }
+
+  //구글 로그인
+  async findByEmailOrSave(email, name, providerId): Promise<User> {
+    const foundUser = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (foundUser) {
+      return foundUser;
+    }
+    const newUser = await this.userRepository.save({
+      email,
+      name,
+      providerId,
+    });
+    return newUser;
   }
 }
