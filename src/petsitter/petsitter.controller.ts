@@ -8,6 +8,8 @@ import {
   Req,
   Query,
   Put,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { PetSitterService } from './petsitter.service';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
@@ -17,6 +19,13 @@ import { ReviewService } from 'src/review/review.service';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
 import { CreateReviewDto } from 'src/review/dto/create-review.dto';
 import { GetReviewDto } from 'src/review/dto/review-res.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { Role } from 'src/user/types/user-role.type';
+import {
+  updatePetsitter,
+  UpdatePetSitterDto,
+} from './dto/update-pet-sitter.dto';
 
 @Controller('pet-sitters')
 export class PetSitterController {
@@ -94,11 +103,56 @@ export class PetSitterController {
     };
   }
 
-  //펫시터생성 - 관리자만 할수있도록 수정필요
+  //펫시터 생성 - 관리자만 할수있도록 수정필요
   @Post()
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.ADMIN)
   async create(
     @Body() createPetSitterDto: CreatePetSitterDto,
   ): Promise<Petsitter> {
     return this.petSitterService.create(createPetSitterDto);
+  }
+
+  //펫시터 수정
+  @Patch(':petsitterId')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.ADMIN)
+  async updatePetsitter(
+    @Param('petsitterId') petsitterId: number,
+    @Body() updatePetSitterDto: UpdatePetSitterDto,
+    @Req() req: CustomRequest,
+  ): Promise<updatePetsitter> {
+    const userId = req.user.id;
+
+    await this.petSitterService.updatePetsitter(
+      petsitterId,
+      updatePetSitterDto,
+    );
+
+    return {
+      status: 200,
+      adminId: userId,
+      message: '펫시터 수정 완료',
+    };
+  }
+
+  //펫시터 삭제
+  @Delete(':petsitterId')
+  @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.ADMIN)
+  async removePetsitter(
+    @Param('petsitterId') petsitterId: number,
+
+    @Req() req: CustomRequest,
+  ): Promise<updatePetsitter> {
+    const userId = req.user.id;
+
+    await this.petSitterService.removePetsitter(petsitterId);
+
+    return {
+      status: 200,
+      adminId: userId,
+      message: '펫시터 삭제 완료',
+    };
   }
 }

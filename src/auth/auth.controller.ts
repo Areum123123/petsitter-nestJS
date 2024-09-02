@@ -80,6 +80,7 @@ export class AuthController {
     };
   }
 
+  //req 테스트
   @Post('test')
   @UseGuards(AuthGuard()) //인증도 해주고 req로 user객체를 보내준다.
   async test(@Req() req: CustomRequest) {

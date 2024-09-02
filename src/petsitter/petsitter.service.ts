@@ -6,6 +6,7 @@ import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
 import { getReviewResponse } from 'src/review/dto/review-res.dto';
 import Redis from 'ioredis';
+import { UpdatePetSitterDto } from './dto/update-pet-sitter.dto';
 
 @Injectable()
 export class PetSitterService {
@@ -95,6 +96,71 @@ export class PetSitterService {
     await this.deleteCaches();
 
     return savedPetSitter;
+  }
+
+  //펫시터 수정
+  async updatePetsitter(
+    petsitterId: number,
+    updatePetSitterDto: UpdatePetSitterDto,
+  ): Promise<void> {
+    try {
+      const petSitter = await this.petSitterRepository.findOne({
+        where: { id: petsitterId },
+      });
+
+      if (!petSitter) {
+        throw new NotFoundException('펫시터를 찾을 수 없습니다.');
+      }
+
+      //펫시터 수정
+      if (updatePetSitterDto.name) {
+        petSitter.name = updatePetSitterDto.name;
+      }
+
+      if (updatePetSitterDto.experience) {
+        petSitter.experience = updatePetSitterDto.experience;
+      }
+
+      if (updatePetSitterDto.certification) {
+        petSitter.certification = updatePetSitterDto.certification;
+      }
+
+      if (updatePetSitterDto.region) {
+        petSitter.region = updatePetSitterDto.region;
+      }
+
+      if (updatePetSitterDto.image_url) {
+        petSitter.image_url = updatePetSitterDto.image_url;
+      }
+
+      petSitter.updated_at = new Date();
+
+      await this.petSitterRepository.save(petSitter);
+
+      // 캐시 삭제
+      await this.deleteCaches();
+    } catch (error) {
+      console.error('Error updated Petsitter:', error);
+    }
+  }
+
+  //펫시터 삭제
+  async removePetsitter(petsitterId: number): Promise<void> {
+    try {
+      const petSitter = await this.petSitterRepository.findOne({
+        where: { id: petsitterId },
+      });
+      if (!petSitter) {
+        throw new NotFoundException('펫시터를 찾을 수 없습니다.');
+      }
+
+      await this.petSitterRepository.remove(petSitter);
+
+      // 캐시 삭제
+      await this.deleteCaches();
+    } catch (error) {
+      console.error('Error deleted Petsitter:', error);
+    }
   }
 
   // 모든 캐시 삭제
