@@ -8,6 +8,9 @@ import { S3Service } from './s3/s3.service';
 
 @Injectable()
 export class UserService {
+  createUser(arg0: { email: any; name: any }): User | PromiseLike<User> {
+    throw new Error('Method not implemented.');
+  }
   findOne(arg0: { where: { id: number } }) {
     throw new Error('Method not implemented.');
   }

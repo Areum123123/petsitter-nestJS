@@ -14,12 +14,11 @@ import _ from 'lodash';
 import { RefreshToken } from './entities/refresh_token.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
 import { TokenResponse } from './dto/req-user.dto';
+import { GoogleRequest } from 'src/user/dto/googleuser.dto';
 
 @Injectable()
 export class AuthService {
-  usersRepository: any;
   constructor(
     @InjectRepository(RefreshToken)
     private readonly refreshTokenRepository: Repository<RefreshToken>,
@@ -89,6 +88,21 @@ export class AuthService {
     return await this.generateTokens(email, userId);
   }
 
+  //구글 로그인
+  async googleLogin(email) {
+    if (typeof email === 'undefined') {
+      return null;
+    }
+
+    const findUser = await this.userService.findUserByEmail(email);
+    console.log(findUser);
+    if (!findUser) {
+      return null;
+    }
+
+    return await this.generateTokens(email, findUser.id);
+  }
+
   // 토큰 발급
   async generateTokens(email: string, userId: number): Promise<TokenResponse> {
     // 토큰 발급
@@ -97,12 +111,12 @@ export class AuthService {
 
     const access_token = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET_KEY,
-      expiresIn: '12h',
+      expiresIn: process.env.JWT_EXPIRES,
     });
 
     const refresh_token = this.jwtService.sign(payload, {
       secret: process.env.REFRESH_SECRET_KEY,
-      expiresIn: '7d',
+      expiresIn: process.env.REFRESH_EXPIRES,
     });
 
     // RefreshToken 저장 또는 갱신

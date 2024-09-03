@@ -20,26 +20,22 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
   }
 
   //OAuth 인증 후 콜백으로 실행되는 메서드
-  async validate(
-    access_token: string,
-    refresh_token: string,
-    profile: Profile,
-  ) {
-    const { id, name, emails } = profile;
+  async validate(accessToken: string, refreshToken: string, profile: Profile) {
+    try {
+      const { id, name, emails } = profile;
 
-    const providerId = id;
-    const email = emails[0].value;
+      const providerId = id;
+      const email = emails[0].value;
+      //유저 정보 저장 혹은 가져오기
+      const user: User = await this.userService.findByEmailOrSave(
+        email,
+        name,
+        providerId,
+      );
 
-    // console.log(providerId, email, name.familyName, name.givenName);
-    // return profile;
-
-    //유저 정보 저장 혹은 가져오기
-    const user: User = await this.userService.findByEmailOrSave(
-      email,
-      name.familyName + name.givenName,
-      providerId,
-    );
-
-    return user;
+      return user;
+    } catch (err) {
+      console.log('Oauth validate error', err);
+    }
   }
 }

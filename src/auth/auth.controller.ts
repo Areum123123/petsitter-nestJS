@@ -16,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from './dto/req-user.dto';
 import { TokenResponse } from './dto/req-user.dto';
 import { GoogleAuthGuard } from './auth.guard';
+import { GoogleRequest } from 'src/user/dto/googleuser.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -85,21 +86,17 @@ export class AuthController {
   //구글 로그인
   @Get('to-google')
   @UseGuards(GoogleAuthGuard)
-  async gooogleAuth(@Req() req: CustomRequest, @Res() res) {
-    // 구글 로그인 페이지로 리다이렉트
-    res.redirect('/auth/google');
-  }
+  async googleLogin(@Req() req: Request, @Res() res) {}
 
   @Get('google')
   @UseGuards(GoogleAuthGuard)
-  async googleAuthRedirect(@Req() req: CustomRequest, @Res() res) {
+  async googleLoginCallback(@Req() req: CustomRequest) {
     //구글계정로그인후 리다이렉트 페이지에 user정보
-    // const { user } = req;
-    // console.log(res.send(user));
-
-    // 로그인 후 클라이언트 페이지로 리다이렉트
-    // 클라이언트 측에서 로그인 처리 후 main 페이지로 리다이렉트
-    res.redirect('/?loginSuccess=true');
+    const { user } = req;
+    // return res.send(user);
+    console.log(user.email);
+    const email = user.email;
+    return this.authService.googleLogin(email);
   }
 
   //req 테스트
