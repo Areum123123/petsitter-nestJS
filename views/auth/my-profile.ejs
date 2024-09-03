@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+      body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #e5edf5;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .profile-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .profile-header {
+        background: #4a90e2;
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+      }
+      .profile-image-container {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 20px;
+      }
+      .profile-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+      }
+      .camera-icon {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        font-size: 20px;
+        color: #4a90e2;
+      }
+      .profile-name {
+        font-size: 2em;
+        margin: 0;
+      }
+      .profile-content {
+        display: flex;
+        padding: 30px;
+      }
+      .profile-info {
+        flex: 1;
+        padding-right: 30px;
+      }
+      .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .info-label {
+        font-weight: bold;
+        color: #666;
+      }
+      .info-value {
+        text-align: right;
+      }
+      .edit-link {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 1em;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+      .management-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .management-link {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #4a90e2;
+        font-weight: bold;
+        font-size: 1.2em;
+        padding: 30px;
+        background: #f8f8f8;
+        transition: background-color 0.3s;
+      }
+      .management-link:first-child {
+        margin-bottom: 15px;
+      }
+      .management-link:hover {
+        background-color: #e8f0fe;
+      }
+      .management-link i {
+        margin-right: 10px;
+      }
+      .notification-section {
+        margin-top: 30px;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .notification-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+      }
+      .notification-link {
+        display: block;
+        margin-bottom: 10px;
+        text-decoration: none;
+        color: #4a90e2;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: color 0.3s;
+      }
+      .notification-link:hover {
+        color: #357abd;
+      }
+      @media (max-width: 768px) {
+        .profile-content {
+          flex-direction: column;
+        }
+        .profile-info {
+          padding-right: 0;
+          padding-bottom: 30px;
+        }
+        .management-section {
+          flex-direction: row;
+        }
+        .management-link:first-child {
+          margin-bottom: 0;
+          margin-right: 15px;
+        }
+      }
+
+      h2 {
+        margin-left: 1vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>마이 프로필</h2>
+      <div class="profile-card">
+        <div class="profile-header">
+          <a href="/users/edit" class="edit-link">수정</a>
+          <div class="profile-image-container">
+            <img
+              id="profileImage"
+              class="profile-image"
+              src="/api/placeholder/150/150"
+              alt="Profile Image"
+            />
+            <label for="imageUpload" class="camera-icon">
+              <i class="fas fa-camera"></i>
+              <!-- 백업 텍스트 아이콘 -->
+              <span style="display: none">📷</span>
+            </label>
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              style="display: none"
+            />
+          </div>
+          <h1 class="profile-name" id="userName">사용자 이름</h1>
+        </div>
+        <div class="profile-content">
+          <div class="profile-info" id="userInfo">
+            <!-- 사용자 정보가 여기에 동적으로 추가됩니다 -->
+          </div>
+          <div class="management-section">
+            <a href="/reservations" class="management-link">
+              <i class="far fa-calendar-alt"></i> 예약관리
+            </a>
+            <a href="/reviews" class="management-link">
+              <i class="far fa-star"></i> 리뷰관리
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification-section">
+        <h2 class="notification-title">문의 및 알림</h2>
+        <a href="/customer-service" class="notification-link">
+          <i class="fas fa-headset"></i> 고객센터
+        </a>
+        <a href="/faq" class="notification-link">
+          <i class="fas fa-question-circle"></i> 자주 묻는 질문
+        </a>
+        <a href="/notices" class="notification-link">
+          <i class="fas fa-bullhorn"></i> 공지사항
+        </a>
+        <a href="/terms" class="notification-link">
+          <i class="fas fa-file-contract"></i> 약관 및 정책
+        </a>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        fetchUserInfo();
+
+        document
+          .getElementById('imageUpload')
+          .addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+              uploadImage(file);
+            }
+          });
+
+        // Font Awesome 아이콘 로드 실패 시 대체 텍스트 아이콘 표시
+        window.addEventListener(
+          'error',
+          function (e) {
+            if (e.target.tagName === 'I') {
+              e.target.style.display = 'none';
+              e.target.nextElementSibling.style.display = 'inline';
+            }
+          },
+          true,
+        );
+      });
+
+      function fetchUserInfo() {
+        const token = localStorage.getItem('access_token');
+        console.log('token', token);
+
+        if (!token) {
+          console.error('No token found');
+          alert('로그인이 필요합니다.');
+          return;
+        }
+
+        fetch('/api/users/me', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+              throw new TypeError('Expected JSON, but received something else');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === 200) {
+              displayUserInfo(data.data);
+            } else {
+              console.error('Failed to fetch user info:', data.message);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert('사용자 정보를 가져오는 중 문제가 발생했습니다.');
+          });
+      }
+
+      function displayUserInfo(user) {
+        const userInfoDiv = document.getElementById('userInfo');
+        const infoToDisplay = ['email', 'phone_number', 'address'];
+
+        document.getElementById('userName').textContent =
+          user.name || '사용자 이름';
+
+        infoToDisplay.forEach((key) => {
+          const div = document.createElement('div');
+          div.className = 'info-item';
+          div.innerHTML = `<span class="info-label">${getLabel(key)}</span>
+            <span class="info-value">${user[key] || '정보 없음'}</span>`;
+          userInfoDiv.appendChild(div);
+        });
+
+        // 프로필 이미지 업데이트
+        if (user.image_url) {
+          const profileImage = document.getElementById('profileImage');
+          profileImage.src = user.image_url;
+        }
+      }
+
+      function getLabel(key) {
+        const labels = {
+          email: '이메일',
+          phone_number: '연락처',
+          address: '주소',
+        };
+        return labels[key] || key;
+      }
+
+      function uploadImage(file) {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const token = localStorage.getItem('access_token');
+        fetch('/api/users/me/upload-images', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === 200) {
+              alert('이미지가 업로드되었습니다.');
+              // 이미지 URL로 프로필 이미지 업데이트
+              displayProfileImage(data.data.image_url);
+            } else {
+              console.error('Failed to upload image:', data.message);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert('이미지 업로드 중 문제가 발생했습니다.');
+          });
+      }
+
+      function displayProfileImage(imageUrl) {
+        const profileImage = document.getElementById('profileImage');
+        profileImage.src = imageUrl;
+      }
+    </script>
+  </body>
+</html>

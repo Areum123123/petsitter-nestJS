@@ -9,6 +9,7 @@ import {
   BadRequestException,
   UseInterceptors,
   UploadedFile,
+  Render,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CustomRequest } from 'src/auth/dto/req-user.dto';
@@ -20,6 +21,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  //내정보조회 페이지 렌더링
+  @Get('/profile')
+  @Render('auth/my-profile.ejs') // views/auth/my-profile.ejs 파일을 렌더링
+  myProfilePage() {}
 
   //내정보조회
   @Get('me')
