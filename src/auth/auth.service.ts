@@ -15,7 +15,6 @@ import { RefreshToken } from './entities/refresh_token.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TokenResponse } from './dto/req-user.dto';
-import { GoogleRequest } from 'src/user/dto/googleuser.dto';
 
 @Injectable()
 export class AuthService {

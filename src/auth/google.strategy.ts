@@ -29,7 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       //유저 정보 저장 혹은 가져오기
       const user: User = await this.userService.findByEmailOrSave(
         email,
-        name,
+        name.familyName + name.givenName,
         providerId,
       );
 
