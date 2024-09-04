@@ -17,6 +17,7 @@ import { CustomRequest } from './dto/req-user.dto';
 import { TokenResponse } from './dto/req-user.dto';
 import { GoogleAuthGuard } from './auth.guard';
 import { GoogleStrategy } from './google.strategy';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -47,9 +48,15 @@ export class AuthController {
   //로그인
   @Post('sign-in')
   @HttpCode(200)
-  async login(@Body() signInDto: SignInDto): Promise<SignInResponse> {
+  async login(
+    @Body() signInDto: SignInDto,
+    @Req() req: Request,
+  ): Promise<SignInResponse> {
     const { access_token, refresh_token } =
       await this.authService.login(signInDto);
+
+    // 세션에 액세스 토큰 저장
+    req.session.accessToken = access_token;
 
     return {
       status: 200,
@@ -95,8 +102,12 @@ export class AuthController {
     const { user } = req;
 
     const email = user.email;
+    const tokens = await this.authService.googleLogin(email);
 
-    return this.authService.googleLogin(email);
+    // 세션에 액세스 토큰 저장
+    req.session.accessToken = tokens.access_token;
+
+    return { status: 200, message: '로그인 성공', data: tokens };
   }
 
   //req 테스트

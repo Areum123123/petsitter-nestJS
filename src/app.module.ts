@@ -18,6 +18,7 @@ import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationLogsModule } from './reservation-logs/reservation-logs.module';
 import { ReservationLog } from './reservation-logs/entities/reservation-log.entity';
 import { ChatGateway } from './chat/chat.gateway';
+import { SessionController } from './session/session.controller';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -65,7 +66,7 @@ const typeOrmModuleOptions = {
     ReservationModule,
     ReservationLogsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, SessionController],
   providers: [AppService, ChatGateway],
 })
 export class AppModule {}

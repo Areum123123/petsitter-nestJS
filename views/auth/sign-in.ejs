@@ -161,7 +161,6 @@
           .then((data) => {
             if (data.status === 200) {
               alert(data.message);
-              localStorage.setItem('access_token', data.data.access_token);
               window.location.href = '/';
             } else {
               alert(data.message);

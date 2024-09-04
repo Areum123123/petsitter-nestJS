@@ -184,12 +184,11 @@
             <img
               id="profileImage"
               class="profile-image"
-              src="/api/placeholder/150/150"
+              src="https://via.placeholder.com/150/CCCCCC/FFFFFF?text=No+Image"
               alt="Profile Image"
             />
             <label for="imageUpload" class="camera-icon">
               <i class="fas fa-camera"></i>
-              <!-- 백업 텍스트 아이콘 -->
               <span style="display: none">📷</span>
             </label>
             <input
@@ -234,8 +233,10 @@
     </div>
 
     <script>
+      let accessToken = '';
+
       document.addEventListener('DOMContentLoaded', function () {
-        fetchUserInfo();
+        fetchSessionData();
 
         document
           .getElementById('imageUpload')
@@ -246,7 +247,6 @@
             }
           });
 
-        // Font Awesome 아이콘 로드 실패 시 대체 텍스트 아이콘 표시
         window.addEventListener(
           'error',
           function (e) {
@@ -259,20 +259,33 @@
         );
       });
 
+      //세션에서 가져오기
+      function fetchSessionData() {
+        fetch('/api/session', {
+          method: 'GET',
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.accessToken) {
+              accessToken = data.accessToken;
+              fetchUserInfo();
+            } else {
+              console.error('No access token found in session');
+              alert('로그인이 필요합니다.');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching session data:', error);
+            alert('세션 정보를 가져오는 중 문제가 발생했습니다.');
+          });
+      }
+
       function fetchUserInfo() {
-        const token = localStorage.getItem('access_token');
-        console.log('token', token);
-
-        if (!token) {
-          console.error('No token found');
-          alert('로그인이 필요합니다.');
-          return;
-        }
-
         fetch('/api/users/me', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
         })
@@ -311,7 +324,6 @@
           userInfoDiv.appendChild(div);
         });
 
-        // 프로필 이미지 업데이트
         if (user.image_url) {
           const profileImage = document.getElementById('profileImage');
           profileImage.src = user.image_url;
@@ -331,11 +343,10 @@
         const formData = new FormData();
         formData.append('file', file);
 
-        const token = localStorage.getItem('access_token');
         fetch('/api/users/me/upload-images', {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
           body: formData,
         })
@@ -348,7 +359,6 @@
           .then((data) => {
             if (data.status === 200) {
               alert('이미지가 업로드되었습니다.');
-              // 이미지 URL로 프로필 이미지 업데이트
               displayProfileImage(data.data.image_url);
             } else {
               console.error('Failed to upload image:', data.message);
