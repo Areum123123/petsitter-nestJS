@@ -199,6 +199,24 @@ h1 {
       .nav-link {
         font-size: 18px; /* 글씨 크기 증가 */
       }
+
+      .profile-icon {
+        display: inline-block;
+        width: 50px; /* 원하는 크기로 조정 */
+        height: 50px; /* 원하는 크기로 조정 */
+        background-color: #4e9ef2; /* 배경색 */
+        border-radius: 50%; /* 둥근 원 모양 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #fff; /* 아이콘 색상 */
+  }
+  
+  .profile-icon:hover {
+        color: #4e9ef2;
+      }
+  
     </style>
   </head>
 
@@ -250,20 +268,13 @@ h1 {
             
           </ul>
 
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input
-              type="search"
-              class="form-control form-control-dark text-bg-dark"
-              placeholder="Search..."
-              aria-label="Search"
-            />
-          </form>
+         
 
-          <div class="text-end">
-            <button type="button" class="btn btn-outline-dark me-2" onclick="redirectToSignIn()">
+          <div id="text-end" class="text-end">
+            <button type="button" id="login-btn" class="btn btn-outline-dark me-2" onclick="redirectToSignIn()">
               로그인
             </button>
-            <button type="button" class="btn custom-btn" onclick="SignUp()">회원가입</button>
+            <button type="button" id="signup-btn" class="btn custom-btn" onclick="SignUp()">회원가입</button>
           </div>
         </div>
       </div>
@@ -411,8 +422,50 @@ h1 {
           <li><a href="#">Twitter</a></li>
       </ul>
   </div>
-</footer>ㄴ
+</footer>
 <script>
+ document.addEventListener('DOMContentLoaded', function () {
+  checkLoginStatus();
+
+       
+      });
+ // API에서 로그인 상태 확인
+ async function checkLoginStatus() {
+    try {
+      const response = await fetch('/api/session', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('test',data)
+        if (data.accessToken) {
+          // 로그인 상태인 경우
+          document.getElementById('login-btn').style.display = 'none'; //숨기기
+          document.getElementById('signup-btn').style.display = 'none';
+          
+          const profileIcon = `
+            <a href="/api/users/profile" class="btn btn-outline-light me-2 profile-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M13.468 12.37C12.759 11.226 11.365 10.5 8 10.5s-4.759.726-5.468 1.87A6.986 6.986 0 0 1 8 1a6.986 6.986 0 0 1 5.468 11.37zM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0z"/>
+                <path d="M8 4.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5z"/>
+              </svg>
+              
+            </a>
+          `;
+          document.getElementById('text-end').innerHTML = profileIcon;
+        }
+      } else {
+        console.log('로그인 상태가 아닙니다.');
+      }
+    } catch (error) {
+      console.error('API 요청 오류:', error);
+    }
+  }
+
  function redirectToSignIn() {
       window.location.href = 'api/auth/sign-in'; // 'sign-in' 페이지로 리디렉션
     }  
