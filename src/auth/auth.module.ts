@@ -12,6 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { RefreshTokenStrategy } from './refresh-token.strategy';
 import { GoogleStrategy } from './google.strategy';
 import { SessionSerializer } from './session.serializer';
+import { AuthRenderController } from './auth-render.controller';
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import { SessionSerializer } from './session.serializer';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AuthRenderController],
   providers: [
     AuthService,
     JwtStrategy,

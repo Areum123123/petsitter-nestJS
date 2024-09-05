@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width , initial-scale=1.0" />
+    <title>돌보미 | 펫시터 소개</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+      * {
+        font-family: 'Jua', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      body {
+        background-color: #f7f8f8;
+      } /* 왼쪽상단 반려견돌보미 */
+      .custom-color {
+        color: #4e9ef2;
+        font-weight: bold; /* 글씨를 두껍게 */
+      } /* 프로필버튼 */
+      .profile-button {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        background-color: #4e9ef2; /* 버튼 배경색 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .profile-icon {
+        width: 50%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .profile-icon svg {
+        width: 100%;
+        height: 100%;
+        color: white; /* 아이콘 색상 */
+      }
+      .profile-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+      .btn {
+        margin-right: 10px;
+      }
+      .mainbar {
+        margin-right: 5%;
+      }
+      .card-footer {
+        background-color: #d0e1f4; /* 배경색 변경 */
+      }
+      .search-button {
+        background-color: #4e9ef2; /* 검색 버튼 색상 */
+        color: white; /* 텍스트 색상 */
+      }
+      .search-button:hover {
+        background-color: #3a8bcf; /* 호버 시 색상 */
+      }
+      .dropdown {
+        margin-left: 3vw;
+      } /* 반응형 디자인을 위한 추가 CSS */
+      .main {
+        color: rgb(35, 34, 34);
+        background-position: center;
+        background-size: cover;
+        max-width: 1000vw;
+        /* 위 오른쪽 아래 왼쪽 */
+        margin: 50px 30px 100px 30px;
+        padding: 0 15px;
+      }
+
+      @media (max-width: 768px) {
+        .mainbar {
+          flex-direction: column;
+          align-items: flex-start;
+          margin-right: 0;
+        }
+        .search-input {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .row-cols-md-4 > * {
+          flex: 0 0 50%;
+          max-width: 50%;
+        }
+      }
+      @media (max-width: 576px) {
+        .row-cols-md-4 > * {
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+      }
+      /* 상단 글씨 크기 조정 */
+      .nav-link {
+        font-size: 18px; /* 글씨 크기 증가 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+          >
+            <svg
+              class="bi me-2"
+              width="40"
+              height="32"
+              role="img"
+              aria-label="Bootstrap"
+            >
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+          </a>
+
+          <ul
+            class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-start mb-md-0"
+          >
+            <li>
+              <a
+                href="#"
+                style="margin-left: -7vw"
+                class="nav-link px-4 text-secondary"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 512 512"
+                  style="transform: translateX(-10px)"
+                >
+                  <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                  <path
+                    d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+                  />
+                </svg>
+                반려견 돌보미
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-4 text-secondary">돌보미 예약</a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-4 custom-color">펫시터 소개</a>
+            </li>
+          </ul>
+
+          <div class="text-end">
+            <a href="/api/users/profile" class="profile-button">
+              <div class="profile-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-person"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 14s1-1.5 6-1.5S14 14 14 14H2zm6-13a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </header>
+
+    <h1>돌보미 펫시터 소개</h1>
+    <div class="mainbar d-flex align-items-center mb-3">
+      <!-- 드롭다운 -->
+      <div class="dropdown me-3">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          지역
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" href="#">서울</a></li>
+          <li><a class="dropdown-item" href="#">부산</a></li>
+          <li><a class="dropdown-item" href="#">제주도</a></li>
+        </ul>
+      </div>
+
+      <!-- 검색 입력 필드 -->
+      <div class="d-flex ms-auto">
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+          <input
+            type="search"
+            class="form-control form-control-dark text-bg-dark search-input"
+            placeholder="펫시터 검색"
+            aria-label="Search"
+          />
+        </form>
+
+        <button type="button" class="btn search-button">검색</button>
+      </div>
+    </div>
+    <div class="mainCard">
+      <div id="cards" class="row row-cols-1 row-cols-md-4 g-4"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        fetchPesitterInfo();
+      });
+
+      function fetchPesitterInfo() {
+        fetch('/api/pet-sitters', {
+          method: 'GET',
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const petsitter = data.data;
+            const cards = document.getElementById('cards');
+            petsitter.forEach((sitter) => {
+              const sitterCard = ` 
+              <div class="col">
+          <div class="card h-100">
+            <img
+              src="https://plus.unsplash.com/premium_photo-1664285640585-39d2b6eae076?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGV0c2l0dGVyfGVufDB8fDB8fHww"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">  ${sitter.name}</h5>
+              <p class="card-text">
+                •펫시터경력:  ${sitter.experience}<br />
+                •자격증: ${sitter.certification} <br />
+                •지역:  ${sitter.region}
+              </p>
+            </div>
+            <div class="card-footer">
+              <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
+            </div>
+          </div>
+        </div>`;
+
+              cards.innerHTML += sitterCard;
+            });
+          });
+      }
+    </script>
+  </body>
+</html>

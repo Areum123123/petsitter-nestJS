@@ -9,6 +9,7 @@ import { UserModule } from '../user/user.module';
 import { ReviewService } from '../review/review.service'; // Importing this just for completeness
 import { Review } from 'src/review/entities/review.entity';
 import { RedisModule } from 'src/redis/redis.module';
+import { PetsitterRenderController } from './petsitter-render.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { RedisModule } from 'src/redis/redis.module';
     forwardRef(() => ReviewModule), // Use forwardRef if there's a circular dependency
     forwardRef(() => UserModule),
   ],
-  controllers: [PetSitterController],
+  controllers: [PetSitterController, PetsitterRenderController],
   providers: [PetSitterService],
   exports: [TypeOrmModule, PetSitterService],
 })
