@@ -172,11 +172,62 @@
       h2 {
         margin-left: 1vw;
       }
+
+      .header {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .header-links {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* 링크 사이의 간격 조정 */
+      }
+
+      .text-button {
+        text-decoration: none;
+        color: #87898c; /* 링크 색상 */
+        font-weight: bold;
+        font-size: 1.1em;
+        padding: 10px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .text-button:hover {
+        color: #357abd; /* 호버 시 링크 색상 */
+      }
+
+      #prifileBtn {
+        color: #4a90e2;
+        margin-left: 5vw;
+      }
+
+      #homeBtn {
+        margin-left: 58vw;
+        font-size: 1.7em;
+      }
     </style>
   </head>
   <body>
+    <div class="header">
+      <!-- <h2>마이 프로필</h2> -->
+      <div class="header-links">
+        <a href="/api/users/profile" id="prifileBtn" class="text-button">
+          마이 프로필</a
+        >
+        <a href="/reservations" class="text-button">돌보미 예약</a>
+        <a href="/api/petsitters" class="text-button">펫시터 소개</a>
+        <a href="/" id="homeBtn" class="home-link">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </div>
     <div class="container">
-      <h2>마이 프로필</h2>
       <div class="profile-card">
         <div class="profile-header">
           <a href="/users/edit" class="edit-link">수정</a>

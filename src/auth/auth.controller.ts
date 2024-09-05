@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   Post,
-  Render,
   Req,
   Res,
   UseGuards,
@@ -16,22 +15,12 @@ import { AuthGuard } from '@nestjs/passport';
 import { CustomRequest } from './dto/req-user.dto';
 import { TokenResponse } from './dto/req-user.dto';
 import { GoogleAuthGuard } from './auth.guard';
-import { GoogleStrategy } from './google.strategy';
-import { Request } from 'express';
+
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  // // 회원가입 페이지 렌더링
-  // @Get('/sign-up')
-  // @Render('auth/sign-up.ejs') // views/auth/sign-up.ejs 파일을 렌더링
-  // signUpPage() {}
-
-  // //로그인 페이지 렌더링
-  // @Get('/sign-in')
-  // @Render('auth/sign-in.ejs') // views/auth/sign-up.ejs 파일을 렌더링
-  // signInPage() {}
 
   //회원가입
   @Post('sign-up')
@@ -97,7 +86,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(GoogleAuthGuard)
-  async googleLoginCallback(@Req() req: CustomRequest) {
+  async googleLoginCallback(@Req() req: CustomRequest, @Res() res: Response) {
     //구글계정로그인후 리다이렉트 페이지에 user정보
     const { user } = req;
 
@@ -107,7 +96,9 @@ export class AuthController {
     // 세션에 액세스 토큰 저장
     req.session.accessToken = tokens.access_token;
 
-    return { status: 200, message: '로그인 성공', data: tokens };
+    // 리다이렉트
+    res.redirect('http://localhost:3020');
+    // return { status: 200, message: '로그인 성공', data: tokens };
   }
 
   //req 테스트
