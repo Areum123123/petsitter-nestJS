@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -53,6 +54,20 @@ export class ReservationService {
       booking_date,
     } = createReservationDto;
 
+    // 오늘 날짜를 기준으로 설정
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정하여 날짜만 비교
+
+    // booking_date를 Date 객체로 변환
+    const bookingDate = new Date(booking_date);
+    bookingDate.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정하여 날짜만 비교
+
+    // 예약 날짜가 오늘 날짜보다 이전이거나 오늘 날짜인 경우 에러 반환
+    if (bookingDate <= today) {
+      throw new BadRequestException(
+        '예약 날짜는 오늘 이후의 날짜만 가능합니다',
+      );
+    }
     const petsitter = await this.petsitterRepository.findOne({
       where: { id: +pet_sitter_id },
     });

@@ -45,10 +45,10 @@ async function bootstrap() {
   app.setViewEngine('ejs');
 
   // CORS 설정
-  app.enableCors({
-    origin: 'http://localhost:3020/api/users/profile', // 프론트엔드 URL 설정
-    credentials: true, // 쿠키를 포함한 요청 허용
-  });
+  // app.enableCors({
+  //   origin: 'http://localhost:3020/api/users/profile', // 프론트엔드 URL 설정
+  //   credentials: true, // 쿠키를 포함한 요청 허용
+  // });
 
   //여러 cors
   // app.enableCors({

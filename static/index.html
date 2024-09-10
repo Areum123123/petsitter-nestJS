@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -14,73 +14,66 @@
       crossorigin="anonymous"
     />
     <style>
-     
-    
-
       @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
-  * {
-    font-family: 'Jua', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    }
+      * {
+        font-family: 'Jua', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
       .main {
         color: rgb(35, 34, 34);
-        
 
-        background-image: url("main.jpg");
+        background-image: url('main.jpg');
         background-position: center;
         background-size: cover;
         height: 60vh; /* 뷰포트의 100% 높이로 설정 */
-
-       
       }
-     
+
       body {
-        background-color: #fff
+        background-color: #fff;
       }
-/* 사진텍스트 높이조절 */
+      /* 사진텍스트 높이조절 */
       .main .container-fluid h1 {
-    margin-top: 23vh; /* 원하는 만큼의 간격을 설정 */
-}
+        margin-top: 23vh; /* 원하는 만큼의 간격을 설정 */
+      }
 
-h1 {
-    color: black; /* 글자 색상을 검정색으로 설정 */
-    text-shadow: 
-        0 0 3px white, /* 부드러운 하얀색 테두리 효과 */
-        0 0 1px white, 
-        0 0 1px white;
-}
+      h1 {
+        color: black; /* 글자 색상을 검정색으로 설정 */
+        text-shadow:
+          0 0 3px white,
+          /* 부드러운 하얀색 테두리 효과 */ 0 0 1px white,
+          0 0 1px white;
+      }
 
+      /* 실시간 채팅 버튼 스타일 */
+      .chat-button {
+        position: fixed; /* 스크롤 시에도 고정된 위치에 있게 함 */
+        right: 20px; /* 오른쪽 끝에서 20px 떨어진 위치 */
+        bottom: 20px; /* 하단에서 20px 떨어진 위치 */
+        background-color: #4e9ef2; /* 버튼 배경색 (블루) */
+        color: white; /* 글자 색상 (하얀색) */
+        padding: 15px 20px; /* 버튼 패딩 */
+        border-radius: 50px; /* 둥근 버튼 모양 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        text-decoration: none; /* 밑줄 제거 */
+        font-size: 18px; /* 글씨 크기 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+        z-index: 1000; /* 버튼이 다른 요소들 위에 위치하도록 설정 */
+        transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+      }
 
-/* 실시간 채팅 버튼 스타일 */
-.chat-button {
-    position: fixed;       /* 스크롤 시에도 고정된 위치에 있게 함 */
-    right: 20px;           /* 오른쪽 끝에서 20px 떨어진 위치 */
-    bottom: 20px;          /* 하단에서 20px 떨어진 위치 */
-    background-color: #4e9ef2; /* 버튼 배경색 (블루) */
-    color: white;          /* 글자 색상 (하얀색) */
-    padding: 15px 20px;    /* 버튼 패딩 */
-    border-radius: 50px;   /* 둥근 버튼 모양 */
-    text-align: center;    /* 텍스트 중앙 정렬 */
-    text-decoration: none; /* 밑줄 제거 */
-    font-size: 18px;       /* 글씨 크기 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
-    z-index: 1000;         /* 버튼이 다른 요소들 위에 위치하도록 설정 */
-    transition: background-color 0.3s ease; /* 배경색 전환 효과 */
-}
+      .chat-button:hover {
+        background-color: #8f9499; /* 버튼 호버 시 색상 */
+        transform: scale(1.05); /* 버튼 확대 효과 */
+      }
 
-.chat-button:hover {
-    background-color: #8f9499; /* 버튼 호버 시 색상 */
-    transform: scale(1.05); /* 버튼 확대 효과 */
-}
-
-    .service-intro {
+      .service-intro {
         padding: 60px 0;
-        background-color: #fff
-    }
-/* 펫시터 매칭서비스, 돌보미의 특별함 카드 */
-    .feature-box {
+        background-color: #fff;
+      }
+      /* 펫시터 매칭서비스, 돌보미의 특별함 카드 */
+      .feature-box {
         text-align: center;
         padding: 30px;
         border-radius: 10px;
@@ -88,113 +81,113 @@ h1 {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
         margin-bottom: 30px;
-    }
+      }
 
-    .feature-box:hover {
+      .feature-box:hover {
         transform: translateY(-10px);
-    }
+      }
 
-    .feature-icon {
+      .feature-icon {
         font-size: 40px;
         color: #8f9499;
         margin-bottom: 20px;
-    }
+      }
 
-    .feature-box h3 {
+      .feature-box h3 {
         font-size: 22px;
         margin-bottom: 15px;
         color: #333;
-    }
+      }
 
-    .feature-box p {
+      .feature-box p {
         font-size: 16px;
         color: #666;
-    }
-/* 왜 돌보미를 선택해야 할까? */
-.why-choose-us, .testimonials {
-    padding: 60px 0;
-    background-color: #edf1f6
-}
+      }
+      /* 왜 돌보미를 선택해야 할까? */
+      .why-choose-us,
+      .testimonials {
+        padding: 60px 0;
+        background-color: #edf1f6;
+      }
 
-.reason-box {
-    text-align: center;
-    padding: 30px;
-    margin-bottom: 30px;
-}
+      .reason-box {
+        text-align: center;
+        padding: 30px;
+        margin-bottom: 30px;
+      }
 
-.reason-icon {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 20px;
-}
+      .reason-icon {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+      }
 
-.testimonial-box {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 30px;
-    text-align: center;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+      .testimonial-box {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-.user-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-}
+      .user-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
 
-.testimonial-text {
-    font-style: italic;
-    margin-bottom: 15px;
-}
+      .testimonial-text {
+        font-style: italic;
+        margin-bottom: 15px;
+      }
 
-.user-name {
-    font-weight: bold;
-}
+      .user-name {
+        font-weight: bold;
+      }
 
-.cta-section {
-    background-color: #fff;
-    color: rgb(65, 62, 62);
-    padding: 60px 0;
-}
+      .cta-section {
+        background-color: #fff;
+        color: rgb(65, 62, 62);
+        padding: 60px 0;
+      }
 
-.cta-section h2 {
-    margin-bottom: 20px;
-}
+      .cta-section h2 {
+        margin-bottom: 20px;
+      }
 
+      /* Footer */
+      .footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+      }
 
- /* Footer */
- .footer {
-            background-color: #333;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
+      .footer .social-links {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
 
-        .footer .social-links {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .footer .social-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1rem;
-        }
-        /* 왼쪽상단 반려견돌보미 */
-        .custom-color {
-    color: #4e9ef2;
-    font-weight: bold; /* 글씨를 두껍게 */
-}
- /* 회원가입버튼 */
-.custom-btn {
-    background-color: #4e9ef2; /* 배경색 */
-    color: #fff; /* 텍스트 색상, 필요에 따라 조정 */
-    border: none; /* 기본 버튼 테두리 제거 */
-}
+      .footer .social-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+      /* 왼쪽상단 반려견돌보미 */
+      .custom-color {
+        color: #4e9ef2;
+        font-weight: bold; /* 글씨를 두껍게 */
+      }
+      /* 회원가입버튼 */
+      .custom-btn {
+        background-color: #4e9ef2; /* 배경색 */
+        color: #fff; /* 텍스트 색상, 필요에 따라 조정 */
+        border: none; /* 기본 버튼 테두리 제거 */
+      }
       /* 상단 글씨 크기 조정 */
       .nav-link {
         font-size: 18px; /* 글씨 크기 증가 */
@@ -211,12 +204,11 @@ h1 {
         justify-content: center;
         text-decoration: none;
         color: #fff; /* 아이콘 색상 */
-  }
-  
-  .profile-icon:hover {
+      }
+
+      .profile-icon:hover {
         color: #4e9ef2;
       }
-  
     </style>
   </head>
 
@@ -246,35 +238,55 @@ h1 {
           >
             <li>
               <!-- <a href="#" class="nav-link px-2 text-info">반려견 돌보미</a> -->
-              <a href="/" style="margin-left: -7vw" class="nav-link px-4 custom-color"><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 512 512"
-                style="transform: translateX(-10px)"
+              <a
+                href="/"
+                style="margin-left: -7vw"
+                class="nav-link px-4 custom-color"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 512 512"
+                  style="transform: translateX(-10px)"
+                >
+                  <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                  <path
+                    d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+                  /></svg
+                >반려견 돌보미</a
               >
-                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                <path
-                  d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
-                />
-              </svg>반려견 돌보미</a>
             </li>
             <li>
-              <a href="#" class="nav-link px-4 text-secondary">돌보미 예약</a>
+              <a
+                href="/api/petsitters/reservation"
+                class="nav-link px-4 text-secondary"
+                >돌보미 예약</a
+              >
             </li>
             <li>
-              <a href="/api/petsitters" class="nav-link px-4 text-secondary">펫시터 소개</a>
+              <a href="/api/petsitters" class="nav-link px-4 text-secondary"
+                >펫시터 소개</a
+              >
             </li>
-            
           </ul>
 
-         
-
           <div id="text-end" class="text-end">
-            <button type="button" id="login-btn" class="btn btn-outline-dark me-2" onclick="redirectToSignIn()">
+            <button
+              type="button"
+              id="login-btn"
+              class="btn btn-outline-dark me-2"
+              onclick="redirectToSignIn()"
+            >
               로그인
             </button>
-            <button type="button" id="signup-btn" class="btn custom-btn" onclick="SignUp()">회원가입</button>
+            <button
+              type="button"
+              id="signup-btn"
+              class="btn custom-btn"
+              onclick="SignUp()"
+            >
+              회원가입
+            </button>
           </div>
         </div>
       </div>
@@ -283,171 +295,218 @@ h1 {
     <div class="main">
       <div class="p-5 mb-4 bg-body-tertiary rounded-3">
         <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">언제 어디서나,</br> 믿을 수 있는 돌봄 파트너</h1>
+          <h1 class="display-5 fw-bold">
+            언제 어디서나,<br />
+            믿을 수 있는 돌봄 파트너
+          </h1>
         </div>
       </div>
     </div>
 
-    
-
     <!-- 실시간 채팅 버튼  -->
- <a href="#" class="chat-button" id="startChatBtn">💬 문의하기</a>
+    <a href="#" class="chat-button" id="startChatBtn">💬 문의하기</a>
 
- <div class="service-intro">
-  <h2 class="text-center mb-5">펫시터 매칭 서비스, 돌보미의 특별함</h2>
-  <div class="row">
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-search feature-icon"></i>
-              <h3>맞춤형 펫시터 검색</h3>
-              <p>당신의 반려동물에게 꼭 맞는 펫시터를 쉽고 빠르게 찾아보세요.</p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-shield-alt feature-icon"></i>
-              <h3>안전한 돌봄 서비스</h3>
-              <p>모든 펫시터는 철저한 신원 확인과 교육을 거쳐 선발되어 관리되고 있습니다.</p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-comments feature-icon"></i>
-              <h3>실시간 소통</h3>
-              <p>펫시터와 실시간 채팅으로 소통하며 안심하고 맡길 수 있습니다.</p>
-          </div>
-      </div>
-  </div>
-  <div class="row mt-4">
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-calendar-alt feature-icon"></i>
-              <h3>유연한 예약 시스템</h3>
-              <p>방문을 원하시는 날짜와 시간에 맞춰 간편하게 펫시터를 예약하세요. </p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-heart feature-icon"></i>
-              <h3>맞춤형 돌봄</h3>
-              <p>당신의 반려동물의 특성과 습관을 고려한 맞춤형 돌봄을 제공합니다.</p>
-          </div>
-      </div>
-      <div class="col-md-4">
-          <div class="feature-box">
-              <i class="fas fa-star feature-icon"></i>
-              <h3>신뢰할 수 있는 리뷰</h3>
-              <p>실제 이용자들의 솔직한 리뷰와 평점으로 최적의 펫시터를 선택하세요.</p>
-          </div>
-      </div>
-  </div>
-</div>
-
-<!-- 추가 -->
-<div class="why-choose-us">
-  <div class="container">
-      <h2 class="text-center mb-5">왜 돌보미를 선택해야 할까요?</h2>
+    <div class="service-intro">
+      <h2 class="text-center mb-5">펫시터 매칭 서비스, 돌보미의 특별함</h2>
       <div class="row">
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-search feature-icon"></i>
+            <h3>맞춤형 펫시터 검색</h3>
+            <p>당신의 반려동물에게 꼭 맞는 펫시터를 쉽고 빠르게 찾아보세요.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-shield-alt feature-icon"></i>
+            <h3>안전한 돌봄 서비스</h3>
+            <p>
+              모든 펫시터는 철저한 신원 확인과 교육을 거쳐 선발되어 관리되고
+              있습니다.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-comments feature-icon"></i>
+            <h3>실시간 소통</h3>
+            <p>펫시터와 실시간 채팅으로 소통하며 안심하고 맡길 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-calendar-alt feature-icon"></i>
+            <h3>유연한 예약 시스템</h3>
+            <p>
+              방문을 원하시는 날짜와 시간에 맞춰 간편하게 펫시터를 예약하세요.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-heart feature-icon"></i>
+            <h3>맞춤형 돌봄</h3>
+            <p>
+              당신의 반려동물의 특성과 습관을 고려한 맞춤형 돌봄을 제공합니다.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-box">
+            <i class="fas fa-star feature-icon"></i>
+            <h3>신뢰할 수 있는 리뷰</h3>
+            <p>
+              실제 이용자들의 솔직한 리뷰와 평점으로 최적의 펫시터를 선택하세요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 추가 -->
+    <div class="why-choose-us">
+      <div class="container">
+        <h2 class="text-center mb-5">왜 돌보미를 선택해야 할까요?</h2>
+        <div class="row">
           <div class="col-md-4">
-              <div class="reason-box">
-                  <img src="https://images.wombo.art/generated/8ce175d7-68e7-4c4a-ae67-7d3cb3279637/final.jpg?Expires=1731972952&Signature=lXpquMtf2gsWqYMq1UpYfi7-axnC8ra-CvqDEqek8Yjz7Ne7UZXLYJVZsx63ymLxBVuiHJ-G801mvf658Mcjs69rXQh3WpPsdYIpQosiAAiffSf4yN7Ple7j8Q73IgO6J9woIpv2m8oDOT~5ASlBPJPgci8q1nSqUzXKINODd-eTxTzaEpz490DizeG4k2TSiKS0WE9ycmLdQsiQ0dhzZ~--iRnu1~UvoJc9hjV3l2b7z4yemMpmsgs8W2lTRzcQ7FGX44pfSgqYHwMGh7yL-eROqGxHKZTiPbtWxGnRCDHgN~CE3cjSkoGdPeoYyKUyY-IMpGfNyQ6fkNQ-mumS1g__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="전문성" class="reason-icon">
-                  <h3>펫시터 전문성</h3>
-                  <p>모든 펫시터는 동물 행동학 및 응급 처치에 대한 전문 교육을 이수합니다.</p>
-              </div>
+            <div class="reason-box">
+              <img
+                src="https://images.wombo.art/generated/8ce175d7-68e7-4c4a-ae67-7d3cb3279637/final.jpg?Expires=1731972952&Signature=lXpquMtf2gsWqYMq1UpYfi7-axnC8ra-CvqDEqek8Yjz7Ne7UZXLYJVZsx63ymLxBVuiHJ-G801mvf658Mcjs69rXQh3WpPsdYIpQosiAAiffSf4yN7Ple7j8Q73IgO6J9woIpv2m8oDOT~5ASlBPJPgci8q1nSqUzXKINODd-eTxTzaEpz490DizeG4k2TSiKS0WE9ycmLdQsiQ0dhzZ~--iRnu1~UvoJc9hjV3l2b7z4yemMpmsgs8W2lTRzcQ7FGX44pfSgqYHwMGh7yL-eROqGxHKZTiPbtWxGnRCDHgN~CE3cjSkoGdPeoYyKUyY-IMpGfNyQ6fkNQ-mumS1g__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="전문성"
+                class="reason-icon"
+              />
+              <h3>펫시터 전문성</h3>
+              <p>
+                모든 펫시터는 동물 행동학 및 응급 처치에 대한 전문 교육을
+                이수합니다.
+              </p>
+            </div>
           </div>
           <div class="col-md-4">
-              <div class="reason-box">
-                  <img src="https://images.wombo.art/generated/5d5ecd90-26f5-4758-a6f7-3ba8ccc42556/final.jpg?Expires=1731973537&Signature=1l5pcJoOTmvia3HFBgn~KCS~6L0zcT2VSc5RWVtqe~lk-U3LDC1zNKY5MMRmOWWiU8DaGwKjI9wi33VJ-7lULb14CeJ4tli1cFnpHUDnfssWeTA83CAyFc9dWQdPeWFqbJgIkaH1Knc1Lm1eWw7LWbFXXDNIbV33oxsFM3ps2FmNpS97UgJEBU8T92ZUm-XoQhzLjGtnnfn9KzQsH5z~N--xYubab0eouQKCjjmxCXKD0Kunpj~sVLWmDF~Xw7bFMWYTJOYcX3-zV7n4Rw4uAw3DlakgQlbNnGqDfrJMf68s8k0BWFYu1bGgVau8317d0qZvKg5bSgZNlfop39xGhg__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="다양성" class="reason-icon">
-                  <h3>다양한 서비스</h3>
-                  <p>산책, 목욕, 훈련 등 필요에 맞는 다양한 돌봄 서비스를 제공합니다.</p>
-              </div>
+            <div class="reason-box">
+              <img
+                src="https://images.wombo.art/generated/5d5ecd90-26f5-4758-a6f7-3ba8ccc42556/final.jpg?Expires=1731973537&Signature=1l5pcJoOTmvia3HFBgn~KCS~6L0zcT2VSc5RWVtqe~lk-U3LDC1zNKY5MMRmOWWiU8DaGwKjI9wi33VJ-7lULb14CeJ4tli1cFnpHUDnfssWeTA83CAyFc9dWQdPeWFqbJgIkaH1Knc1Lm1eWw7LWbFXXDNIbV33oxsFM3ps2FmNpS97UgJEBU8T92ZUm-XoQhzLjGtnnfn9KzQsH5z~N--xYubab0eouQKCjjmxCXKD0Kunpj~sVLWmDF~Xw7bFMWYTJOYcX3-zV7n4Rw4uAw3DlakgQlbNnGqDfrJMf68s8k0BWFYu1bGgVau8317d0qZvKg5bSgZNlfop39xGhg__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="다양성"
+                class="reason-icon"
+              />
+              <h3>다양한 서비스</h3>
+              <p>
+                산책, 목욕, 훈련 등 필요에 맞는 다양한 돌봄 서비스를 제공합니다.
+              </p>
+            </div>
           </div>
           <!-- 추가 -->
           <div class="col-md-4">
             <div class="reason-box">
-                <img src="https://images.wombo.art/generated/99d3b2ae-2897-46af-b952-cc1e89eef6bf/final.jpg?Expires=1731973447&Signature=N7qtL-d28lyzuBOI63YBax~7GZnBwXWtuk8gch0dBqNCY8Mx2YVF7r-e0KvNiZ6A8OU2PwNgjqaDBkChCQlAIFCPmA0yizPRZ~rpQVVJeORcHXvYH8sO~RtdSmlrkezxNZ8wH-KGyca2jSiLmUt9wm12YQ21ezQJNV8Ctgxf51dj3ZaLMzULW4HiShg1m5TJa2U5FVvjFJY5ObqmCPsrxG4LTTeBxTSSbqwLvnz-2xVjDY1sHQBRRBpfUSKjp4bLjzTsbBwvsn16dGPa5F9Q8Lo~pMR4UtDCIWALp4nvgNX9JBLaapNxpl2b5LBTDbNe3ocMGDTQjSnl5BQUktLEOA__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="돌봄환경" class="reason-icon">
-                <h3>안전한 돌봄 환경</h3>
-                <p>엄격한 안전 프로토콜을 통해 반려동물의 안전과 건강을 최우선으로 합니다.</p>
+              <img
+                src="https://images.wombo.art/generated/99d3b2ae-2897-46af-b952-cc1e89eef6bf/final.jpg?Expires=1731973447&Signature=N7qtL-d28lyzuBOI63YBax~7GZnBwXWtuk8gch0dBqNCY8Mx2YVF7r-e0KvNiZ6A8OU2PwNgjqaDBkChCQlAIFCPmA0yizPRZ~rpQVVJeORcHXvYH8sO~RtdSmlrkezxNZ8wH-KGyca2jSiLmUt9wm12YQ21ezQJNV8Ctgxf51dj3ZaLMzULW4HiShg1m5TJa2U5FVvjFJY5ObqmCPsrxG4LTTeBxTSSbqwLvnz-2xVjDY1sHQBRRBpfUSKjp4bLjzTsbBwvsn16dGPa5F9Q8Lo~pMR4UtDCIWALp4nvgNX9JBLaapNxpl2b5LBTDbNe3ocMGDTQjSnl5BQUktLEOA__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="돌봄환경"
+                class="reason-icon"
+              />
+              <h3>안전한 돌봄 환경</h3>
+              <p>
+                엄격한 안전 프로토콜을 통해 반려동물의 안전과 건강을 최우선으로
+                합니다.
+              </p>
             </div>
+          </div>
+          <!-- 추가 -->
         </div>
-           <!-- 추가 -->
       </div>
-  </div>
-</div>
+    </div>
 
-<div class="testimonials">
-  <div class="container">
-      <h2 class="text-center mb-5">고객 후기</h2>
-      <div class="row">
+    <div class="testimonials">
+      <div class="container">
+        <h2 class="text-center mb-5">고객 후기</h2>
+        <div class="row">
           <div class="col-md-4">
-              <div class="testimonial-box">
-                  <img src="https://images.wombo.art/generated/1b581eea-01d7-496a-a105-08e0b80cf653/final.jpg?Expires=1731973095&Signature=I4cMMznfXjrUnrPYjUUusUTpLVMoARwPdY-yP5TwQFPIP~AIeBN-~OlXAKrq2zrNfSkgOlsoATvMdaG1xGSrndbbMsJLwY-nLTsG7ar-dgcUEPKHlZhh22Y6YDjsZcT6M0VW1gjG6tsHCp2~V-jsH6ExjnHmQghvPKGVVOMG0A7sM6Kj6sAf22hF4w7ce-cEdlddVBniOOurnr7EpihxAOH6sCMqAulCTeXU9J-mY72PKRn8E8Brm9emwA4zh4EWonvsdKZbIhs95Gb3RdNB29RxRMXujJOFNgu1N35U4Hql-YQ-AoC9WYfUYLA~-4B6TRBBgX-phEKStbIbEDUYig__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="사용자 1" class="user-img">
-                  <p class="testimonial-text">"돌보미 덕분에 안심하고 여행을 다녀올 수 있었어요. 우리 강아지가 정말 행복해 보였답니다!"</p>
-                  <p class="user-name">- 김서연 님</p>
-              </div>
+            <div class="testimonial-box">
+              <img
+                src="https://images.wombo.art/generated/1b581eea-01d7-496a-a105-08e0b80cf653/final.jpg?Expires=1731973095&Signature=I4cMMznfXjrUnrPYjUUusUTpLVMoARwPdY-yP5TwQFPIP~AIeBN-~OlXAKrq2zrNfSkgOlsoATvMdaG1xGSrndbbMsJLwY-nLTsG7ar-dgcUEPKHlZhh22Y6YDjsZcT6M0VW1gjG6tsHCp2~V-jsH6ExjnHmQghvPKGVVOMG0A7sM6Kj6sAf22hF4w7ce-cEdlddVBniOOurnr7EpihxAOH6sCMqAulCTeXU9J-mY72PKRn8E8Brm9emwA4zh4EWonvsdKZbIhs95Gb3RdNB29RxRMXujJOFNgu1N35U4Hql-YQ-AoC9WYfUYLA~-4B6TRBBgX-phEKStbIbEDUYig__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="사용자 1"
+                class="user-img"
+              />
+              <p class="testimonial-text">
+                "돌보미 덕분에 안심하고 여행을 다녀올 수 있었어요. 우리 강아지가
+                정말 행복해 보였답니다!"
+              </p>
+              <p class="user-name">- 김서연 님</p>
+            </div>
           </div>
           <div class="col-md-4">
-              <div class="testimonial-box">
-                  <img src="https://images.wombo.art/generated/1a4a6725-c4ab-46ae-8b06-a55f9c942ed6/final.jpg?Expires=1731973071&Signature=FPgYm3MnKqwfwVJFMFGVlkjnzhGmxpHMPkYEd4Tln1N8fNDYUIru823w2PGfp3tnsNtoMEpsDi5j~91Ki8yJYTKv0V-bNVzjUGfgmD7TrdpwS~iT0zeCj-EqKzZ-44kDAvfDEtVsNtpc~GGRb8eGbf8fLiiPi1uSaCfSz8pa1hpLO506ylSiDI-11uB8ZmkHhoyFQ00MpzBYTqC8grgAFlvVrgtmTMRy5IxdyrSsbEUcGz4Bv0a184hUJ7exZTDZxhjAJMDF0JYn-sWQBpRJ5p6stWci4S9UkKPMbVCfDekymuShx6xt1wF~lh38DQ~~foLn-bW7LYNHZQu1jbRBwg__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="사용자 2" class="user-img">
-                  <p class="testimonial-text">"전문적이고 친절한 펫시터 선생님 덕분에 우리 고양이의 건강 상태가 많이 좋아졌어요."</p>
-                  <p class="user-name">- 이준호 님</p>
-              </div>
+            <div class="testimonial-box">
+              <img
+                src="https://images.wombo.art/generated/1a4a6725-c4ab-46ae-8b06-a55f9c942ed6/final.jpg?Expires=1731973071&Signature=FPgYm3MnKqwfwVJFMFGVlkjnzhGmxpHMPkYEd4Tln1N8fNDYUIru823w2PGfp3tnsNtoMEpsDi5j~91Ki8yJYTKv0V-bNVzjUGfgmD7TrdpwS~iT0zeCj-EqKzZ-44kDAvfDEtVsNtpc~GGRb8eGbf8fLiiPi1uSaCfSz8pa1hpLO506ylSiDI-11uB8ZmkHhoyFQ00MpzBYTqC8grgAFlvVrgtmTMRy5IxdyrSsbEUcGz4Bv0a184hUJ7exZTDZxhjAJMDF0JYn-sWQBpRJ5p6stWci4S9UkKPMbVCfDekymuShx6xt1wF~lh38DQ~~foLn-bW7LYNHZQu1jbRBwg__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="사용자 2"
+                class="user-img"
+              />
+              <p class="testimonial-text">
+                "전문적이고 친절한 펫시터 선생님 덕분에 우리 고양이의 건강
+                상태가 많이 좋아졌어요."
+              </p>
+              <p class="user-name">- 이준호 님</p>
+            </div>
           </div>
           <div class="col-md-4">
-              <div class="testimonial-box">
-                  <img src="https://images.wombo.art/generated/c63bdf7c-4b88-4c75-9e15-dfab97bd5629/final.jpg?Expires=1731973134&Signature=PmfdQLQUdd73TG9gpDdzcWTSWrf6wKo0I2ehwa28U35XTVbMsKSFexCyiW0vZljt~HMTVYCy8gCohTCP8NDvOfbR5-U6NwZpZ7j8VaEG2ntRdzZzBZMD~sn5tCIO5gd~y75UBw3RsFKvpJlScEmiovTC~CjfltL2yLDd6lL6VAmbE34n04DaP9JDPoKXxApGm5LcP0LgJUFWJgwdU6qSiVuglnWz~hGMDLUUp9bstLFNLQAhcfIDtl0HmSe7RNNorOpRGWPtmdMzt42fF6G7vBic1j0VEC6oqf7LVRE9bFgHJyeovQiCTmE89xxQ7zAXbyKcg2FhF29QDGDa7arIuA__&Key-Pair-Id=K1ZXCNMC55M2IL" alt="사용자 3" class="user-img">
-                  <p class="testimonial-text">"급한 출장 때문에 걱정했는데, 돌보미에서 빠르게 펫시터를 연결해줘서 정말 고마웠어요!"</p>
-                  <p class="user-name">- 박미라 님</p>
-              </div>
+            <div class="testimonial-box">
+              <img
+                src="https://images.wombo.art/generated/c63bdf7c-4b88-4c75-9e15-dfab97bd5629/final.jpg?Expires=1731973134&Signature=PmfdQLQUdd73TG9gpDdzcWTSWrf6wKo0I2ehwa28U35XTVbMsKSFexCyiW0vZljt~HMTVYCy8gCohTCP8NDvOfbR5-U6NwZpZ7j8VaEG2ntRdzZzBZMD~sn5tCIO5gd~y75UBw3RsFKvpJlScEmiovTC~CjfltL2yLDd6lL6VAmbE34n04DaP9JDPoKXxApGm5LcP0LgJUFWJgwdU6qSiVuglnWz~hGMDLUUp9bstLFNLQAhcfIDtl0HmSe7RNNorOpRGWPtmdMzt42fF6G7vBic1j0VEC6oqf7LVRE9bFgHJyeovQiCTmE89xxQ7zAXbyKcg2FhF29QDGDa7arIuA__&Key-Pair-Id=K1ZXCNMC55M2IL"
+                alt="사용자 3"
+                class="user-img"
+              />
+              <p class="testimonial-text">
+                "급한 출장 때문에 걱정했는데, 돌보미에서 빠르게 펫시터를
+                연결해줘서 정말 고마웠어요!"
+              </p>
+              <p class="user-name">- 박미라 님</p>
+            </div>
           </div>
+        </div>
       </div>
-  </div>
-</div>
+    </div>
 
-<div class="cta-section">
-  <div class="container text-center">
-    
-      <h2>지금 바로 돌보미와 함께 시작하세요!</h2>
-      <p>당신의 소중한 반려동물에게 최고의 돌봄을 선사합니다.</p>
-      
-  </div>
-</div>
+    <div class="cta-section">
+      <div class="container text-center">
+        <h2>지금 바로 돌보미와 함께 시작하세요!</h2>
+        <p>당신의 소중한 반려동물에게 최고의 돌봄을 선사합니다.</p>
+      </div>
+    </div>
 
-<footer class="footer">
-  <div class="container">
-      <p>&copy; 2024 PetCare. All rights reserved.</p>
-      <ul class="social-links">
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2024 PetCare. All rights reserved.</p>
+        <ul class="social-links">
           <li><a href="#">Facebook</a></li>
           <li><a href="#">Instagram</a></li>
           <li><a href="#">Twitter</a></li>
-      </ul>
-  </div>
-</footer>
-<script>
- document.addEventListener('DOMContentLoaded', function () {
-  checkLoginStatus();
+        </ul>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        checkLoginStatus();
+      });
+      // API에서 로그인 상태 확인
+      async function checkLoginStatus() {
+        try {
+          const response = await fetch('/api/session', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-       
-      });
- // API에서 로그인 상태 확인
- async function checkLoginStatus() {
-    try {
-      const response = await fetch('/api/session', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('test',data)
-        if (data.accessToken) {
-          // 로그인 상태인 경우
-          document.getElementById('login-btn').style.display = 'none'; //숨기기
-          document.getElementById('signup-btn').style.display = 'none';
-          
-          const profileIcon = `
+          if (response.ok) {
+            const data = await response.json();
+            console.log('test', data);
+            if (data.accessToken) {
+              // 로그인 상태인 경우
+              document.getElementById('login-btn').style.display = 'none'; //숨기기
+              document.getElementById('signup-btn').style.display = 'none';
+
+              const profileIcon = `
             <a href="/api/users/profile" class="btn btn-outline-light me-2 profile-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                 <path d="M13.468 12.37C12.759 11.226 11.365 10.5 8 10.5s-4.759.726-5.468 1.87A6.986 6.986 0 0 1 8 1a6.986 6.986 0 0 1 5.468 11.37zM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0z"/>
@@ -456,29 +515,27 @@ h1 {
               
             </a>
           `;
-          document.getElementById('text-end').innerHTML = profileIcon;
+              document.getElementById('text-end').innerHTML = profileIcon;
+            }
+          } else {
+            console.log('로그인 상태가 아닙니다.');
+          }
+        } catch (error) {
+          console.error('API 요청 오류:', error);
         }
-      } else {
-        console.log('로그인 상태가 아닙니다.');
       }
-    } catch (error) {
-      console.error('API 요청 오류:', error);
-    }
-  }
 
- function redirectToSignIn() {
-      window.location.href = 'api/auth/sign-in'; // 'sign-in' 페이지로 리디렉션
-    }  
+      function redirectToSignIn() {
+        window.location.href = 'api/auth/sign-in'; // 'sign-in' 페이지로 리디렉션
+      }
 
-    function SignUp() {
-      window.location.href = 'api/auth/sign-up'; // 'sign-in' 페이지로 리디렉션
-    }  
+      function SignUp() {
+        window.location.href = 'api/auth/sign-up'; // 'sign-in' 페이지로 리디렉션
+      }
 
-  document.getElementById('startChatBtn').addEventListener('click', () => {
-    window.location.href = 'chat.html'; // 상담 페이지로 리디렉션
-  });
-
- 
-</script>
+      document.getElementById('startChatBtn').addEventListener('click', () => {
+        window.location.href = 'chat.html'; // 상담 페이지로 리디렉션
+      });
+    </script>
   </body>
-</html> 
+</html>

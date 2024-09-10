@@ -189,6 +189,8 @@
         align-items: center;
         padding: 10px 20px;
         border-bottom: 1px solid #ddd;
+        flex-wrap: nowrap; /* 줄바꿈 방지 */
+        overflow-x: auto; /* 필요한 경우 수평 스크롤 허용 */
       }
 
       .header-links {
@@ -208,7 +210,10 @@
         cursor: pointer;
         transition: color 0.3s;
       }
-
+      /* 필요시 너비 조정 */
+      .text-button {
+        white-space: nowrap; /* 버튼 텍스트 줄바꿈 방지 */
+      }
       .text-button:hover {
         color: #357abd; /* 호버 시 링크 색상 */
       }
@@ -259,7 +264,9 @@
           </svg>
           반려견 돌보미</a
         >
-        <a href="/reservations" class="text-button px-4">돌보미 예약</a>
+        <a href="/api/petsitters/reservation" class="text-button px-4"
+          >돌보미 예약</a
+        >
         <a href="/api/petsitters" class="text-button px-4">펫시터 소개</a>
 
         <a href="/api/users/profile" id="profileBtn" class="profile-link">
@@ -365,6 +372,7 @@
             } else {
               console.error('No access token found in session');
               alert('로그인이 필요합니다.');
+              window.location.href = '/api/auth/sign-in';
             }
           })
           .catch((error) => {

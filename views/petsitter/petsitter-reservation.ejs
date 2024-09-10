@@ -70,7 +70,7 @@
         margin-right: 5%;
       }
       .card-footer {
-        background-color: #d0e1f4; /* 배경색 변경 */
+        background-color: #f2f3f5; /* 배경색 변경 */
       }
       .search-button {
         background-color: #4e9ef2; /* 검색 버튼 색상 */
@@ -117,6 +117,26 @@
       /* 상단 글씨 크기 조정 */
       .nav-link {
         font-size: 18px; /* 글씨 크기 증가 */
+      }
+      /* 카드펫시터 이름 */
+      .card-title {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 필요 시 수직 중앙 정렬도 추가 */
+        text-align: center;
+        margin: 0; /* 타이틀의 기본 마진을 제거하여 중앙에 더 가깝게 */
+      }
+      /* 카드버튼 */
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+      }
+      .card-footer button {
+        flex: 1;
+        margin: 0 5px;
+      }
+      .card-body {
+        padding: 10px; /* 기본 패딩보다 줄입니다 */
       }
     </style>
   </head>
@@ -169,12 +189,12 @@
             <li>
               <a
                 href="/api/petsitters/reservation"
-                class="nav-link px-4 text-secondary"
+                class="nav-link px-4 custom-color"
                 >돌보미 예약</a
               >
             </li>
             <li>
-              <a href="/api/petsitters" class="nav-link px-4 custom-color"
+              <a href="/api/petsitters" class="nav-link px-4 text-secondary"
                 >펫시터 소개</a
               >
             </li>
@@ -259,7 +279,7 @@
             const cards = document.getElementById('cards');
             petsitter.forEach((sitter) => {
               const sitterCard = ` 
-              <div class="col">
+               <div class="col">
           <div class="card h-100">
             <img
               src="https://plus.unsplash.com/premium_photo-1664285640585-39d2b6eae076?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGV0c2l0dGVyfGVufDB8fDB8fHww"
@@ -267,18 +287,21 @@
               alt="..."
             />
             <div class="card-body">
-              <h5 class="card-title">  ${sitter.name}</h5>
-              <p class="card-text">
-                •펫시터경력:  ${sitter.experience}<br />
-                •자격증: ${sitter.certification} <br />
-                •지역:  ${sitter.region}
-              </p>
+              <h5 class="card-title">${sitter.name}</h5>
             </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
+            <div class="card-footer d-flex justify-content-between">
+              <button
+                class="btn w-100 me-2"
+                style="background-color: #4e9ef2; color: white"
+                onclick="location.href='/api/reservation?pet_sitter_id=${sitter.petSitterId}'"
+              >
+                예약
+              </button>
+              <button class="btn btn-dark w-100">펫시터 소개</button>
             </div>
           </div>
-        </div>`;
+        </div>
+           `;
 
               cards.innerHTML += sitterCard;
             });
