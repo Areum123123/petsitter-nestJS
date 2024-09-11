@@ -93,7 +93,9 @@ export class PetSitterController {
 
   //펫시터 리뷰 조회
   @Get(':petSitterId/reviews')
-  async getReviews(@Param('petSitterId') petSitterId: number) {
+  async getReviews(
+    @Param('petSitterId') petSitterId: number,
+  ): Promise<GetReviewDto> {
     const reviews = await this.petSitterService.getReviews(petSitterId);
 
     return {
@@ -153,6 +155,21 @@ export class PetSitterController {
       status: 200,
       adminId: userId,
       message: '펫시터 삭제 완료',
+    };
+  }
+
+  //펫시터,리뷰 통합 조회
+  @Get(':petSitterId/details')
+  async getPetsitterAndReview(
+    @Param('petSitterId') petSitterId: number,
+  ): Promise<GetReviewDto> {
+    const totalDetails =
+      await this.petSitterService.getTotalPetsitter(petSitterId);
+
+    return {
+      status: 200,
+      message: '펫시터, 리뷰 조회 완료',
+      data: totalDetails,
     };
   }
 }

@@ -18,8 +18,8 @@ export class UpdatePetSitterDto {
   region?: string;
 
   @IsOptional()
-  @IsNumber()
-  total_rate?: number;
+  @IsString()
+  total_rate?: string;
 
   @IsOptional()
   @IsString()

@@ -23,6 +23,10 @@
       body {
         background-color: #f7f8f8;
       } /* 왼쪽상단 반려견돌보미 */
+
+      .mainCard {
+        padding: 0 20px; /* 양쪽 여백을 20px로 설정 */
+      }
       .custom-color {
         color: #4e9ef2;
         font-weight: bold; /* 글씨를 두껍게 */
@@ -117,6 +121,23 @@
       /* 상단 글씨 크기 조정 */
       .nav-link {
         font-size: 18px; /* 글씨 크기 증가 */
+      }
+      .card-img-top {
+        width: 100%;
+        height: 250px; /* 원하는 고정 높이로 설정 */
+        object-fit: cover; /* 이미지가 컨테이너에 맞게 잘리도록 설정 */
+        object-position: top; /* 이미지를 위쪽에 맞추기 */
+      }
+
+      .card {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: scale(1.05); /* 카드 크기 확대 */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
       }
     </style>
   </head>
@@ -256,29 +277,33 @@
           .then((response) => response.json())
           .then((data) => {
             const petsitter = data.data;
+            console.log('petsitter', petsitter);
             const cards = document.getElementById('cards');
             petsitter.forEach((sitter) => {
+              console.log('petsitter', sitter);
               const sitterCard = ` 
-              <div class="col">
-          <div class="card h-100">
-            <img
-              src="https://plus.unsplash.com/premium_photo-1664285640585-39d2b6eae076?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGV0c2l0dGVyfGVufDB8fDB8fHww"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title">  ${sitter.name}</h5>
-              <p class="card-text">
-                •펫시터경력:  ${sitter.experience}<br />
-                •자격증: ${sitter.certification} <br />
-                •지역:  ${sitter.region}
-              </p>
-            </div>
-            <div class="card-footer">
-              <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
-            </div>
-          </div>
-        </div>`;
+               <div class="col">
+            <a href="/api/petsitters/${sitter.petSitterId}/details" class="text-decoration-none text-dark">
+              <div class="card h-100">
+                <img
+                  src="${sitter.image_url}"
+                  class="card-img-top"
+                  alt="${sitter.name}"
+                />
+                <div class="card-body">
+                  <h5 class="card-title">${sitter.name}</h5>
+                  <p class="card-text">
+                    •펫시터경력: ${sitter.experience}<br />
+                    •자격증: ${sitter.certification}<br />
+                    •지역: ${sitter.region}
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
+                </div>
+              </div>
+            </a>
+          </div>`;
 
               cards.innerHTML += sitterCard;
             });

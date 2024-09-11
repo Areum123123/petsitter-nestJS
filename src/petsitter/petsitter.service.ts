@@ -4,7 +4,10 @@ import { Like, Repository } from 'typeorm';
 import { Petsitter } from './entities/petsitter.entity';
 import { CreatePetSitterDto } from './dto/create-pet-sitter.dto';
 import { Review } from 'src/review/entities/review.entity';
-import { getReviewResponse } from 'src/review/dto/review-res.dto';
+import {
+  getPetsitterAndReview,
+  getReviewResponse,
+} from 'src/review/dto/review-res.dto';
 import Redis from 'ioredis';
 import { UpdatePetSitterDto } from './dto/update-pet-sitter.dto';
 
@@ -132,6 +135,9 @@ export class PetSitterService {
       if (updatePetSitterDto.image_url) {
         petSitter.image_url = updatePetSitterDto.image_url;
       }
+      if (updatePetSitterDto.total_rate) {
+        petSitter.total_rate = +updatePetSitterDto.total_rate;
+      }
 
       petSitter.updated_at = new Date();
 
@@ -175,5 +181,63 @@ export class PetSitterService {
     } catch (error) {
       console.error('Error deleting caches:', error);
     }
+  }
+
+  async getTotalPetsitter(
+    petSitterId: number,
+  ): Promise<getPetsitterAndReview[]> {
+    // 펫시터가 존재하는지 확인
+    const petsitter = await this.petSitterRepository.findOne({
+      where: { id: petSitterId },
+      relations: ['reviews', 'reviews.user'], // 리뷰와 관련된 사용자도 포함
+    });
+
+    if (!petsitter) {
+      throw new NotFoundException('펫시터를 찾을 수 없습니다.');
+    }
+    //펫시터 리뷰
+    // 리뷰를 created_at 기준으로 내림차순 정렬
+    const sortedReviews = petsitter.reviews.sort(
+      (a, b) => b.created_at.getTime() - a.created_at.getTime(),
+    );
+
+    if (sortedReviews.length === 0) {
+      return [
+        {
+          petSitterName: petsitter.name,
+          experience: petsitter.experience,
+          region: petsitter.region,
+          certification: petsitter.certification,
+          total_rate: petsitter.total_rate,
+          image_url: petsitter.image_url,
+          reviewDetails: {
+            reviewId: '리뷰 아이디 없음',
+            userName: '작성자',
+            rating: '☆☆☆☆☆',
+            comment: '첫 리뷰의 주인공이 되어 주세요!',
+            createdAt: 'null',
+            updatedAt: 'null',
+          },
+        },
+      ];
+    }
+
+    //리뷰 변환
+    return sortedReviews.map((review) => ({
+      petSitterName: petsitter.name,
+      experience: petsitter.experience,
+      region: petsitter.region,
+      certification: petsitter.certification,
+      total_rate: petsitter.total_rate,
+      image_url: petsitter.image_url,
+      reviewDetails: {
+        reviewId: review.id,
+        userName: review.user.name, // 사용자 이름은 User 엔티티에 정의되어 있어야 합니다.
+        rating: review.rating,
+        comment: review.comment,
+        createdAt: review.created_at.toISOString(),
+        updatedAt: review.updated_at.toISOString(),
+      },
+    }));
   }
 }

@@ -10,7 +10,7 @@ export class PetsitterRenderController {
   @Render('petsitter/petsitter-reservation.ejs') // views/petsitter/reservation.ejs 파일을 렌더링
   reservationPage() {}
 
-  // @Get('/detail/:id')
-  // @Render('petsitter/detail.ejs') // views/petsitter/detail.ejs 파일을 렌더링
-  // detailPage() {}
+  @Get('/:petSitterId/details')
+  @Render('petsitter/petsitter-review.ejs') // views/petsitter/petsitter-reveiw.ejs 파일을 렌더링
+  petsitterReveiwPage() {}
 }
