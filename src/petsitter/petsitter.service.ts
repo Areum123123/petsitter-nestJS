@@ -18,24 +18,24 @@ export class PetSitterService {
     private petSitterRepository: Repository<Petsitter>,
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
-    @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+    // @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
   ) {}
 
   //펫시터 목록 조회
   async getPetsitters(name?: string, region?: string): Promise<Petsitter[]> {
-    const startCacheTime = Date.now(); //캐시타임
+    // const startCacheTime = Date.now(); //캐시타임
     const cacheKey = `petsitters_search:${name || ''}:${region || ''}`;
 
-    // Redis에서 캐시된 데이터 가져오기
-    const cachedData = await this.redisClient.get(cacheKey);
+    // // Redis에서 캐시된 데이터 가져오기
+    // const cachedData = await this.redisClient.get(cacheKey);
 
-    if (cachedData) {
-      console.log('Cache hit'); // 캐시에서 데이터 조회
-      console.log(`Cache lookup time: ${Date.now() - startCacheTime} ms`); //캐시타임
-      return JSON.parse(cachedData);
-    }
+    // if (cachedData) {
+    //   console.log('Cache hit'); // 캐시에서 데이터 조회
+    //   console.log(`Cache lookup time: ${Date.now() - startCacheTime} ms`); //캐시타임
+    //   return JSON.parse(cachedData);
+    // }
 
-    console.log('Cache miss'); // 캐시에서 데이터 없음, DB 조회
+    // console.log('Cache miss'); // 캐시에서 데이터 없음, DB 조회
 
     const where: any = {};
 
@@ -57,7 +57,7 @@ export class PetSitterService {
 
     console.log(`Database query time: ${Date.now() - dbStartTime} ms`);
     // Redis에 데이터 캐싱 (1시간 동안 유효)
-    await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 3000);
+    // await this.redisClient.set(cacheKey, JSON.stringify(result), 'EX', 3000);
 
     return result;
   }
@@ -96,7 +96,7 @@ export class PetSitterService {
     const savedPetSitter = await this.petSitterRepository.save(petSitter);
 
     // 캐시 삭제
-    await this.deleteCaches();
+    // await this.deleteCaches();
 
     return savedPetSitter;
   }
@@ -144,7 +144,7 @@ export class PetSitterService {
       await this.petSitterRepository.save(petSitter);
 
       // 캐시 삭제
-      await this.deleteCaches();
+      // await this.deleteCaches();
     } catch (error) {
       console.error('Error updated Petsitter:', error);
     }
@@ -163,25 +163,25 @@ export class PetSitterService {
       await this.petSitterRepository.remove(petSitter);
 
       // 캐시 삭제
-      await this.deleteCaches();
+      // await this.deleteCaches();
     } catch (error) {
       console.error('Error deleted Petsitter:', error);
     }
   }
 
   // 모든 캐시 삭제
-  private async deleteCaches(): Promise<void> {
-    try {
-      const cachePatterns = 'petsitters_search:*'; // 펫시터 캐시 전부 삭제
+  // private async deleteCaches(): Promise<void> {
+  //   try {
+  //     const cachePatterns = 'petsitters_search:*'; // 펫시터 캐시 전부 삭제
 
-      const keys = await this.redisClient.keys(cachePatterns);
-      if (keys.length) {
-        await this.redisClient.del(keys);
-      }
-    } catch (error) {
-      console.error('Error deleting caches:', error);
-    }
-  }
+  //     const keys = await this.redisClient.keys(cachePatterns);
+  //     if (keys.length) {
+  //       await this.redisClient.del(keys);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting caches:', error);
+  //   }
+  // }
 
   async getTotalPetsitter(
     petSitterId: number,

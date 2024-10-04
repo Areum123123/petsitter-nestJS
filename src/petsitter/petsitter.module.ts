@@ -8,14 +8,14 @@ import { ReviewModule } from '../review/review.module'; // Make sure this is cor
 import { UserModule } from '../user/user.module';
 import { ReviewService } from '../review/review.service'; // Importing this just for completeness
 import { Review } from 'src/review/entities/review.entity';
-import { RedisModule } from 'src/redis/redis.module';
+// import { RedisModule } from 'src/redis/redis.module';
 import { PetsitterRenderController } from './petsitter-render.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Petsitter, Review]),
     AuthModule,
-    RedisModule,
+    // RedisModule,
     forwardRef(() => ReviewModule), // Use forwardRef if there's a circular dependency
     forwardRef(() => UserModule),
   ],
