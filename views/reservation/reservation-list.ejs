@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>예약 관리</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* 기본 스타일 */
+      body {
+        font-family: 'Jua', sans-serif;
+        background-color: #f8f9fa;
+      }
+
+      .container {
+        padding: 40px 20px;
+        max-width: 900px;
+        margin: auto;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #343a40;
+      }
+
+      .reservation-item {
+        background: white;
+        padding: 20px;
+        margin-bottom: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .reservation-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .reservation-item h4 {
+        font-size: 22px;
+        color: #495057;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+      }
+
+      .reservation-item p {
+        margin: 8px 0;
+        font-size: 16px;
+        color: #6c757d;
+      }
+
+      .section-title {
+        font-weight: bold;
+        color: #343a40;
+        margin-top: 20px;
+      }
+
+      /* 각 정보 섹션 */
+      .reservation-details,
+      .petsitter-details,
+      .pet-details {
+        background-color: #f1f3f5;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .reservation-status {
+        color: #007bff !important;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>내 예약 관리</h2>
+      <div id="reservationList">
+        <!-- 예약 데이터가 여기에 동적으로 렌더링됩니다. -->
+      </div>
+    </div>
+
+    <script>
+      let accessToken = '';
+
+      document.addEventListener('DOMContentLoaded', function () {
+        fetchSessionData();
+      });
+
+      // 세션에서 토큰 가져오기
+      function fetchSessionData() {
+        fetch('/api/session', {
+          method: 'GET',
+          credentials: 'include',
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.accessToken) {
+              accessToken = data.accessToken;
+              fetchReservations();
+            } else {
+              alert('로그인이 필요합니다.');
+              window.location.href = '/api/auth/sign-in';
+            }
+          })
+          .catch((error) => {
+            console.error('세션 정보를 가져오는 중 오류 발생:', error);
+          });
+      }
+
+      // 예약 정보 가져오기
+      function fetchReservations() {
+        fetch('/api/reservations', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('네트워크 응답 오류');
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === 200) {
+              displayReservations(data.data);
+            } else {
+              alert('예약 정보를 가져오는 데 실패했습니다.');
+            }
+          })
+          .catch((error) => {
+            console.error('예약 정보를 가져오는 중 오류 발생:', error);
+          });
+      }
+
+      // 예약 정보 화면에 표시
+      function displayReservations(reservations) {
+        const reservationList = document.getElementById('reservationList');
+        reservationList.innerHTML = '';
+
+        if (reservations.length === 0) {
+          reservationList.innerHTML = '<p>예약 정보가 없습니다.</p>';
+          return;
+        }
+
+        reservations.forEach((reservation) => {
+          const reservationItem = document.createElement('div');
+          reservationItem.className = 'reservation-item';
+          //   const statusClass = getStatusClass(reservation.status);
+
+          reservationItem.innerHTML = `
+            <h4>예약 번호: ${reservation.reservation_id}</h4>
+            <p class="reservation-status">예약 상태: ${reservation.status}</p>
+
+            <div class="reservation-details">
+              <p class="section-title">예약자 정보</p>
+              <p>보호자 이름: ${reservation.reservation_details.user_name}</p>
+              <p>연락처: ${reservation.reservation_details.phone_number}</p>
+              <p>주소: ${reservation.reservation_details.address}</p>
+            </div>
+
+            <div class="petsitter-details">
+              <p class="section-title">펫시터 정보</p>
+              <p>펫시터 이름: ${reservation.petsitter_details.name}</p>
+              <p>펫시터 지역: ${reservation.petsitter_details.region}</p>
+              <p>예약 날짜: ${reservation.petsitter_details.booking_date}</p>
+            </div>
+
+            <div class="pet-details">
+              <p class="section-title">반려견 정보</p>
+              <p>반려견 이름: ${reservation.pet_details.name}</p>
+              <p>반려견 종: ${reservation.pet_details.breed}</p>
+              <p>반려견 나이: ${reservation.pet_details.age}</p>
+              <p>반려견 몸무게: ${reservation.pet_details.weight}</p>
+              <p>요청 사항: ${reservation.pet_details.request_details}</p>
+            </div>
+          `;
+          reservationList.appendChild(reservationItem);
+        });
+      }
+    </script>
+  </body>
+</html>

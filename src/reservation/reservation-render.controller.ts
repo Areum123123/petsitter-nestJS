@@ -5,4 +5,8 @@ export class reservationRenderController {
   @Get('')
   @Render('reservation/reservation-page.ejs') // views/reservation/reservation-page.ejs 파일을 렌더링
   reservationPage() {}
+
+  @Get('me')
+  @Render('reservation/reservation-list.ejs')
+  reservationList() {}
 }

@@ -2,5 +2,5 @@ export enum Status {
   PENDING = 'PENDING',
   CONFIRMED = 'CONFIRMED',
   COMPLETED = 'COMPLETED',
-  CANCELED = 'CANCELED’',
+  CANCELED = 'CANCELED',
 }
