@@ -272,6 +272,11 @@
         <a href="/api/users/profile" id="profileBtn" class="profile-link">
           <i class="fas fa-user"></i>
         </a>
+
+        <!-- 로그아웃 버튼 추가 -->
+        <button id="logoutBtn" class="text-button" style="margin-left: 10px">
+          로그아웃
+        </button>
       </div>
     </div>
     <div class="container">
@@ -333,9 +338,17 @@
 
     <script>
       let accessToken = '';
+      let refreshToken = '';
 
       document.addEventListener('DOMContentLoaded', function () {
         fetchSessionData();
+
+        //로그아웃
+        document
+          .getElementById('logoutBtn')
+          .addEventListener('click', function () {
+            signOut();
+          });
 
         document
           .getElementById('imageUpload')
@@ -358,6 +371,32 @@
         );
       });
 
+      // 로그아웃 함수 추가
+      function signOut() {
+        fetch('/api/auth/sign-out', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              // 세션에서 accessToken과 refreshToken 제거
+              sessionStorage.removeItem('accessToken');
+              sessionStorage.removeItem('refreshToken');
+              alert('로그아웃되었습니다.');
+              window.location.href = '/api/auth/sign-in';
+            } else {
+              console.error('Failed to sign out');
+            }
+          })
+          .catch((error) => {
+            console.error('Error during sign out:', error);
+            alert('로그아웃 중 문제가 발생했습니다.');
+          });
+      }
+
       //세션에서 가져오기
       function fetchSessionData() {
         fetch('/api/session', {
@@ -368,6 +407,7 @@
           .then((data) => {
             if (data.accessToken) {
               accessToken = data.accessToken;
+              refreshToken = data.refreshToken;
               fetchUserInfo();
             } else {
               console.error('No access token found in session');

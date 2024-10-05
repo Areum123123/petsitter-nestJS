@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>예약 관리</title>
+    <title>돌보미 | 예약 관리</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
@@ -14,17 +14,59 @@
     />
     <style>
       /* 기본 스타일 */
-      body {
+      @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+      * {
         font-family: 'Jua', sans-serif;
-        background-color: #f8f9fa;
+        font-weight: 400;
+        font-style: normal;
+      }
+      body {
+        background-color: #f7f8f8;
       }
 
-      .container {
-        padding: 40px 20px;
-        max-width: 900px;
-        margin: auto;
+      /* 상단 글씨 크기 조정 */
+      .nav-link {
+        font-size: 18px; /* 글씨 크기 증가 */
       }
 
+      /* 프로필 버튼 */
+      .profile-button {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        background-color: #4e9ef2; /* 버튼 배경색 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      /* 헤더 타이틀 */
+      h1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* 프로필 아이콘 */
+      .profile-icon {
+        width: 50%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .profile-icon svg {
+        width: 100%;
+        height: 100%;
+        color: white;
+      }
+
+      /* 예약 관리 타이틀 */
       h2 {
         text-align: center;
         margin-bottom: 40px;
@@ -33,6 +75,7 @@
         color: #343a40;
       }
 
+      /* 예약 아이템 박스 */
       .reservation-item {
         background: white;
         padding: 20px;
@@ -43,50 +86,148 @@
           transform 0.2s ease,
           box-shadow 0.2s ease;
       }
-
       .reservation-item:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
-
       .reservation-item h4 {
         font-size: 22px;
         color: #495057;
         margin-bottom: 15px;
         border-bottom: 1px solid #dee2e6;
         padding-bottom: 10px;
+        color: #333;
       }
 
-      .reservation-item p {
-        margin: 8px 0;
-        font-size: 16px;
+      /* 예약 상태 스타일 */
+      .reservation-status {
+        font-weight: bold;
+      }
+      .reservation-status.text-warning {
+        color: #f0ad4e;
+      }
+      .reservation-status.text-success {
+        color: #28a745;
+      }
+      .reservation-status.text-danger {
+        color: #dc3545;
+      }
+      .reservation-status.text-secondary {
         color: #6c757d;
       }
 
+      /* 각 섹션별 타이틀과 텍스트 */
       .section-title {
+        font-size: 18px;
         font-weight: bold;
         color: #343a40;
         margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
-      /* 각 정보 섹션 */
       .reservation-details,
       .petsitter-details,
       .pet-details {
-        background-color: #f1f3f5;
+        background-color: #f8f9fa;
         padding: 15px;
         border-radius: 10px;
         margin-top: 20px;
+        border: 1px solid #dee2e6;
       }
 
-      .reservation-status {
-        color: #007bff !important;
-        font-weight: bold;
+      .reservation-details p,
+      .petsitter-details p,
+      .pet-details p {
+        font-size: 16px;
+        color: #495057;
+        margin: 5px 0;
       }
     </style>
   </head>
   <body>
-    <div class="container">
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+          >
+            <svg
+              class="bi me-2"
+              width="40"
+              height="32"
+              role="img"
+              aria-label="Bootstrap"
+            >
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+          </a>
+
+          <ul
+            class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-start mb-md-0"
+          >
+            <li>
+              <a
+                href="/"
+                style="margin-left: -7vw"
+                class="nav-link px-4 text-secondary"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 512 512"
+                  style="transform: translateX(-10px)"
+                >
+                  <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                  <path
+                    d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+                  />
+                </svg>
+                반려견 돌보미
+              </a>
+            </li>
+            <li>
+              <a
+                href="/api/petsitters/reservation"
+                class="nav-link px-4 text-secondary"
+                >돌보미 예약</a
+              >
+            </li>
+            <li>
+              <a href="/api/petsitters" class="nav-link px-4 text-secondary"
+                >펫시터 소개</a
+              >
+            </li>
+          </ul>
+
+          <div class="text-end">
+            <a href="/api/users/profile" class="profile-button">
+              <div class="profile-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-person"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 14s1-1.5 6-1.5S14 14 14 14H2zm6-13a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </header>
+
+    <div class="container1">
       <h2>내 예약 관리</h2>
       <div id="reservationList">
         <!-- 예약 데이터가 여기에 동적으로 렌더링됩니다. -->
@@ -148,6 +289,38 @@
           });
       }
 
+      // 예약 상태별로 색상 클래스 반환
+      function getStatusClass(status) {
+        if (status === 'PENDING') {
+          return 'text-warning'; // 대기 중인 예약은 노란색
+        } else if (status === 'CONFIRMED') {
+          return 'text-success'; // 확인된 예약은 초록색
+        } else if (status === 'CANCELED') {
+          return 'text-danger'; // 취소된 예약은 빨간색
+        } else {
+          return 'text-primary'; // 다른 상태는 기본 회색
+        }
+      }
+
+      // 날짜 포맷팅 함수 (2024-10-05 토요일 형식으로 변경)
+      function formatDate(dateString) {
+        const days = [
+          '일요일',
+          '월요일',
+          '화요일',
+          '수요일',
+          '목요일',
+          '금요일',
+          '토요일',
+        ];
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const dayName = days[date.getDay()];
+        return `${year}-${month}-${day} ${dayName}`;
+      }
+
       // 예약 정보 화면에 표시
       function displayReservations(reservations) {
         const reservationList = document.getElementById('reservationList');
@@ -161,33 +334,35 @@
         reservations.forEach((reservation) => {
           const reservationItem = document.createElement('div');
           reservationItem.className = 'reservation-item';
-          //   const statusClass = getStatusClass(reservation.status);
+
+          // 예약 상태에 따른 클래스 추가
+          const statusClass = getStatusClass(reservation.status);
 
           reservationItem.innerHTML = `
             <h4>예약 번호: ${reservation.reservation_id}</h4>
-            <p class="reservation-status">예약 상태: ${reservation.status}</p>
-
+            <p class="reservation-status ${statusClass}">예약 상태: ${reservation.status}</p>
+    
             <div class="reservation-details">
-              <p class="section-title">예약자 정보</p>
-              <p>보호자 이름: ${reservation.reservation_details.user_name}</p>
-              <p>연락처: ${reservation.reservation_details.phone_number}</p>
-              <p>주소: ${reservation.reservation_details.address}</p>
+              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">예약자 정보</p>
+              <p>보호자 이름:  ${reservation.reservation_details.user_name}</p>
+              <p>연락처:  ${reservation.reservation_details.phone_number}</p>
+              <p>주소:  ${reservation.reservation_details.address}</p>
             </div>
-
+    
             <div class="petsitter-details">
-              <p class="section-title">펫시터 정보</p>
-              <p>펫시터 이름: ${reservation.petsitter_details.name}</p>
-              <p>펫시터 지역: ${reservation.petsitter_details.region}</p>
-              <p>예약 날짜: ${reservation.petsitter_details.booking_date}</p>
+              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">펫시터 정보</p>
+              <p>펫시터 이름:  ${reservation.petsitter_details.name}</p>
+              <p>펫시터 지역:  ${reservation.petsitter_details.region}</p>
+              <p>예약 날짜: ${formatDate(reservation.petsitter_details.booking_date)}</p>
             </div>
-
+    
             <div class="pet-details">
-              <p class="section-title">반려견 정보</p>
-              <p>반려견 이름: ${reservation.pet_details.name}</p>
-              <p>반려견 종: ${reservation.pet_details.breed}</p>
-              <p>반려견 나이: ${reservation.pet_details.age}</p>
-              <p>반려견 몸무게: ${reservation.pet_details.weight}</p>
-              <p>요청 사항: ${reservation.pet_details.request_details}</p>
+              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">반려견 정보</p>
+              <p>반려견 이름:  ${reservation.pet_details.name}</p>
+              <p>반려견 종:  ${reservation.pet_details.breed}</p>
+              <p>반려견 나이:  ${reservation.pet_details.age}</p>
+              <p>반려견 몸무게:  ${reservation.pet_details.weight}</p>
+              <p>요청 사항:  ${reservation.pet_details.request_details}</p>
             </div>
           `;
           reservationList.appendChild(reservationItem);

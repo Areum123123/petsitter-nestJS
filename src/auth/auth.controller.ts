@@ -46,6 +46,7 @@ export class AuthController {
 
     // 세션에 액세스 토큰 저장
     req.session.accessToken = access_token;
+    req.session.refreshToken = refresh_token;
 
     return {
       status: 200,
@@ -73,6 +74,10 @@ export class AuthController {
     const userId = req.user.id;
     await this.authService.signOut(userId);
 
+    // 세션에서 accessToken과 refreshToken 제거
+    delete req.session.accessToken; // 또는 req.session.accessToken = null; 도 가능
+    delete req.session.refreshToken; // 또는 req.session.refreshToken = null; 도 가능
+
     return {
       status: 200,
       message: '로그아웃이 성공적으로 처리 되었습니다.',
@@ -95,6 +100,7 @@ export class AuthController {
 
     // 세션에 액세스 토큰 저장
     req.session.accessToken = tokens.access_token;
+    req.session.refreshToken = tokens.refresh_token;
 
     // 리다이렉트
     res.redirect('http://localhost:3020');
