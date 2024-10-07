@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>돌보미 | 내리뷰관리</title>
+  </head>
+  <body>
+    <!doctype html>
+    <html lang="ko">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>돌보미 | 예약 관리</title>
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          rel="stylesheet"
+        />
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+        />
+        <style>
+          /* 기본 스타일 */
+          @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+          * {
+            font-family: 'Jua', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+          }
+          body {
+            background-color: #f7f8f8;
+          } /* 왼쪽상단 반려견돌보미 */
+          .custom-color {
+            color: #4e9ef2;
+            font-weight: bold; /* 글씨를 두껍게 */
+          }
+
+          /* 상단 글씨 크기 조정 */
+          .nav-link {
+            font-size: 18px; /* 글씨 크기 증가 */
+          }
+
+          /* 프로필버튼 */
+          .profile-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background-color: #4e9ef2; /* 버튼 배경색 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+          }
+
+          h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .profile-icon {
+            width: 50%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .profile-icon svg {
+            width: 100%;
+            height: 100%;
+            color: white; /* 아이콘 색상 */
+          }
+          .profile-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+          }
+          .container1 {
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: auto;
+          }
+
+          h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #343a40;
+          }
+
+          .review-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition:
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
+          }
+
+          .review-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+          }
+
+          .review-item h4 {
+            font-size: 22px;
+            color: #495057;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+          }
+
+          .review-item p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: #6c757d;
+          }
+
+          .section-title {
+            font-weight: bold;
+            color: #343a40;
+            margin-top: 20px;
+          }
+
+          /* 각 정보 섹션 */
+          .review-details {
+            /* 수정 삭제버튼 위치 */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            background-color: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+          }
+          /* 수정 삭제버튼 */
+          .button-group {
+            display: flex;
+            margin-top: 0px; /* Adjust to move buttons higher */
+          }
+          /* 버튼 css */
+          /* 공통 버튼 스타일 */
+          .custom-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4e9ef2;
+            color: white;
+            cursor: pointer;
+            transition:
+              background-color 0.3s ease,
+              transform 0.2s ease;
+            margin: 0 5px;
+          }
+
+          /* 버튼 호버 효과 */
+          .custom-button:hover {
+            background-color: #357acb; /* 조금 더 진한 파란색으로 변경 */
+            transform: translateY(-2px); /* 약간 위로 올라가는 효과 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 추가 */
+          }
+
+          /* 버튼 클릭 효과 */
+          .custom-button:active {
+            transform: translateY(0); /* 클릭 시 원래 위치로 돌아오게 */
+            box-shadow: none; /* 클릭 시 그림자 제거 */
+          }
+
+          /* ">" 버튼 스타일 */
+          .go-button {
+            background: none;
+            border: none;
+            color: #4e9ef2;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s ease;
+          }
+
+          .go-button:hover {
+            color: #357acb;
+          }
+        </style>
+      </head>
+      <body>
+        <header class="p-3 text-bg-dark">
+          <div class="container">
+            <div
+              class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+            >
+              <a
+                href="/"
+                class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+              >
+                <svg
+                  class="bi me-2"
+                  width="40"
+                  height="32"
+                  role="img"
+                  aria-label="Bootstrap"
+                >
+                  <use xlink:href="#bootstrap"></use>
+                </svg>
+              </a>
+
+              <ul
+                class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-start mb-md-0"
+              >
+                <li>
+                  <a
+                    href="/"
+                    style="margin-left: -7vw"
+                    class="nav-link px-4 text-secondary"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 512 512"
+                      style="transform: translateX(-10px)"
+                    >
+                      <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                      <path
+                        d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+                      />
+                    </svg>
+                    반려견 돌보미
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/api/petsitters/reservation"
+                    class="nav-link px-4 custom-color"
+                    >돌보미 예약</a
+                  >
+                </li>
+                <li>
+                  <a href="/api/petsitters" class="nav-link px-4 text-secondary"
+                    >펫시터 소개</a
+                  >
+                </li>
+              </ul>
+
+              <div class="text-end">
+                <a href="/api/users/profile" class="profile-button">
+                  <div class="profile-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      class="bi bi-person"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 14s1-1.5 6-1.5S14 14 14 14H2zm6-13a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </header>
+
+        <div class="container1">
+          <h2>내 리뷰 관리</h2>
+          <div id="reviewList">
+            <!-- 예약 데이터가 여기에 동적으로 렌더링됩니다. -->
+          </div>
+        </div>
+
+        <script>
+          let accessToken = '';
+
+          document.addEventListener('DOMContentLoaded', function () {
+            fetchSessionData();
+          });
+
+          // 세션에서 토큰 가져오기
+          function fetchSessionData() {
+            fetch('/api/session', {
+              method: 'GET',
+              credentials: 'include',
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.accessToken) {
+                  accessToken = data.accessToken;
+                  fetchReview();
+                } else {
+                  alert('로그인이 필요합니다.');
+                  window.location.href = '/api/auth/sign-in';
+                }
+              })
+              .catch((error) => {
+                console.error('세션 정보를 가져오는 중 오류 발생:', error);
+              });
+          }
+
+          // 예약 정보 가져오기
+          function fetchReview() {
+            fetch('/api/reviews/my', {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error('네트워크 응답 오류');
+                }
+                return response.json();
+              })
+              .then((data) => {
+                if (data.status === 200) {
+                  console.log(data.data);
+                  displayReview(data.data);
+                } else {
+                  alert('예약 정보를 가져오는 데 실패했습니다.');
+                }
+              })
+              .catch((error) => {
+                console.error('예약 정보를 가져오는 중 오류 발생:', error);
+              });
+          }
+
+          // 리뷰 정보 화면에 표시
+          function displayReview(review) {
+            const reviewList = document.getElementById('reviewList');
+            reviewList.innerHTML = '';
+
+            if (review.length === 0) {
+              reviewList.innerHTML = '<p>예약 정보가 없습니다.</p>';
+              return;
+            }
+
+            review.forEach((review) => {
+              const reviewItem = document.createElement('div');
+              reviewItem.className = 'review-item';
+
+              //평점 별로 표시
+              const starRating = getStarRating(review.reviews.rating);
+
+              reviewItem.innerHTML = `
+            <h4>리뷰 번호: ${review.review_id}</h4>
+     
+            <div class="review-details">
+                <div>
+              <p class="section-title">${review.reviews.petsitter_name} 펫시터  <button class="go-button" onclick="window.location.href='/api/petsitters/${review.reviews.pet_sitter_id}/details'">&gt;</button></p>
+              <p>${starRating}</p>
+              <p>${review.reviews.comment}</p>
+              </div>
+              <div class="button-group">
+              <button class="custom-button">수정</button>
+              <button class="custom-button" onclick="deleteReview(${review.review_id})">삭제</button>
+            </div>
+
+          
+          `;
+              reviewList.appendChild(reviewItem);
+            });
+          }
+
+          function getStarRating(rating) {
+            let starHTML = '';
+            for (let i = 1; i <= 5; i++) {
+              if (i <= rating) {
+                starHTML += '<i class="fas fa-star" style="color: gold;"></i>'; // Filled star
+              } else {
+                starHTML += '<i class="far fa-star" style="color: gold;"></i>'; // Empty star
+              }
+            }
+            return starHTML;
+          }
+
+          async function deleteReview(reviewId) {
+            // 삭제 확인 알림
+            const isConfirmed = confirm('삭제하시겠습니까?');
+            if (isConfirmed) {
+              // 리뷰 삭제 API 호출
+              try {
+                const response = await fetch(`/api/reviews/${reviewId}`, {
+                  method: 'DELETE', // DELETE 메서드 사용
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`, // 필요한 경우 Authorization 헤더 추가
+                  },
+                });
+
+                if (response.ok) {
+                  alert('리뷰가 삭제되었습니다.'); // 삭제 성공 시 알림
+                  location.reload(); // 페이지 리로드
+                } else {
+                  const errorData = await response.json();
+                  alert(`오류: ${errorData.message}`); // 오류 처리
+                }
+              } catch (error) {
+                console.error('삭제 중 오류 발생:', error);
+                alert('리뷰 삭제에 실패했습니다.');
+              }
+            }
+          }
+        </script>
+      </body>
+    </html>
+  </body>
+</html>

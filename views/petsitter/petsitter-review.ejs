@@ -321,11 +321,12 @@
               <p class="card-text"><small class="text-muted">작성일: ${new Date(
                 review.createdAt,
               ).toLocaleDateString()}</small></p>
-              <button type="button" class="btn btn-primary btn-sm">수정</button>
-              <button type="button" class="btn btn-secondary btn-sm">삭제</button>
+             
             </div>
           `;
-
+          //리뷰 수정삭제 버튼 일단 보류
+          // <button type="button" class="btn btn-primary btn-sm">수정</button>
+          // <button type="button" class="btn btn-secondary btn-sm">삭제</button>
           reviewsContainer.appendChild(reviewCard);
         });
       }

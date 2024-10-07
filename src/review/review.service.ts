@@ -110,12 +110,17 @@ export class ReviewService {
     const reviews = await this.reviewRepository.find({
       where: { user: { id: userId } },
       relations: ['petsitter'],
+      order: {
+        created_at: 'DESC',
+      },
     });
 
     return reviews.map((review) => ({
       review_id: review.id,
       user_id: userId,
+
       reviews: {
+        pet_sitter_id: review.petsitter.id,
         petsitter_name: review.petsitter.name,
         rating: review.rating,
         comment: review.comment,
