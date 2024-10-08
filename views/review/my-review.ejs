@@ -361,7 +361,8 @@
               <p>${review.reviews.comment}</p>
               </div>
               <div class="button-group">
-              <button class="custom-button">수정</button>
+                
+              <button class="custom-button" onclick="window.location.href='/api/review/edit/${review.review_id}'">수정</button>
               <button class="custom-button" onclick="deleteReview(${review.review_id})">삭제</button>
             </div>
 
@@ -369,6 +370,10 @@
           `;
               reviewList.appendChild(reviewItem);
             });
+          }
+
+          function openReviewEditPopup(rating) {
+            alert(rating);
           }
 
           function getStarRating(rating) {
