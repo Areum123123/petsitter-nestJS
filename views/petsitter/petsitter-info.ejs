@@ -266,48 +266,97 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        fetchPesitterInfo();
+        fetchPesitterInfo(); // 초기 로드 시 전체 펫시터 목록을 불러옵니다.
+        setupRegionDropdown(); // 드롭다운 메뉴에 이벤트 리스너를 설정합니다.
+        setupSearchButton(); // 검색 버튼에 이벤트 리스너를 설정합니다.
+        setupSearchInput(); // 검색 입력 필드에 이벤트 리스너를 설정합니다.
       });
 
-      function fetchPesitterInfo() {
-        fetch('/api/pet-sitters', {
+      function fetchPesitterInfo(region = '', name = '') {
+        let url = '/api/pet-sitters';
+        const params = new URLSearchParams();
+
+        if (region) {
+          params.append('region', region);
+        }
+
+        if (name) {
+          params.append('name', name);
+        }
+
+        if (params.toString()) {
+          url += `?${params.toString()}`;
+        }
+
+        fetch(url, {
           method: 'GET',
           credentials: 'include',
         })
           .then((response) => response.json())
           .then((data) => {
             const petsitter = data.data;
-            console.log('petsitter', petsitter);
             const cards = document.getElementById('cards');
-            petsitter.forEach((sitter) => {
-              console.log('petsitter', sitter);
-              const sitterCard = ` 
-               <div class="col">
-            <a href="/api/petsitters/${sitter.petSitterId}/details" class="text-decoration-none text-dark">
-              <div class="card h-100">
-                <img
-                  src="${sitter.image_url}"
-                  class="card-img-top"
-                  alt="${sitter.name}"
-                />
-                <div class="card-body">
-                  <h5 class="card-title">${sitter.name}</h5>
-                  <p class="card-text">
-                    •펫시터경력: ${sitter.experience}<br />
-                    •자격증: ${sitter.certification}<br />
-                    •지역: ${sitter.region}
-                  </p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
-                </div>
-              </div>
-            </a>
-          </div>`;
+            cards.innerHTML = ''; // 기존 카드들을 지우고 새로 렌더링
 
+            petsitter.forEach((sitter) => {
+              const sitterCard = `
+            <div class="col">
+              <a href="/api/petsitters/${sitter.petSitterId}/details" class="text-decoration-none text-dark">
+                <div class="card h-100">
+                  <img
+                    src="${sitter.image_url}"
+                    class="card-img-top"
+                    alt="${sitter.name}"
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">${sitter.name}</h5>
+                    <p class="card-text">
+                      •펫시터경력: ${sitter.experience}<br />
+                      •자격증: ${sitter.certification}<br />
+                      •지역: ${sitter.region}
+                    </p>
+                  </div>
+                  <div class="card-footer">
+                    <small class="text-body-secondary">•평점: ${sitter.total_rate}</small>
+                  </div>
+                </div>
+              </a>
+            </div>`;
               cards.innerHTML += sitterCard;
             });
           });
+      }
+
+      function setupRegionDropdown() {
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach((item) => {
+          item.addEventListener('click', function () {
+            const selectedRegion = this.textContent.trim();
+            fetchPesitterInfo(selectedRegion); // 선택된 지역에 맞는 펫시터 목록을 불러옵니다.
+          });
+        });
+      }
+
+      function setupSearchButton() {
+        const searchButton = document.querySelector('.search-button');
+        searchButton.addEventListener('click', function () {
+          const searchInput = document
+            .querySelector('.search-input')
+            .value.trim();
+          fetchPesitterInfo('', searchInput); // 입력된 이름에 맞는 펫시터 목록을 불러옵니다.
+        });
+      }
+
+      // New function to handle Enter key press in search input
+      function setupSearchInput() {
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default form submission
+            const searchValue = this.value.trim();
+            fetchPesitterInfo('', searchValue); // 입력된 이름에 맞는 펫시터 목록을 불러옵니다.
+          }
+        });
       }
     </script>
   </body>

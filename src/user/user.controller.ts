@@ -22,11 +22,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  //내정보조회 페이지 렌더링
-  @Get('/profile')
-  @Render('auth/my-profile.ejs') // views/auth/my-profile.ejs 파일을 렌더링
-  myProfilePage() {}
-
   //내정보조회
   @Get('me')
   @UseGuards(AuthGuard())

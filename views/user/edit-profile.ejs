@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>돌보미 | 리뷰 수정</title>
+    <title>돌보미 | 프로필 수정</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,7 +17,6 @@
         font-weight: 400;
         font-style: normal;
       }
-      /* 스타일링 부분은 그대로 유지 */
       body {
         background-color: #f7f8f8;
       } /* 왼쪽상단 반려견돌보미 */
@@ -61,6 +60,8 @@
       .nav-link {
         font-size: 18px; /* 글씨 크기 증가 */
       }
+
+      /* 스타일링 부분은 그대로 유지 */
 
       .form-container {
         max-width: 500px;
@@ -217,33 +218,26 @@
 
     <!--  -->
     <div class="form-container">
-      <div class="form-title">리뷰 수정하기</div>
+      <div class="form-title">프로필 수정</div>
       <form id="reviewForm">
         <div class="mb-3">
-          <label for="rating" class="form-label rating-label">
-            평점
-            <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-          </label>
-          <input
-            type="number"
-            class="form-control"
-            id="rating"
-            name="rating"
-            min="1"
-            max="5"
-            placeholder="1 ~ 5"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="comment" class="form-label">댓글</label>
+          <label for="phone_number" class="form-label">연락처</label>
           <textarea
             class="form-control"
-            id="comment"
-            name="comment"
+            id="phone_number"
+            name="phone_number"
             rows="4"
-            placeholder="여기에 수정할 리뷰를 작성해 주세요."
-            required
+            placeholder="여기에 수정할 연락처를 작성해 주세요."
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label">주소</label>
+          <textarea
+            class="form-control"
+            id="address"
+            name="address"
+            rows="4"
+            placeholder="여기에 수정할 주소를 작성해 주세요."
           ></textarea>
         </div>
         <button type="submit" class="btn btn-submit">수정 완료</button>
@@ -252,28 +246,21 @@
 
     <script>
       let accessToken = '';
-      let reviewId = ''; // 리뷰 ID를 여기에 설정해주세요
       console.log('accessToken', accessToken);
-      console.log('reviewId', reviewId);
 
       document.addEventListener('DOMContentLoaded', function () {
         // URL에서 reviewId를 추출
-        reviewId = window.location.pathname.split('/').pop(); // URL의 마지막 부분을 가져옴
-        console.log('reviewId', reviewId); // reviewId 출력
 
-        const reviewForm = document.getElementById('reviewForm');
-
-        // accessToken 및 reviewId의 값을 출력
+        // accessToken
         console.log('accessToken', accessToken);
-        console.log('reviewId', reviewId);
 
         reviewForm.addEventListener('submit', function (e) {
           e.preventDefault(); // 폼의 기본 제출 동작 방지
 
-          // 세션 데이터 가져오기 및 리뷰 업데이트
+          // 세션 데이터 가져오기 및 프로필 업데이트
           fetchSessionData().then(() => {
             console.log('accessToken', accessToken); // accessToken 출력
-            fetchReview();
+            fetchProfile();
           });
         });
 
@@ -296,14 +283,22 @@
             });
         }
 
-        function fetchReview() {
-          const data = {
-            rating: parseInt(document.getElementById('rating').value), // 평점 정수로 변환
-            comment: document.getElementById('comment').value, // 댓글
-          };
+        function fetchProfile() {
+          const data = {};
+          const phoneNumberValue =
+            document.getElementById('phone_number').value;
+          const addressValue = document.getElementById('address').value;
 
-          // PATCH 요청으로 리뷰 수정
-          fetch(`/api/reviews/${reviewId}`, {
+          // 값이 있는 경우에만 데이터 객체에 추가
+          if (phoneNumberValue) {
+            data.phone_number = phoneNumberValue;
+          }
+
+          if (addressValue) {
+            data.address = addressValue;
+          }
+          // PATCH 요청으로 프로필 수정
+          fetch(`/api/users/me`, {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -313,17 +308,17 @@
           })
             .then((response) => {
               if (response.ok) {
-                alert('리뷰가 성공적으로 수정되었습니다!');
-                window.location.href = '/api/review/my'; // 수정 후 이동할 페이지
+                alert('프로필이 성공적으로 수정되었습니다!');
+                window.location.href = '/api/users/profile'; // 수정 후 이동할 페이지
               } else {
                 return response.json().then((err) => {
                   console.error('서버 응답 오류:', err);
-                  throw new Error('리뷰 수정에 실패했습니다.'); // 오류 처리
+                  throw new Error('프로필 수정에 실패했습니다.'); // 오류 처리
                 });
               }
             })
             .catch((error) => {
-              alert('리뷰 수정에 실패했습니다. 다시 시도해 주세요.');
+              alert('프로필 수정에 실패했습니다. 다시 시도해 주세요.');
               console.error(error);
             });
         }
