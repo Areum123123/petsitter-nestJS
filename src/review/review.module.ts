@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Petsitter } from 'src/petsitter/entities/petsitter.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Reservation } from 'src/reservation/entities/reservation.entity';
+import { reviewRenderController } from './review-render.controller';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { Reservation } from 'src/reservation/entities/reservation.entity';
     // PetsitterModule,
     // UserModule,
   ],
-  controllers: [ReviewController],
+  controllers: [ReviewController, reviewRenderController],
   providers: [ReviewService],
   exports: [ReviewService],
 })

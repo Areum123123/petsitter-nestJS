@@ -69,7 +69,7 @@ export class PetSitterController {
     };
   }
 
-  //펫시터 리뷰
+  //펫시터 리뷰 작성
   @Post(':petSitterId/reviews')
   @UseGuards(AuthGuard())
   async createReview(

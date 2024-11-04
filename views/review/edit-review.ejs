@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>돌보미 | 리뷰 수정</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+      * {
+        font-family: 'Jua', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      /* 스타일링 부분은 그대로 유지 */
+      body {
+        background-color: #f7f8f8;
+      } /* 왼쪽상단 반려견돌보미 */
+      .custom-color {
+        color: #4e9ef2;
+        font-weight: bold; /* 글씨를 두껍게 */
+      } /* 프로필버튼 */
+      .profile-button {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        background-color: #4e9ef2; /* 버튼 배경색 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .profile-icon {
+        width: 50%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .profile-icon svg {
+        width: 100%;
+        height: 100%;
+        color: white; /* 아이콘 색상 */
+      }
+      .profile-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* 상단 글씨 크기 조정 */
+      .nav-link {
+        font-size: 18px; /* 글씨 크기 증가 */
+      }
+
+      .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      .form-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #4e9ef2;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .form-control {
+        height: 45px;
+        font-size: 16px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+
+      .form-control:focus {
+        border-color: #4e9ef2;
+        box-shadow: 0 0 5px rgba(78, 158, 242, 0.5);
+      }
+
+      .btn-submit {
+        background-color: #4e9ef2;
+        color: white;
+        border: none;
+        width: 100%;
+        height: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        background-color: #357ab9;
+      }
+
+      .form-label {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      textarea {
+        resize: none;
+      }
+
+      .rating-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .rating-stars {
+        font-size: 24px;
+        color: #ffd700;
+        margin-top: -5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div
+          class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+          >
+            <svg
+              class="bi me-2"
+              width="40"
+              height="32"
+              role="img"
+              aria-label="Bootstrap"
+            >
+              <use xlink:href="#bootstrap"></use>
+            </svg>
+          </a>
+
+          <ul
+            class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-start mb-md-0"
+          >
+            <li>
+              <a
+                href="/"
+                style="margin-left: -7vw"
+                class="nav-link px-4 custom-color"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 512 512"
+                  style="transform: translateX(-10px)"
+                >
+                  <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                  <path
+                    d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z"
+                  />
+                </svg>
+                반려견 돌보미
+              </a>
+            </li>
+            <li>
+              <a
+                href="/api/petsitters/reservation"
+                class="nav-link px-4 text-secondary"
+                >돌보미 예약</a
+              >
+            </li>
+            <li>
+              <a href="/api/petsitters" class="nav-link px-4 text-secondary"
+                >펫시터 소개</a
+              >
+            </li>
+          </ul>
+
+          <div class="text-end">
+            <a href="/api/users/profile" class="profile-button">
+              <div class="profile-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-person"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 14s1-1.5 6-1.5S14 14 14 14H2zm6-13a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <hr />
+    </header>
+
+    <!--  -->
+    <div class="form-container">
+      <div class="form-title">리뷰 수정하기</div>
+      <form id="reviewForm">
+        <div class="mb-3">
+          <label for="rating" class="form-label rating-label">
+            평점
+            <span class="rating-stars">⭐⭐⭐⭐⭐</span>
+          </label>
+          <input
+            type="number"
+            class="form-control"
+            id="rating"
+            name="rating"
+            min="1"
+            max="5"
+            placeholder="1 ~ 5"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="comment" class="form-label">댓글</label>
+          <textarea
+            class="form-control"
+            id="comment"
+            name="comment"
+            rows="4"
+            placeholder="여기에 수정할 리뷰를 작성해 주세요."
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-submit">수정 완료</button>
+      </form>
+    </div>
+
+    <script>
+      let accessToken = '';
+      let reviewId = ''; // 리뷰 ID를 여기에 설정해주세요
+      console.log('accessToken', accessToken);
+      console.log('reviewId', reviewId);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        // URL에서 reviewId를 추출
+        reviewId = window.location.pathname.split('/').pop(); // URL의 마지막 부분을 가져옴
+        console.log('reviewId', reviewId); // reviewId 출력
+
+        const reviewForm = document.getElementById('reviewForm');
+
+        // accessToken 및 reviewId의 값을 출력
+        console.log('accessToken', accessToken);
+        console.log('reviewId', reviewId);
+
+        reviewForm.addEventListener('submit', function (e) {
+          e.preventDefault(); // 폼의 기본 제출 동작 방지
+
+          // 세션 데이터 가져오기 및 리뷰 업데이트
+          fetchSessionData().then(() => {
+            console.log('accessToken', accessToken); // accessToken 출력
+            fetchReview();
+          });
+        });
+
+        function fetchSessionData() {
+          return fetch('/api/session', {
+            method: 'GET',
+            credentials: 'include',
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.accessToken) {
+                accessToken = data.accessToken; // accessToken을 저장
+              } else {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/api/auth/sign-in'; // 로그인 페이지로 리디렉션
+              }
+            })
+            .catch((error) => {
+              console.error('세션 정보를 가져오는 중 오류 발생:', error);
+            });
+        }
+
+        function fetchReview() {
+          const data = {
+            rating: parseInt(document.getElementById('rating').value), // 평점 정수로 변환
+            comment: document.getElementById('comment').value, // 댓글
+          };
+
+          // PATCH 요청으로 리뷰 수정
+          fetch(`/api/reviews/${reviewId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${accessToken}`, // 토큰 인증
+            },
+            body: JSON.stringify(data), // 데이터 JSON 문자열로 변환
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert('리뷰가 성공적으로 수정되었습니다!');
+                window.location.href = '/api/review/my'; // 수정 후 이동할 페이지
+              } else {
+                return response.json().then((err) => {
+                  console.error('서버 응답 오류:', err);
+                  throw new Error('리뷰 수정에 실패했습니다.'); // 오류 처리
+                });
+              }
+            })
+            .catch((error) => {
+              alert('리뷰 수정에 실패했습니다. 다시 시도해 주세요.');
+              console.error(error);
+            });
+        }
+      });
+    </script>
+  </body>
+</html>

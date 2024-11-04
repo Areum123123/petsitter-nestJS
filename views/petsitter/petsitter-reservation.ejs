@@ -235,7 +235,7 @@
     <h1>돌보미 펫시터 소개</h1>
     <div class="mainbar d-flex align-items-center mb-3">
       <!-- 드롭다운 -->
-      <div class="dropdown me-3">
+      <!-- <div class="dropdown me-3">
         <button
           class="btn btn-secondary dropdown-toggle"
           type="button"
@@ -250,7 +250,7 @@
           <li><a class="dropdown-item" href="#">부산</a></li>
           <li><a class="dropdown-item" href="#">제주도</a></li>
         </ul>
-      </div>
+      </div> -->
 
       <!-- 검색 입력 필드 -->
       <div class="d-flex ms-auto">
@@ -275,10 +275,23 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         fetchPesitterInfo();
+        setupSearchButton(); // 검색 버튼에 이벤트 리스너를 설정합니다.
+        setupSearchInput(); // 검색 입력 필드에 이벤트 리스너를 설정합니다.
       });
 
-      function fetchPesitterInfo() {
-        fetch('/api/pet-sitters', {
+      function fetchPesitterInfo(name = '') {
+        let url = '/api/pet-sitters';
+        const params = new URLSearchParams();
+
+        if (name) {
+          params.append('name', name);
+        }
+
+        if (params.toString()) {
+          url += `?${params.toString()}`;
+        }
+
+        fetch(url, {
           method: 'GET',
           credentials: 'include',
         })
@@ -286,35 +299,60 @@
           .then((data) => {
             const petsitter = data.data;
             const cards = document.getElementById('cards');
+            cards.innerHTML = ''; // 기존 카드들을 지우고 새로 렌더링
+
             petsitter.forEach((sitter) => {
               const sitterCard = ` 
-               <div class="col">
-          <div class="card h-100">
-            <img
-              src="${sitter.image_url}"
-              class="card-img-top"
-              alt="..."
-            />
-            <div class="card-body">
-              <h5 class="card-title">${sitter.name}</h5>
-            </div>
-            <div class="card-footer d-flex justify-content-between">
-              <button
-                class="btn w-100 me-2"
-                style="background-color: #4e9ef2; color: white"
-                onclick="location.href='/api/reservation?pet_sitter_id=${sitter.petSitterId}'"
-              >
-                예약
-              </button>
-              
+           <div class="col">
+            <div class="card h-100">
+              <img
+                src="${sitter.image_url}"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h5 class="card-title">${sitter.name}</h5>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                <button
+                  class="btn w-100 me-2"
+                  style="background-color: #4e9ef2; color: white"
+                  onclick="location.href='/api/reservation?pet_sitter_id=${sitter.petSitterId}'"
+                >
+                  예약
+                </button>
+              </div>
             </div>
           </div>
-        </div>
            `;
 
               cards.innerHTML += sitterCard;
             });
           });
+      }
+
+      function setupSearchButton() {
+        const searchButton = document.querySelector('.search-button');
+        searchButton.addEventListener('click', function (event) {
+          event.preventDefault(); // 기본 제출 동작 방지
+          const searchInput = document
+            .querySelector('.search-input')
+            .value.trim();
+          fetchPesitterInfo(searchInput); // 입력된 이름에 맞는 펫시터 목록을 불러옵니다.
+        });
+      }
+
+      function setupSearchInput() {
+        const searchInput = document.querySelector('.search-input');
+
+        // Enter 키가 눌렸을 때 검색
+        searchInput.addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault(); // 기본 동작 방지 (새로 고침 방지)
+            const searchInputValue = searchInput.value.trim();
+            fetchPesitterInfo(searchInputValue); // 입력된 이름에 맞는 펫시터 목록을 불러옵니다.
+          }
+        });
       }
     </script>
   </body>

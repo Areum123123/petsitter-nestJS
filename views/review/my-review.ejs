@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>돌보미 | 예약 관리</title>
+    <title>돌보미 | 내리뷰관리</title>
+
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
@@ -22,6 +23,10 @@
       }
       body {
         background-color: #f7f8f8;
+      } /* 왼쪽상단 반려견돌보미 */
+      .custom-color {
+        color: #4e9ef2;
+        font-weight: bold; /* 글씨를 두껍게 */
       }
 
       /* 상단 글씨 크기 조정 */
@@ -29,7 +34,7 @@
         font-size: 18px; /* 글씨 크기 증가 */
       }
 
-      /* 프로필 버튼 */
+      /* 프로필버튼 */
       .profile-button {
         width: 45px;
         height: 45px;
@@ -45,14 +50,11 @@
         overflow: hidden;
       }
 
-      /* 헤더 타이틀 */
       h1 {
         display: flex;
         justify-content: center;
         align-items: center;
       }
-
-      /* 프로필 아이콘 */
       .profile-icon {
         width: 50%;
         height: 50%;
@@ -63,10 +65,18 @@
       .profile-icon svg {
         width: 100%;
         height: 100%;
-        color: white;
+        color: white; /* 아이콘 색상 */
+      }
+      .profile-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+      }
+      .container1 {
+        padding: 40px 20px;
+        max-width: 900px;
+        margin: auto;
       }
 
-      /* 예약 관리 타이틀 */
       h2 {
         text-align: center;
         margin-bottom: 40px;
@@ -75,8 +85,7 @@
         color: #343a40;
       }
 
-      /* 예약 아이템 박스 */
-      .reservation-item {
+      .review-item {
         background: white;
         padding: 20px;
         margin-bottom: 30px;
@@ -86,67 +95,90 @@
           transform 0.2s ease,
           box-shadow 0.2s ease;
       }
-      .reservation-item:hover {
+
+      .review-item:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
-      .reservation-item h4 {
+
+      .review-item h4 {
         font-size: 22px;
         color: #495057;
         margin-bottom: 15px;
         border-bottom: 1px solid #dee2e6;
         padding-bottom: 10px;
-        color: #333;
       }
 
-      /* 예약 상태 스타일 */
-      .reservation-status {
-        font-weight: bold;
-      }
-      .reservation-status.text-warning {
-        color: #f0ad4e;
-      }
-      .reservation-status.text-success {
-        color: #28a745;
-      }
-      .reservation-status.text-danger {
-        color: #dc3545;
-      }
-      .reservation-status.text-secondary {
+      .review-item p {
+        margin: 8px 0;
+        font-size: 16px;
         color: #6c757d;
       }
 
-      /* 각 섹션별 타이틀과 텍스트 */
       .section-title {
-        font-size: 18px;
         font-weight: bold;
         color: #343a40;
         margin-top: 20px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
       }
 
-      .reservation-details,
-      .petsitter-details,
-      .pet-details {
-        background-color: #f8f9fa;
+      /* 각 정보 섹션 */
+      .review-details {
+        /* 수정 삭제버튼 위치 */
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        background-color: #f1f3f5;
         padding: 15px;
         border-radius: 10px;
         margin-top: 20px;
-        border: 1px solid #dee2e6;
+      }
+      /* 수정 삭제버튼 */
+      .button-group {
+        display: flex;
+        margin-top: 0px; /* Adjust to move buttons higher */
+      }
+      /* 버튼 css */
+      /* 공통 버튼 스타일 */
+      .custom-button {
+        padding: 8px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4e9ef2;
+        color: white;
+        cursor: pointer;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s ease;
+        margin: 0 5px;
       }
 
-      .reservation-details p,
-      .petsitter-details p,
-      .pet-details p {
-        font-size: 16px;
-        color: #495057;
-        margin: 5px 0;
+      /* 버튼 호버 효과 */
+      .custom-button:hover {
+        background-color: #357acb; /* 조금 더 진한 파란색으로 변경 */
+        transform: translateY(-2px); /* 약간 위로 올라가는 효과 */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 추가 */
       }
 
-      .custom-color {
+      /* 버튼 클릭 효과 */
+      .custom-button:active {
+        transform: translateY(0); /* 클릭 시 원래 위치로 돌아오게 */
+        box-shadow: none; /* 클릭 시 그림자 제거 */
+      }
+
+      /* ">" 버튼 스타일 */
+      .go-button {
+        background: none;
+        border: none;
         color: #4e9ef2;
-        font-weight: bold; /* 글씨를 두껍게 */
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.3s ease;
+      }
+
+      .go-button:hover {
+        color: #357acb;
       }
     </style>
   </head>
@@ -233,8 +265,8 @@
     </header>
 
     <div class="container1">
-      <h2>내 예약 관리</h2>
-      <div id="reservationList" style="margin: 100px">
+      <h2>내 리뷰 관리</h2>
+      <div id="reviewList">
         <!-- 예약 데이터가 여기에 동적으로 렌더링됩니다. -->
       </div>
     </div>
@@ -256,7 +288,7 @@
           .then((data) => {
             if (data.accessToken) {
               accessToken = data.accessToken;
-              fetchReservations();
+              fetchReview();
             } else {
               alert('로그인이 필요합니다.');
               window.location.href = '/api/auth/sign-in';
@@ -268,8 +300,8 @@
       }
 
       // 예약 정보 가져오기
-      function fetchReservations() {
-        fetch('/api/reservations', {
+      function fetchReview() {
+        fetch('/api/reviews/my', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -284,7 +316,8 @@
           })
           .then((data) => {
             if (data.status === 200) {
-              displayReservations(data.data);
+              console.log(data.data);
+              displayReview(data.data);
             } else {
               alert('예약 정보를 가져오는 데 실패했습니다.');
             }
@@ -294,84 +327,86 @@
           });
       }
 
-      // 예약 상태별로 색상 클래스 반환
-      function getStatusClass(status) {
-        if (status === 'PENDING') {
-          return 'text-warning'; // 대기 중인 예약은 노란색
-        } else if (status === 'CONFIRMED') {
-          return 'text-success'; // 확인된 예약은 초록색
-        } else if (status === 'CANCELED') {
-          return 'text-danger'; // 취소된 예약은 빨간색
-        } else {
-          return 'text-primary'; // 다른 상태는 기본 회색
-        }
-      }
+      // 리뷰 정보 화면에 표시
+      function displayReview(review) {
+        const reviewList = document.getElementById('reviewList');
+        reviewList.innerHTML = '';
 
-      // 날짜 포맷팅 함수 (2024-10-05 토요일 형식으로 변경)
-      function formatDate(dateString) {
-        const days = [
-          '일요일',
-          '월요일',
-          '화요일',
-          '수요일',
-          '목요일',
-          '금요일',
-          '토요일',
-        ];
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const dayName = days[date.getDay()];
-        return `${year}-${month}-${day} ${dayName}`;
-      }
-
-      // 예약 정보 화면에 표시
-      function displayReservations(reservations) {
-        const reservationList = document.getElementById('reservationList');
-        reservationList.innerHTML = '';
-
-        if (reservations.length === 0) {
-          reservationList.innerHTML = '<p>예약 정보가 없습니다.</p>';
+        if (review.length === 0) {
+          reviewList.innerHTML = '<p>등록한 리뷰가 없습니다.</p>';
           return;
         }
 
-        reservations.forEach((reservation) => {
-          const reservationItem = document.createElement('div');
-          reservationItem.className = 'reservation-item';
+        review.forEach((review) => {
+          const reviewItem = document.createElement('div');
+          reviewItem.className = 'review-item';
 
-          // 예약 상태에 따른 클래스 추가
-          const statusClass = getStatusClass(reservation.status);
+          //평점 별로 표시
+          const starRating = getStarRating(review.reviews.rating);
 
-          reservationItem.innerHTML = `
-            <h4>예약 번호: ${reservation.reservation_id}</h4>
-            <p class="reservation-status ${statusClass}">예약 상태: ${reservation.status}</p>
-    
-            <div class="reservation-details">
-              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">예약자 정보</p>
-              <p>보호자 이름:  ${reservation.reservation_details.user_name}</p>
-              <p>연락처:  ${reservation.reservation_details.phone_number}</p>
-              <p>주소:  ${reservation.reservation_details.address}</p>
+          reviewItem.innerHTML = `
+            <h4>리뷰 번호: ${review.review_id}</h4>
+     
+            <div class="review-details">
+                <div>
+              <p class="section-title">${review.reviews.petsitter_name} 펫시터  <button class="go-button" onclick="window.location.href='/api/petsitters/${review.reviews.pet_sitter_id}/details'">&gt;</button></p>
+              <p>${starRating}</p>
+              <p>${review.reviews.comment}</p>
+              </div>
+              <div class="button-group">
+                
+              <button class="custom-button" onclick="window.location.href='/api/review/edit/${review.review_id}'">수정</button>
+              <button class="custom-button" onclick="deleteReview(${review.review_id})">삭제</button>
             </div>
-    
-            <div class="petsitter-details">
-              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">펫시터 정보</p>
-              <p>펫시터 이름:  ${reservation.petsitter_details.name}</p>
-              <p>펫시터 지역:  ${reservation.petsitter_details.region}</p>
-              <p>예약 날짜: ${formatDate(reservation.petsitter_details.booking_date)}</p>
-            </div>
-    
-            <div class="pet-details">
-              <p class="section-title" style="color: black; font-size: 20px;  margin-bottom: 10px;">반려견 정보</p>
-              <p>반려견 이름:  ${reservation.pet_details.name}</p>
-              <p>반려견 종:  ${reservation.pet_details.breed}</p>
-              <p>반려견 나이:  ${reservation.pet_details.age}</p>
-              <p>반려견 몸무게:  ${reservation.pet_details.weight}</p>
-              <p>요청 사항:  ${reservation.pet_details.request_details}</p>
-            </div>
+
+          
           `;
-          reservationList.appendChild(reservationItem);
+          reviewList.appendChild(reviewItem);
         });
+      }
+
+      function openReviewEditPopup(rating) {
+        alert(rating);
+      }
+
+      function getStarRating(rating) {
+        let starHTML = '';
+        for (let i = 1; i <= 5; i++) {
+          if (i <= rating) {
+            starHTML += '<i class="fas fa-star" style="color: gold;"></i>'; // Filled star
+          } else {
+            starHTML += '<i class="far fa-star" style="color: gold;"></i>'; // Empty star
+          }
+        }
+        return starHTML;
+      }
+
+      async function deleteReview(reviewId) {
+        // 삭제 확인 알림
+        const isConfirmed = confirm('삭제하시겠습니까?');
+        if (isConfirmed) {
+          // 리뷰 삭제 API 호출
+          try {
+            const response = await fetch(`/api/reviews/${reviewId}`, {
+              method: 'DELETE', // DELETE 메서드 사용
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`, // 필요한 경우 Authorization 헤더 추가
+              },
+            });
+
+            if (response.ok) {
+              alert('리뷰가 삭제되었습니다.'); // 삭제 성공 시 알림
+              location.reload(); // 페이지 리로드
+            } else {
+              const errorData = await response.json();
+              alert(`오류: ${errorData.message}`); // 오류 처리
+            }
+          } catch (error) {
+            console.error('삭제 중 오류 발생:', error);
+            alert('리뷰 삭제에 실패했습니다.');
+          }
+        }
       }
     </script>
   </body>

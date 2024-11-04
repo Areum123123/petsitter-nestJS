@@ -13,4 +13,12 @@ export class PetsitterRenderController {
   @Get('/:petSitterId/details')
   @Render('petsitter/petsitter-review.ejs') // views/petsitter/petsitter-reveiw.ejs 파일을 렌더링
   petsitterReveiwPage() {}
+
+  @Get('/create')
+  @Render('petsitter/petsitter-create.ejs') // views/petsitter/petsitter-reveiw.ejs 파일을 렌더링
+  petsitterCreatePage() {}
+
+  @Get('/admin')
+  @Render('admin/petsitter-admin.ejs') // views/admin/petsitter-admin.ejs 파일을 렌더링
+  petsitterAdminPage() {}
 }

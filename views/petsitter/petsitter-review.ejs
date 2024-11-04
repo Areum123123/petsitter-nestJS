@@ -273,9 +273,18 @@
           petSitter.certification;
         document.getElementById('totalRate').textContent = rating.toFixed(1);
 
-        // 별점 렌더링
-        const starRatingElement = document.getElementById('starRating');
-        starRatingElement.innerHTML = getStarRatingHtml(rating);
+        // 평점이 NaN인 경우 처리
+        if (isNaN(rating)) {
+          document.getElementById('totalRate').textContent = '평점이 없습니다';
+          document.getElementById('starRating').innerHTML = ''; // 별점도 비워줍니다.
+        } else {
+          document.getElementById('totalRate').textContent = rating.toFixed(1);
+
+          // 별점 렌더링
+          const starRatingElement = document.getElementById('starRating');
+          starRatingElement.innerHTML = getStarRatingHtml(rating);
+        }
+
         document.getElementById('petSitterImage').src = petSitter.image_url;
       }
 
@@ -321,11 +330,12 @@
               <p class="card-text"><small class="text-muted">작성일: ${new Date(
                 review.createdAt,
               ).toLocaleDateString()}</small></p>
-              <button type="button" class="btn btn-primary btn-sm">수정</button>
-              <button type="button" class="btn btn-secondary btn-sm">삭제</button>
+             
             </div>
           `;
-
+          //리뷰 수정삭제 버튼 일단 보류
+          // <button type="button" class="btn btn-primary btn-sm">수정</button>
+          // <button type="button" class="btn btn-secondary btn-sm">삭제</button>
           reviewsContainer.appendChild(reviewCard);
         });
       }
