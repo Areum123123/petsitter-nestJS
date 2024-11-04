@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 페이지</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+      * {
+        font-family: 'Jua', sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+      .main {
+        color: rgb(35, 34, 34);
+        background-image: url('main.jpg');
+        background-position: center;
+        background-size: cover;
+        height: 60vh; /* 뷰포트의 100% 높이로 설정 */
+      }
+      body {
+        background-color: #fff;
+      }
+      /* Footer */
+      .footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+      }
+      .footer .social-links {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+      .footer .social-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <footer class="footer">
+      <div class="container">
+        <p>관리자 페이지</p>
+        <ul class="social-links">
+          <li><a href="/api/petsitters/admin">펫시터 관리</a></li>
+          <li><a href="#">관리자페이지1</a></li>
+          <li><a href="#">관리자페이지2</a></li>
+          <li><a href="#">관리자페이지3</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>
